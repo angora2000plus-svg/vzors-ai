@@ -2,48 +2,36 @@
 <html lang="lv">
 <head>
 <meta charset="UTF-8">
-<title>Novembris ir klāt — Vzors AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novembris ir klāt — Vzors AI</title>
 <style>
 body{margin:0;background:#f8f7ff;color:#1a1a1a;font-family:Inter,system-ui,sans-serif;padding:24px}
-.top{display:flex;align-items:center;gap:16px}
-.star{width:56px;height:56px;background:#000;clip-path:polygon(50% 0,61% 35%,98% 50%,61% 65%,50% 100%,39% 65%,2% 50%,39% 35%);display:grid;place-items:center;color:#fff}
-h1{margin:0;font-size:40px}
-.amethyst{margin:16px 0;background:linear-gradient(135deg,#d6c2ff,#b18cff);border-radius:16px;padding:14px 20px;display:flex;gap:12px;align-items:center}
-.amethyst .V{width:34px;height:34px;background:#1a1a1a;color:#fff;border-radius:10px;display:grid;place-items:center;font-weight:800}
-.layout{display:flex;gap:18px}
-.left{flex:1}
-.stickers{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:16px}
+.top{display:flex;align-items:center;gap:16px}.star{width:56px;height:56px;background:#000;clip-path:polygon(50% 0,61% 35%,98% 50%,61% 65%,50% 100%,39% 65%,2% 50%,39% 35%);display:grid;place-items:center;color:#fff}
+h1{margin:0;font-size:40px}.amethyst{margin:16px 0;background:linear-gradient(135deg,#d6c2ff,#b18cff);border-radius:16px;padding:14px 20px;display:flex;gap:12px;align-items:center}
+.layout{display:flex;gap:18px}.left{flex:1}.stickers{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:16px}
 .sticker{background:#fffbe6;border:1px solid #f0e6b0;border-radius:12px;padding:14px;min-height:100px;box-shadow:2px 4px 12px #00000008;font-size:14px}
 .sticker.auto{background:#e9ffef;border-color:#b6e9c5}
 .input-area{background:#fff;border:1px solid #e9e3ff;border-radius:18px;padding:16px}
 .input-area textarea{width:100%;border:1px solid #ece6ff;border-radius:12px;padding:12px;min-height:80px;resize:none;outline:0;box-sizing:border-box}
 .btn-black{background:#1a1a1a;color:#fff;border:0;border-radius:999px;padding:10px 20px;cursor:pointer;font-weight:700}
-.btn-black.rec{background:#ff3b30;animation:pulse 1s infinite}
-@keyframes pulse{0%{opacity:1}50%{opacity:.6}100%{opacity:1}}
-.right{width:360px;display:flex;flex-direction:column;gap:16px}
-.card{background:#fff;border:1px solid #e9e3ff;border-radius:18px;padding:18px;cursor:pointer}
+.btn-black.rec{background:#ff3b30}.right{width:360px;display:flex;flex-direction:column;gap:16px}
+.card{background:#fff;border:1px solid #e9e3ff;border-radius:18px;padding:18px}.card.cal{cursor:pointer}
 .card h3{margin:0 0 10px 0;font-size:11px;letter-spacing:1.5px;opacity:.6}
 .plugin{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f0ff;font-size:13px}
-#calModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#00000080;backdrop-filter:blur(10px);z-index:99;align-items:center;justify-content:center}
-#calModal.open{display:flex}
-.calBig{background:#fff;border-radius:20px;padding:24px;width:90%;max-width:480px}
+#calModal{display:none;position:fixed;inset:0;background:#00000080;backdrop-filter:blur(10px);z-index:99;align-items:center;justify-content:center}
+#calModal.open{display:flex}.calBig{background:#fff;border-radius:20px;padding:24px;width:90%;max-width:480px}
 .calGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;margin-top:12px}
-.calGrid div{padding:12px;border-radius:10px;border:1px solid #f0e0ff;cursor:pointer}
-.calGrid div.today{background:#1a1a1a;color:#fff}
-.calGrid div.hasEv{background:#e9ffef;border-color:#b6e9c5}
+.calGrid div{padding:12px;border-radius:10px;border:1px solid #f0e0ff;cursor:pointer}.calGrid div.today{background:#1a1a1a;color:#fff}.calGrid div.hasEv{background:#e9ffef}
 </style>
 </head>
 <body>
-
 <div class="top"><div class="star">✦</div><h1>Novembris ir klāt</h1></div>
-<div class="amethyst"><div class="V">V</div><div><b>Vzors AI • Tavs gudrais kolēģis</b></div></div>
-
+<div class="amethyst"><div style="width:34px;height:34px;background:#1a1a1a;color:#fff;border-radius:10px;display:grid;place-items:center;font-weight:800">V</div><div><b>Vzors AI • Tavs gudrais kolēģis</b></div></div>
 <div class="layout">
 <div class="left">
 <div class="stickers" id="stickers"></div>
 <div class="input-area">
-<textarea id="freeText" placeholder="Pasts • Raksti vai nodiktē..."></textarea>
+<textarea id="freeText" placeholder="Raksti vai nodiktē..."></textarea>
 <div style="display:flex;gap:10px;margin-top:10px">
 <button id="micBtn" class="btn-black" onclick="startVoice()">🎤 Nodiktēt</button>
 <button style="background:#fff;border:1px solid #e9e3ff;border-radius:999px;padding:10px 20px;cursor:pointer" onclick="saveSticker()">+ Pievienot kā lapiņu</button>
@@ -51,52 +39,41 @@ h1{margin:0;font-size:40px}
 <div id="micStatus" style="font-size:11px;opacity:.6;margin-top:8px"></div>
 </div>
 </div>
-
 <div class="right">
-<div class="card"><h3>✦ VZORS AI • KONTEKSTS</h3><div id="vzorContext" style="font-size:13px;line-height:1.6"></div></div>
-<div class="card" onclick="openCalendar()"><h3>📅 KALENDĀRS • SPIED LAI PALIELINĀTU</h3><div id="calendarInfo" style="font-size:12px"></div><div style="text-align:center;margin-top:8px;font-size:20px">🗓️</div></div>
+<div class="card"><h3>✦ VZORS AI • KONTEKSTS</h3><div id="vzorContext" style="font-size:13px"></div></div>
+<div class="card cal" onclick="openCalendar()"><h3>📅 KALENDĀRS • SPIED LAI PALIELINĀTU</h3><div id="calendarInfo" style="font-size:12px"></div><div style="text-align:center;margin-top:8px;font-size:22px">🗓️ Palielināt</div></div>
 <div class="card"><h3>🧩 PLUGINS</h3>
 <div class="plugin"><span>▶️ YouTube</span><span>●</span></div>
 <div class="plugin"><span>✏️ Edit Hub</span><span>●</span></div>
 <div class="plugin"><span>🐙 GitHub</span><span>●</span></div>
 <div class="plugin"><span>📰 Delfi.lv</span><span>●</span></div>
 <div class="plugin"><span>🌤️ Laika ziņas</span><span>●</span></div>
+<div class="plugin"><span>🎤 Balss ievade</span><span>●</span></div>
 </div>
 </div>
 </div>
-
-<div id="calModal" onclick="closeCalendar()"><div class="calBig" onclick="event.stopPropagation()"><h3>Novembris 2026 • Klikšķini dienu</h3><div class="calGrid" id="calGrid"></div><div style="margin-top:12px;font-size:12px" id="calDetail"></div><button class="btn-black" style="margin-top:12px;width:100%" onclick="closeCalendar()">Aizvērt</button></div></div>
-
+<div id="calModal" onclick="closeCalendar()"><div class="calBig" onclick="event.stopPropagation()"><h3>Novembris 2026</h3><div class="calGrid" id="calGrid"></div><div id="calDetail" style="margin-top:12px;font-size:13px"></div><button class="btn-black" style="margin-top:12px;width:100%" onclick="closeCalendar()">Aizvērt</button></div></div>
 <script>
 const events={"2026-11-08":"Tēva diena","2026-11-11":"Lāčplēša diena","2026-11-18":"Latvijas proklamēšanas diena"};
 const today="2026-11-08";
-const stickersEl=document.getElementById('stickers');
-const calInfo=document.getElementById('calendarInfo');
-const vzorContext=document.getElementById('vzorContext');
 function renderAll(){
-stickersEl.innerHTML='';calInfo.innerHTML='';
-if(events[today]){let s=document.createElement('div');s.className='sticker auto';s.textContent=events[today];stickersEl.appendChild(s);calInfo.innerHTML=`Šodien: ${events[today]}`;vzorContext.innerText=`Šodien: ${events[today]}.`;}
-else{calInfo.innerHTML='Šodien nav notikumu.';vzorContext.innerText='Brīvs.'}
-let saved=JSON.parse(localStorage.getItem('vzors_stickers')||'[]');
-saved.forEach(t=>{let s=document.createElement('div');s.className='sticker';s.textContent=t;stickersEl.appendChild(s);});
-buildBigCal();
+const el=document.getElementById('stickers'),ci=document.getElementById('calendarInfo'),vc=document.getElementById('vzorContext');
+el.innerHTML='';if(events[today]){let s=document.createElement('div');s.className='sticker auto';s.textContent=events[today];el.appendChild(s);ci.innerHTML=events[today];vc.innerText=events[today];}else{ci.innerHTML='Nav notikumu';vc.innerText='Brīvs.'}
+let saved=JSON.parse(localStorage.getItem('vzors_stickers')||'[]');saved.forEach(t=>{let s=document.createElement('div');s.className='sticker';s.textContent=t;el.appendChild(s);});
+buildCal();
 }
-function saveSticker(){let v=document.getElementById('freeText').value;if(!v)return;let saved=JSON.parse(localStorage.getItem('vzors_stickers')||'[]');saved.unshift(v);localStorage.setItem('vzors_stickers',JSON.stringify(saved));document.getElementById('freeText').value='';renderAll();}
+function saveSticker(){let v=document.getElementById('freeText').value;if(!v)return;let s=JSON.parse(localStorage.getItem('vzors_stickers')||'[]');s.unshift(v);localStorage.setItem('vzors_stickers',JSON.stringify(s));document.getElementById('freeText').value='';renderAll();}
 function startVoice(){
-let status=document.getElementById('micStatus');let btn=document.getElementById('micBtn');
-if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)){status.innerText='Pārlūks neatbalsta mikrofonu. Izmanto Chrome.';return;}
-let Rec=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=new Rec();
-rec.lang='lv-LV';rec.interimResults=false;
-rec.onstart=()=>{btn.classList.add('rec');btn.innerText='🔴 Klausos...';status.innerText='Runā tagad...';};
-rec.onend=()=>{btn.classList.remove('rec');btn.innerText='🎤 Nodiktēt';};
-rec.onerror=e=>{status.innerText='Kļūda: '+e.error+' — atļauj mikrofonu pārlūkā (augšā pa kreisi 🔒)';btn.classList.remove('rec');};
-rec.onresult=e=>{document.getElementById('freeText').value=e.results[0][0].transcript;status.innerText='Ierakstīts ✓ Spied + Pievienot';};
-rec.start();
+let status=document.getElementById('micStatus'),btn=document.getElementById('micBtn');
+if(!(window.SpeechRecognition||window.webkitSpeechRecognition)){status.innerText='Izmanto Chrome';return;}
+let Rec=window.SpeechRecognition||window.webkitSpeechRecognition,rec=new Rec();
+rec.lang='lv-LV';rec.onstart=()=>{btn.classList.add('rec');btn.innerText='🔴 Klausos...';status.innerText='Runā...';};
+rec.onend=()=>{btn.classList.remove('rec');btn.innerText='🎤 Nodiktēt';};rec.onerror=e=>{status.innerText='Atļauj mikrofonu: spied 🔒 augšā';btn.classList.remove('rec');};
+rec.onresult=e=>{document.getElementById('freeText').value=e.results[0][0].transcript;status.innerText='✓ Gatavs';};rec.start();
 }
-function buildBigCal(){
-let grid=document.getElementById('calGrid');grid.innerHTML='';
-["P","O","T","C","P","S","Sv"].forEach(d=>{let x=document.createElement('div');x.style.opacity=.5;x.textContent=d;x.style.border='0';grid.appendChild(x);});
-for(let i=1;i<=30;i++){let d=document.createElement('div');d.textContent=i;let key=`2026-11-${String(i).padStart(2,'0')}`;if(key===today)d.classList.add('today');if(events[key])d.classList.add('hasEv');d.onclick=()=>{document.getElementById('calDetail').innerText=events[key]?`${i}. novembris: ${events[key]}`:`${i}. novembris: nav notikumu`;};grid.appendChild(d);}
+function buildCal(){
+let g=document.getElementById('calGrid');g.innerHTML='';["P","O","T","C","P","S","Sv"].forEach(d=>{let x=document.createElement('div');x.textContent=d;x.style.border='0';x.style.opacity=.5;g.appendChild(x);});
+for(let i=1;i<=30;i++){let d=document.createElement('div');d.textContent=i;let k=`2026-11-${String(i).padStart(2,'0')}`;if(k===today)d.classList.add('today');if(events[k])d.classList.add('hasEv');d.onclick=()=>{document.getElementById('calDetail').innerText=events[k]?`${i}. nov: ${events[k]}`:`${i}. nov: tukšs`;};g.appendChild(d);}
 }
 function openCalendar(){document.getElementById('calModal').classList.add('open');}
 function closeCalendar(){document.getElementById('calModal').classList.remove('open');}
