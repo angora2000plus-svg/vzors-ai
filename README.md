@@ -1,46 +1,32 @@
-# Vzors AI — Novembris ir klāt — Organizer Patch
-
-Moonwhite #fdfdff breathing, star upper left no frame, black text on amethyst #d8b4fe.
-
-## Kas ir šis patch?
-
-Originalais `index.html` — chat bija tikai viens teksts Vzors AI. Šis patch pārveido **sirenevo pole** (`.chat`) par **organaizeru**:
-
-### 📓 Piezīmes
-- Textarea + 🎙️ Nadiktovatj (Web Speech API, lv-LV)
-- Saglabājas `localStorage` key `vzors_organizer_notes`
-- Paliek kamēr pati neizdzēsīsi (Delete poga), pārlāde nenodzēš
-
-### ✉️ Pasts — filtrs
-- **Atjaunājumi / Updates — TIKAI šie iet uz organaizeru:**
-  - Duolingo — Flvia pобила rekord
-  - Opera — jauna uzskaites ieraksts
-- **Pirkumi / Promocijas — salocītas `<details>`:**
-  - Quora Digest — pārcelta uz Rassylki pēc pieprasījuma (from:quora.com → Promotions)
-  - Meshy, Lovable
-
-Gmail filtrs ieteikums:
-```
-from:(quora.com) → Skip Inbox, Apply label Rassylki, Category Promotions
-```
-
-### 📅 Kalendārs
-- Google Calendar 07.11–14.11: Duolingo daily 08:00 + Tēva diena 08.11, Lāčplēša 11.11, Latvijas proklamēšana 18.11 (brīvdiena)
-
-## Faili
-- `index.html` — final versija (šis ir `index_organizer.html` pārdēvēts)
-- `index_original.html` — originals pirms patch
-- `PATCH_NOTES.txt` — kā tika taisīts
-
-## Kā uzlikt
-1. Nomaini `index.html` ar jauno
-2. Atver Chrome/Edge (mikrofons strādā tikai tur)
-3. Nospied 🎙️ un runā, tad + Saglabāt
-
-## Kā tika uztaisīts
-- `gmail_search newer_than:30d` + `gmail_read` — reāli e-pasti no angora2000plus@gmail.com
-- `google_calendar.search` 07.11–14.11 — reāli eventi
-- Aizvietots `chat-area` ar organizer HTML/CSS/JS
-
-Beacon: steady()
-vzors.smartyou.lv
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VZOR Smart Organizer 2026 PREMIUM</title>
+<style>
+body{font-family:Arial,sans-serif;display:flex;margin:0;height:100vh;background:#f5f5f7}
+.left{width:50%;padding:20px;background:white;border-right:1px solid #ddd}
+.right{width:50%;padding:20px;background:#fafafa}
+textarea{width:100%;height:80%;border:1px solid #ccc;border-radius:8px;padding:12px}
+.badge{background:black;color:white;padding:4px 10px;border-radius:12px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="left">
+<h2>Smart Notes <span class="badge">VZOR</span></h2>
+<textarea id="notes" placeholder="Write your notes here..."></textarea>
+</div>
+<div class="right">
+<h2>Calendar & Vzors AI</h2>
+<p>Connected to smart glasses VZOR-26 PREMIUM</p>
+<div id="ai-status">AI Core: Ready (Offline)</div>
+<ul id="tasks"><li>Email tasks will appear here</li></ul>
+</div>
+<script>
+const notes=document.getElementById('notes');
+http://notes.value=localStorage.getItem('vzor-notes')||'';
+http://notes.addEventListener('input',()=>{localStorage.setItem('vzor-notes',notes.value)});
+</script>
+</body>
+</html>
