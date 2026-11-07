@@ -6,16 +6,16 @@ Moonwhite #fdfdff breathing, star upper left no frame, black text on amethyst #d
 
 Originalais `index.html` — chat bija tikai viens teksts Vzors AI. Šis patch pārveido **sirenevo pole** (`.chat`) par **organaizeru**:
 
-### 📓 Zapisnaya knizhka
+### 📓 Piezīmes
 - Textarea + 🎙️ Nadiktovatj (Web Speech API, lv-LV)
 - Saglabājas `localStorage` key `vzors_organizer_notes`
 - Paliek kamēr pati neizdzēsīsi (Delete poga), pārlāde nenodzēš
 
-### ✉️ Pošta — filtrs
-- **Opoveščenija / Updates — TIKAI šie iet uz organaizeru:**
+### ✉️ Pasts — filtrs
+- **Atjaunājumi / Updates — TIKAI šie iet uz organaizeru:**
   - Duolingo — Flvia pобила rekord
   - Opera — jauna uzskaites ieraksts
-- **Rassylki / Promocijas — salocītas `<details>`:**
+- **Pirkumi / Promocijas — salocītas `<details>`:**
   - Quora Digest — pārcelta uz Rassylki pēc pieprasījuma (from:quora.com → Promotions)
   - Meshy, Lovable
 
