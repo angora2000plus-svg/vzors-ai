@@ -1,32 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lv">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VZOR Smart Organizer 2026 PREMIUM</title>
+<title>VZOR-26</title>
 <style>
-body{font-family:Arial,sans-serif;display:flex;margin:0;height:100vh;background:#f5f5f7}
-.left{width:50%;padding:20px;background:white;border-right:1px solid #ddd}
-.right{width:50%;padding:20px;background:#fafafa}
-textarea{width:100%;height:80%;border:1px solid #ccc;border-radius:8px;padding:12px}
-.badge{background:black;color:white;padding:4px 10px;border-radius:12px;font-size:12px}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter;background:#f8f3ec;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.top{height:58px;background:#fffaf3;border-bottom:1px solid #eadfcf;display:flex;align-items:center;padding:0 20px;font-weight:800;letter-spacing:0.2em;flex-shrink:0}
+.main{flex:1;display:grid;grid-template-columns:1fr 380px;overflow:hidden}
+.left{padding:18px;overflow-y:auto;background:#fdf8f1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.square{min-height:110px;border-radius:18px;padding:14px;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,0.04);cursor:pointer}
+.c1{background:#e9d5ff}.c2{background:#dbeafe}.c3{background:#fef3c7}.c4{background:#fce7f3}
+.events{margin-top:20px;background:#fff;border-radius:18px;padding:16px}
+.events h4{font-size:11px;opacity:.5;margin:0 0 10px;letter-spacing:.2em}
+.right{border-left:1px solid #eadfcf;background:#fff;padding:18px;display:flex;flex-direction:column;gap:16px;overflow-y:auto}
+.cal{background:#fdf8f1;border-radius:20px;padding:14px}
+.cal-h{display:flex;justify-content:space-between;font-weight:700;margin-bottom:10px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:12px}
+.dd{padding:8px 0;border-radius:8px;cursor:pointer}
+.dd.active{background:#111;color:#fff}
+.vzor{background:#111;color:#fff;border-radius:20px;padding:16px}
+.vzor input{width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:10px;background:#222;color:#fff;outline:none}
+.bar{height:56px;background:#111;color:#fff;display:flex;align-items:center;gap:14px;padding:0 18px;font-size:12px;flex-shrink:0}
+.bar input{background:#222;border:none;color:#fff;border-radius:10px;padding:6px 10px;width:150px}
 </style>
 </head>
 <body>
+<div class="top">VZOR-26 PREMIUM</div>
+<div class="main">
 <div class="left">
-<h2>Smart Notes <span class="badge">VZOR</span></h2>
-<textarea id="notes" placeholder="Write your notes here..."></textarea>
+<div style="font-size:11px;opacity:.5;margin-bottom:12px;letter-spacing:.2em">PIEZĪMES KVADRĀTIŅI</div>
+<div id="grid" class="grid"></div>
+<div class="events"><h4>KURSI / VEBINĀRI / SVĒTKI</h4><div id="evList"></div></div>
 </div>
 <div class="right">
-<h2>Calendar & Vzors AI</h2>
-<p>Connected to smart glasses VZOR-26 PREMIUM</p>
-<div id="ai-status">AI Core: Ready (Offline)</div>
-<ul id="tasks"><li>Email tasks will appear here</li></ul>
+<div class="cal"><div class="cal-h"><button onclick="mv(-1)">‹</button><div id="ml"></div><button onclick="mv(1)">›</button></div><div id="cal" class="cal-g"></div></div>
+<div class="vzor">
+<div style="display:flex;justify-content:space-between;align-items:center;background:#222;border-radius:10px;padding:8px 12px;font-size:11px"><span>👓 BRILLES: <span id="gStatus">Nav savienotas</span></span><a href="https://github.com/vzor26/vzors-ai-novembris/blob/main/GLASSES_GUIDE.md" target="_blank" style="color:#a78bfa">kā savienot?</a></div>
+<div id="log" style="font-size:12px;opacity:.8;margin-top:10px">Diktē šeit — parādīsies kā kvadrātiņš</div>
+<input id="in" placeholder="Raksti vai diktē..." onkeydown="if(event.key==='Enter')add()">
+<div style="display:flex;gap:8px;margin-top:10px"><button onclick="startVoice()" style="flex:1;background:#fff;color:#111;border:none;border-radius:12px;padding:10px;font-weight:700">🎤 Diktēt</button><button onclick="add()" style="flex:1;background:#a78bfa;color:#fff;border:none;border-radius:12px;padding:10px;font-weight:700">+ Kvadrātiņš</button><button onclick="speakLast()" style="background:#333;color:#fff;border:none;border-radius:12px;padding:10px">🔊</button></div>
 </div>
+</div>
+</div>
+<div class="bar"><span>★</span> Mūzika: <input id="music" onchange="saveBar()"><a id="musicLink" target="_blank" style="color:#a78bfa">Play</a> Saite: <input id="site" onchange="saveBar()"><a id="siteLink" target="_blank" style="color:#a78bfa">Open</a><div style="margin-left:auto;display:flex;gap:6px"><button onclick="setLang('lv')">LV</button><button onclick="setLang('en')">EN</button><button onclick="setLang('es')">ES</button></div></div>
 <script>
-const notes=document.getElementById('notes');
-http://notes.value=localStorage.getItem('vzor-notes')||'';
-http://notes.addEventListener('input',()=>{localStorage.setItem('vzor-notes',notes.value)});
+let cur=new Date(),sel=new Date();
+let notes=JSON.parse(localStorage.getItem('vzor_squares')||'[]');
+let bar=JSON.parse(localStorage.getItem('vzor_bar')||'{"music":"","site":""}');
+const colors=['c1','c2','c3','c4'];
+document.getElementById('music').value=bar.music;document.getElementById('site').value=bar.site;
+function render(){const y=cur.getFullYear(),m=cur.getMonth();document.getElementById('ml').textContent=cur.toLocaleString('lv-LV',{month:'long',year:'numeric'});const cal=document.getElementById('cal');cal.innerHTML='';const first=new Date(y,m,1).getDay()||7,days=new Date(y,m+1,0).getDate();for(let i=1;i<first;i++)cal.innerHTML+='<div></div>';for(let d=1;d<=days;d++){let div=document.createElement('div');div.className='dd'+(sel.getDate()==d&&sel.getMonth()==m&&sel.getFullYear()==y?' active':'');div.textContent=d;div.onclick=()=>{sel=new Date(y,m,d);render();};cal.appendChild(div);}const grid=document.getElementById('grid');grid.innerHTML='';notes.filter(n=>n.date==sel.toLocaleDateString('lv-LV')).forEach(n=>{let div=document.createElement('div');div.className='square '+n.color;div.innerHTML=n.text+`<div style="font-size:10px;opacity:.5;margin-top:8px">${n.time}</div>`;div.onclick=()=>speak(n.text);grid.appendChild(div);});const evList=document.getElementById('evList');const specials=notes.filter(n=>{const t=n.text.toLowerCase();return t.includes('kurss')||t.includes('vebinārs')||t.includes('svētki');});evList.innerHTML=specials.length?specials.map(s=>`<div>${s.date} — ${s.text}</div>`).join(''):'Nav';saveBar();}
+function add(){const t=document.getElementById('in').value.trim();if(!t)return;notes.push({text:t,date:sel.toLocaleDateString('lv-LV'),time:new Date().toLocaleTimeString().slice(0,5),color:colors[Math.floor(Math.random()*colors.length)]});localStorage.setItem('vzor_squares',JSON.stringify(notes));document.getElementById('in').value='';document.getElementById('log').innerHTML+=`<div>Tu: ${t}</div>`;render();speak(t);}
+function speak(txt){const u=new SpeechSynthesisUtterance(txt);u.lang='lv-LV';u.rate=.95;speechSynthesis.cancel();speechSynthesis.speak(u);}
+function speakLast(){if(notes.length)speak(notes[notes.length-1].text);}
+function mv(d){cur.setMonth(cur.getMonth()+d);render();}
+function startVoice(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Chrome');return;}const r=new SR();r.lang='lv-LV';r.onresult=e=>{document.getElementById('in').value=e.results[0][0].transcript;add();};r.start();}
+function saveBar(){const m=document.getElementById('music').value,s=document.getElementById('site').value;localStorage.setItem('vzor_bar',JSON.stringify({music:m,site:s}));document.getElementById('musicLink').href=m||'#';document.getElementById('siteLink').href=s||'#';}
+function setLang(l){document.getElementById('log').innerHTML+=`<div>${l}</div>`;}
+render();saveBar();
 </script>
 </body>
 </html>
