@@ -1,84 +1,64 @@
-<!DOCTYPE html><html lang="lv"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vzors AI — PILNAIS</title><style>
-body{margin:0;padding:24px;background:#f8f7ff;color:#111;font-family:Inter,sans-serif}
-.top{font-size:44px;font-weight:900;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.star{font-size:56px;filter:drop-shadow(0 0 12px #8b5cf6);animation:shine 2.5s infinite alternate}
-@keyframes shine{0%{transform:rotate(0deg) scale(1)}100%{transform:rotate(15deg) scale(1.12)}}
-.card{background:#fff;border:1px solid #e9e3ff;border-radius:18px;padding:16px;margin-top:16px}
-.card.cal{cursor:pointer;transition:.2s}.card.cal:hover{transform:scale(1.01);box-shadow:0 8px 20px #0001}
-textarea{width:100%;min-height:60px;border:1px solid #e9e3ff;border-radius:12px;padding:12px;box-sizing:border-box;font-family:inherit}
-button{background:#111;color:#fff;border:0;border-radius:999px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13px}
-.monthNav{display:flex;gap:8px;align-items:center}.monthNav button{width:36px;height:36px;display:grid;place-items:center;font-size:16px;background:#fff;color:#111;border:1px solid #e9e3ff}
-.st{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:14px}
-.st div{background:#fffbe6;border:1px solid #f0e6b0;border-radius:12px;padding:12px;min-height:70px;position:relative}
-.edit{position:absolute;top:6px;right:6px;background:#fff;border:1px solid #e9e3ff;border-radius:999px;width:26px;height:26px;display:grid;place-items:center;cursor:pointer}
-.wa{position:absolute;bottom:6px;right:6px;background:#25D366;color:#fff;border:0;border-radius:999px;padding:4px 8px;font-size:11px;cursor:pointer}
-.models{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
-.modelIcon{border:2px solid #e9e3ff;background:#fff;border-radius:18px;padding:12px 4px;text-align:center;cursor:pointer;transition:all .25s}
-.modelIcon:hover{transform:translateY(-3px) scale(1.06);box-shadow:0 12px 28px #0001}
-.modelIcon.active{border-color:#111;transform:scale(1.08);box-shadow:0 12px 28px #0002}
-.iconWrap{width:56px;height:56px;margin:0 auto 6px;display:grid;place-items:center;border-radius:14px;font-size:28px;color:#fff}
-.i-meta{background:linear-gradient(135deg,#0064E0,#00C6FF)} .i-astra{background:linear-gradient(135deg,#7C3AED,#C084FC)}
-.i-gem{background:linear-gradient(135deg,#FF5A5F,#4D96FF,#6BCB77,#FFD93D)} .i-claude{background:linear-gradient(135deg,#FF8A00,#FFB86A)}
-.name{font-size:12px;font-weight:800;display:block}
-#calModal{display:none;position:fixed;inset:0;background:#00000090;backdrop-filter:blur(14px);z-index:99;align-items:center;justify-content:center}
-#calModal.open{display:flex}
-.calBig{background:#fff;border-radius:26px;padding:28px;width:94%;max-width:580px;transform:scale(0.75);opacity:0;transition:all .45s cubic-bezier(0.34,1.56,0.64,1)}
-#calModal.open .calBig{transform:scale(1);opacity:1}
-.calGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center;margin-top:18px}
-.calGrid div{padding:14px;border-radius:12px;border:1px solid #f0e0ff;cursor:pointer;font-weight:600;transition:transform .2s}
-.calGrid div:hover{transform:scale(1.15);background:#f8f7ff}
-.calGrid div.today{background:#111;color:#fff;transform:scale(1.1)}
-.calGrid div.ev{background:#e9ffef}
-.plugin a{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #f3f0ff;text-decoration:none;color:#111;font-size:14px}
-.zoomBig{background:#0B5CFF;color:#fff;border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;text-decoration:none;margin-top:10px;font-weight:700}
-</style></head><body>
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vzors AI - Clarity Vision</title>
+<style>
+body{margin:0;padding:24px;background:#f8f7ff;font-family:-apple-system,Inter,Segoe UI,sans-serif}
+.header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.star-img{width:64px;height:64px;object-fit:contain;background:white;border-radius:16px;border:1px solid #e9e3ff;padding:6px;box-shadow:0 2px 12px rgba(90,40,255,0.08)}
+.top-title{font-size:32px;font-weight:800;letter-spacing:0.12em;color:#7d8fb0}
+.top-title span{display:block;font-size:12px;letter-spacing:0.25em;font-weight:600;color:#1a2340;margin-top:2px}
+.top-models{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.model{background:white;border:1px solid #e9e3ff;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px}
+.model:hover{background:#f3f0ff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(120,80,255,0.12)}
+.model .ico{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.card{background:white;border:1px solid #e9e3ff;border-radius:16px;padding:16px;margin-top:14px}
+.card.amethyst{background:#faf8ff}
+.card.amethyst:hover{background:#f3f0ff}
+textarea{width:100%;border:1px solid #e9e3ff;border-radius:12px;padding:12px;box-sizing:border-box;min-height:70px;background:#faf8ff}
+button{background:#111;color:#fff;border:0;border-radius:999px;padding:10px 18px;cursor:pointer;font-weight:600}
+button.sec{background:white;color:#111;border:1px solid #e9e3ff}
+#list{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+.note{background:#fffbe6;border:1px solid #f0e6b0;border-radius:12px;padding:12px;min-width:120px;max-width:220px;word-break:break-word}
+</style>
+</head>
+<body>
+<div class="header">
+<img class="star-img" src="star.png" alt="VZOR AI Star">
+<div class="top-title">VZOR AI<span>Clarity Vision</span></div>
+</div>
 
-<div class="top"><span class="star">✦</span><span id="title">Maijs ir klāt</span><div class="monthNav"><button onclick="changeMonth(-1)">◀️</button><button onclick="changeMonth(1)">▶️</button></div></div>
-<div style="opacity:.6;font-size:13px">Vzors AI • ar mūsu zvaigzni ✦ • Superintelekts • Pilnais kods</div>
+<div class="top-models">
+<div class="model" onclick="window.open('https://www.meta.ai','_blank')"><div class="ico" style="background:#e6f0ff;color:#0064ff">∞</div><div><b>Meta</b><br><small>Spark</small></div></div>
+<div class="model" onclick="window.open('https://chat.openai.com','_blank')"><div class="ico" style="background:#111;color:#fff">GPT</div><div><b>Astra G56</b><br><small>GPT-6</small></div></div>
+<div class="model" onclick="window.open('https://gemini.google.com','_blank')"><div class="ico" style="background:linear-gradient(135deg,#4285f4,#ea4335,#fbbc05,#34a853);color:white">◆</div><div><b>Gemini</b><br><small>Google</small></div></div>
+<div class="model" onclick="window.open('https://claude.ai','_blank')"><div class="ico" style="background:#fff1e6;color:#d45500">✿</div><div><b>Claude</b><br><small>Anthropic</small></div></div>
 
-<div style="display:flex;gap:16px;flex-wrap:wrap">
-<div style="flex:1;min-width:300px">
+<!-- НОВЫЕ ИКОНКИ -->
+<div class="model" onclick="window.open('https://www.yr.no/en/forecast/daily-table/Latvia/Riga/Riga','_blank')"><div class="ico" style="background:#e6f7ff;color:#0090ff">☁️</div><div><b>Laiks</b><br><small>Weather</small></div></div>
+<div class="model" onclick="alert('Lapas: 12 ❤️ Patīk!')"><div class="ico" style="background:#ffe6ef;color:#ff2d6b">♥</div><div><b>Patīk</b><br><small>Like</small></div></div>
+<div class="model" onclick="window.open('https://www.dynas.lv','_blank')"><div class="ico" style="background:#fffbe6;color:#b89a00">◍</div><div><b>Dynas</b><br><small>Shop</small></div></div>
+<div class="model" onclick="window.open('https://www.delfi.lv/horoskopi','_blank')"><div class="ico" style="background:#f3e6ff;color:#7a3cff">♌</div><div><b>Horoskops</b><br><small>Zodiac</small></div></div>
+</div>
+
 <div class="card">
-<textarea id="t" placeholder="Raksti vai nodiktē... sešos"></textarea>
-<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button id="mb" onclick="mic()">🎤 Nodiktēt</button><button style="background:#fff;color:#111;border:1px solid #e9e3ff" onclick="save()">+ Lapiņa</button><button style="background:#f8f7ff;color:#111;border:1px solid #e9e3ff" onclick="document.getElementById('t').value='';">Notīrīt</button></div>
-<div class="st" id="list"></div>
-</div>
-<div class="card cal" onclick="openCal()">📅 <span id="calLabel">Kalendārs</span> — klikšķini ZOOM 🗓️<div id="calSmall" style="font-size:12px;opacity:.6;margin-top:4px"></div></div>
+<textarea id="t" placeholder="Raksti vai nodiktē..."></textarea><br><br>
+<button id="b" onclick="mic()">🎤 Nodiktēt</button>
+<button class="sec" onclick="save()">+ Lapiņa</button>
+<div id="list"></div>
 </div>
 
-<div style="width:380px;min-width:320px"><div class="card" style="position:sticky;top:16px">
-<div style="font-size:11px;letter-spacing:1.2px;opacity:.6">✦ IZVĒLIES SUPERINTELEKTU • KLIKŠĶINI UZ IKONAS</div>
-<div class="models">
-<div class="modelIcon" onclick="ask('spark',this)"><div class="iconWrap i-meta">∞</div><span class="name" style="color:#0064E0">Meta • Spark</span></div>
-<div class="modelIcon" onclick="ask('astra',this)"><div class="iconWrap i-astra">∞</div><span class="name" style="color:#7C3AED">Astra</span></div>
-<div class="modelIcon" onclick="ask('gemini',this)"><div class="iconWrap i-gem">✦</div><span class="name" style="color:#4285f4">Gemini</span></div>
-<div class="modelIcon" onclick="ask('claude',this)"><div class="iconWrap i-claude">❋</div><span class="name" style="color:#d97757">Claude</span></div>
-</div>
-<textarea id="aiQ" placeholder="Ko jautāt? Raksti šeit un spied ikonu augšā — atvērsies modelis ar jautājumu" style="margin-top:12px"></textarea>
-<a href="https://zoom.us/join" target="_blank" class="zoomBig"><span>💻 Zoom — Mana grupa</span><span>↗ Iet</span></a>
-<div style="margin-top:16px;border-top:1px solid #f3f0ff;padding-top:12px">
-<div class="plugin"><a href="https://zoom.us" target="_blank"><span>🔵 Zoom.com</span><span>↗</span></a></div>
-<div class="plugin"><a href="https://www.youtube.com" target="_blank"><span>▶️ YouTube</span><span>↗</span></a></div>
-<div class="plugin"><a href="https://www.radioswh.lv" target="_blank"><span>📻 SWH+</span><span>↗</span></a></div>
-<div class="plugin"><a href="https://wa.me/" target="_blank"><span>🟢 WhatsApp</span><span>↗</span></a></div>
-<div class="plugin"><a href="https://www.ss.lv" target="_blank"><span>🏠 SS.LV</span><span>↗</span></a></div>
-<div class="plugin"><a href="https://www.facebook.com" target="_blank"><span>👥 Facebook</span><span>↗</span></a></div>
-</div></div></div></div>
-
-<div id="calModal" onclick="closeCal()"><div class="calBig" onclick="event.stopPropagation()"><h3 style="margin:0" id="bigTitle">Maijs 2026 — ZOOM</h3><div class="calGrid" id="calGrid"></div><div id="calDet" style="margin-top:14px;font-size:14px;min-height:20px"></div><div style="display:flex;gap:8px;margin-top:14px"><button style="flex:1;padding:12px" onclick="changeMonth(-1)">◀️ Iepriekšējais</button><button style="flex:1;padding:12px" onclick="changeMonth(1)">Nākamais ▶️</button></div><button style="margin-top:8px;width:100%;padding:12px;background:#fff;color:#111;border:1px solid #e9e3ff" onclick="closeCal()">Aizvērt ✕</button></div></div>
+<div class="card amethyst" onclick="alert('Kalendārs: 8. nov - Tēva diena, 18. nov - Neatkarības diena')"><div style="display:flex;justify-content:space-between"><span>📅 Kalendārs</span><span>• spied</span></div></div>
+<div class="card amethyst"><div style="display:flex;gap:18px;flex-wrap:wrap">🧩 YouTube • Edit Hub • GitHub • Delfi</div></div>
+<div class="card amethyst" style="font-size:13px;color:#6a5a9a">✦ Vzors AI • novembris 2026 • diplomdarbs • vzor.smartyou.lv • star.png = tava ametista zvaigzne</div>
 
 <script>
-const monthNames=['Janvāris','Februāris','Marts','Aprīlis','Maijs','Jūnijs','Jūlijs','Augusts','Septembris','Oktobris','Novembris','Decembris'];const monthGen=['janvārī','februārī','martā','aprīlī','maijā','jūnijā','jūlijā','augustā','septembrī','oktobrī','novembrī','decembrī'];const evs={"2026-04-12":"Lieldienas","2026-05-01":"Darba svētki","2026-05-04":"Neatkarības atjaunošana","2026-05-10":"Mātes diena","2026-11-08":"Tēva diena","2026-11-18":"Latvijas proklamēšana","2026-12-24":"Ziemassvētki"};let cur=new Date();cur.setDate(1);
-function updateTitle(){let m=cur.getMonth();let y=cur.getFullYear();document.getElementById('title').innerText=`${monthNames[m]} ir klāt`;document.getElementById('calLabel').innerText=monthNames[m];document.getElementById('bigTitle').innerText=`${monthNames[m]} ${y} — ZOOM`;document.getElementById('calSmall').innerText=`${monthGen[m]} • ${Object.keys(evs).filter(k=>k.startsWith(y+'-'+String(m+1).padStart(2,'0'))).length} notikumi • klikšķini`;buildCal();}
-function changeMonth(d){cur.setMonth(cur.getMonth()+d);updateTitle();}
-function render(){let a=JSON.parse(localStorage.getItem('vzors')||'[]');let l=document.getElementById('list');l.innerHTML='';a.forEach((txt,i)=>{let d=document.createElement('div');let e=document.createElement('div');e.className='edit';e.innerHTML='✏️';e.onclick=()=>{let n=prompt('Labot lapiņu:',txt);if(n!==null){a[i]=n;localStorage.setItem('vzors',JSON.stringify(a));render()}};let t=document.createElement('div');t.textContent=txt;t.style.marginTop='18px';t.style.wordBreak='break-word';let w=document.createElement('button');w.className='wa';w.textContent='WhatsApp';w.onclick=()=>window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');d.appendChild(e);d.appendChild(t);d.appendChild(w);l.appendChild(d);});updateTitle();}
-function save(){let v=document.getElementById('t').value.trim();if(!v)return;let a=JSON.parse(localStorage.getItem('vzors')||'[]');a.unshift(v);localStorage.setItem('vzors',JSON.stringify(a));document.getElementById('t').value='';document.getElementById('aiQ').value=v;render();}
-function mic(){let S=window.SpeechRecognition||window.webkitSpeechRecognition;if(!S){alert('Atver Chrome pārlūku diktēšanai');return;}let r=new S();r.lang='lv-LV';r.interimResults=false;let mb=document.getElementById('mb');r.onstart=()=>mb.innerText='🔴 Klausos... runā';r.onend=()=>mb.innerText='🎤 Nodiktēt';r.onerror=()=>{alert('Atļauj mikrofonu pārlūkā');mb.innerText='🎤 Nodiktēt'};r.onresult=e=>{let txt=e.results[0][0].transcript;document.getElementById('t').value=txt;document.getElementById('aiQ').value=txt;};r.start();}
-function buildCal(){let g=document.getElementById('calGrid');g.innerHTML='';["P","O","T","C","P","S","Sv"].forEach(d=>{let x=document.createElement('div');x.textContent=d;x.style.border='0';x.style.opacity=.5;x.style.cursor='default';g.appendChild(x)});let year=cur.getFullYear(),month=cur.getMonth();let first=new Date(year,month,1);let start=(first.getDay()+6)%7;let days=new Date(year,month+1,0).getDate();for(let i=0;i<start;i++){let b=document.createElement('div');b.style.border='0';b.style.cursor='default';g.appendChild(b);}let today=new Date();for(let i=1;i<=days;i++){let d=document.createElement('div');d.textContent=i;let k=`${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;if(year===today.getFullYear()&&month===today.getMonth()&&i===today.getDate())d.classList.add('today');if(evs[k])d.classList.add('ev');d.onclick=()=>{document.getElementById('calDet').innerText=evs[k]?`${i}. ${monthGen[month]}: ${evs[k]} ✨`:`${i}. ${monthGen[month]}: brīva diena`;};g.appendChild(d);}}
-function openCal(){document.getElementById('calModal').classList.add('open');buildCal();}
-function closeCal(){document.getElementById('calModal').classList.remove('open');}
-function ask(model,el){if(el){document.querySelectorAll('.modelIcon').forEach(x=>x.classList.remove('active'));el.classList.add('active');}let q=document.getElementById('aiQ').value.trim()||document.getElementById('t').value.trim();if(!q){alert('Uzraksti jautājumu vispirms laukā!');document.getElementById('aiQ').focus();return;}let url=model==='gemini'?'https://gemini.google.com/app?q='+encodeURIComponent(q):model==='claude'?'https://claude.ai/new?q='+encodeURIComponent(q):model==='astra'?'https://www.meta.ai/?q='+encodeURIComponent(q):'https://www.meta.ai/?q='+encodeURIComponent(q);window.open(url,'_blank');}
-render();
-// Sync t -> aiQ
-document.getElementById('t').addEventListener('input',e=>document.getElementById('aiQ').value=e.target.value);
-</script></body></html>
+function render(){let a=JSON.parse(localStorage.getItem('v')||'[]');let l=document.getElementById('list');l.innerHTML='';a.forEach((x,i)=>{let d=document.createElement('div');d.className='note';d.textContent=x;d.title='Dzēst';d.onclick=()=>{a.splice(i,1);localStorage.setItem('v',JSON.stringify(a));render()};l.appendChild(d)})}
+function save(){let v=document.getElementById('t').value.trim();if(!v)return;let a=JSON.parse(localStorage.getItem('v')||'[]');a.unshift(v);localStorage.setItem('v',JSON.stringify(a));document.getElementById('t').value='';render()}
+function mic(){let R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){alert('Pārlūks neatbalsta mikrofonu');return}let r=new R();r.lang='lv-LV';r.onstart=()=>document.getElementById('b').innerText='🔴 Klausos';r.onend=()=>document.getElementById('b').innerText='🎤 Nodiktēt';r.onresult=e=>document.getElementById('t').value=e.results[0][0].transcript;r.start()}
+render()
+</script>
+</body>
+</html>
