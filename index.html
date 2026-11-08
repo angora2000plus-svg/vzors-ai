@@ -3,51 +3,175 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VZOR AI - Delta Core</title>
+<title>VZOR AI - Context Notebook // SmartGlasses Compatible</title>
 <style>
-body{margin:0;background:#fff;color:#000;font-family:Inter,monospace;padding:24px}
-header{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding-bottom:12px}
+*{box-sizing:border-box}
+body{margin:0;background:#ffffff;color:#000;font-family:Inter,Helvetica,Arial,sans-serif;padding:0}
+header{position:sticky;top:0;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid #ececec;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;z-index:20}
 .dot{width:8px;height:8px;background:#0066ff;border-radius:50%;box-shadow:0 0 8px #0066ff;animation:blink 1s infinite;display:inline-block}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
-.m{width:28px;height:28px;border:1.5px solid #0066ff;color:#0066ff;display:flex;align-items:center;justify-content:center;font-weight:900;opacity:0.2}
-.m.active{opacity:1;background:#0066ff;color:#fff;box-shadow:0 0 15px #0066ff}
-.hero{display:flex;justify-content:center;margin:20px 0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:900px;margin:0 auto}
-.card{border:1px solid #e5e5e5;border-radius:16px;padding:16px}
-.card.prem{border:2px solid #000}
-a.btn{display:inline-block;background:#000;color:#fff;padding:8px 14px;border-radius:999px;text-decoration:none;font-size:11px;letter-spacing:0.1em;margin-top:10px}
-a.btn.white{background:#fff;color:#000;border:1px solid #000}
-input{width:100%;border:1px solid #ddd;padding:10px;border-radius:10px;font-family:monospace;margin-top:8px}
+.m{width:32px;height:32px;border:1.8px solid #0066ff;color:#0066ff;display:flex;align-items:center;justify-content:center;font-weight:900;opacity:0.18;transition:0.25s;border-radius:6px}
+.m.active{opacity:1;background:#0066ff;color:#fff;box-shadow:0 0 18px #0066ff}
+
+/* ЗНАЧОК ОЧКОВ В УГОЛКЕ — ТВОЯ ИДЕЯ */
+.corner-glasses{
+ position:fixed;
+ top:14px;
+ right:86px;
+ width:44px;
+ height:44px;
+ background:#fff;
+ border:1.6px solid #000;
+ border-radius:12px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:22px;
+ z-index:100;
+ box-shadow:0 6px 18px rgba(0,0,0,0.08);
+ animation:floatCorner 3.2s ease-in-out infinite;
+}
+@keyframes floatCorner{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.corner-glasses .dot-corner{
+ position:absolute;
+ top:-4px;
+ right:-4px;
+ width:9px;
+ height:9px;
+ background:#0066ff;
+ border-radius:50%;
+ box-shadow:0 0 10px #0066ff;
+ animation:blink 1s infinite;
+}
+
+.hero{display:flex;flex-direction:column;align-items:center;padding:14px 0 6px;border-bottom:1px solid #f0f0f0}
+canvas{display:block}
+.status{font-size:10px;letter-spacing:0.28em;color:#0066ff;margin-top:6px;font-family:monospace}
+.links{display:flex;gap:10px;margin-top:10px}
+.links a{font-size:11px;letter-spacing:0.12em;color:#fff;background:#000;padding:7px 12px;border-radius:999px;text-decoration:none}
+.links a.white{background:#fff;color:#000;border:1px solid #000}
+
+.notebook{
+ max-width:760px;
+ margin:22px auto;
+ background:#fff;
+ border:1px solid #e8e8e8;
+ border-radius:18px;
+ padding:18px 18px 10px;
+ box-shadow:0 12px 30px rgba(0,0,0,0.05);
+ position:relative;
+}
+.notebook::before{
+ content:'';
+ position:absolute;
+ left:56px;
+ top:0; bottom:0;
+ width:1px;
+ background:#ffdede;
+}
+.nb-head{font-size:11px;letter-spacing:0.22em;font-weight:800;display:flex;justify-content:space-between}
+.nb-input{display:flex;gap:8px;margin:14px 0 10px 70px}
+.nb-input input{flex:1;border:1px solid #d8d8d8;padding:10px 12px;border-radius:10px;font-family:monospace;font-size:12px}
+.nb-input button{border:none;background:#0066ff;color:#fff;padding:10px 14px;border-radius:10px;font-weight:800;cursor:pointer}
+.nb-line{
+ border-bottom:1px solid #f4f4f4;
+ padding:11px 0 11px 70px;
+ font-family:monospace;
+ font-size:12px;
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+}
+.nb-line b{color:#000}
+.tag{font-size:9px;padding:2px 6px;border-radius:999px;border:1px solid #000;margin-left:6px}
+.tag.cham{background:#000;color:#fff}.tag.tint{background:#eee}.tag.clear{background:#fff;color:#000;border-color:#ccc}
+.foot{text-align:center;font-size:10px;color:#999;padding:18px;letter-spacing:0.18em}
 </style>
 </head>
 <body>
+
 <header>
-<div style="font-size:11px;letter-spacing:0.2em;display:flex;gap:8px;align-items:center"><span class="dot"></span> VZOR AI // DELTA CORE // COMPATIBLE WITH SMARTGLASSES</div>
+<div style="font-size:11px;letter-spacing:0.2em;display:flex;gap:8px;align-items:center"><span class="dot"></span> VZOR AI // CONTEXT NOTEBOOK // DELTA CORE // M-CLOUD</div>
 <div class="m" id="mBox">M</div>
 </header>
 
-<div class="hero"><canvas id="c" width="400" height="200"></canvas></div>
+<!-- ТВОЙ ЗНАЧОК ОЧКОВ В УГОЛКЕ -->
+<div class="corner-glasses" id="cornerGlasses">👓<div class="dot-corner"></div></div>
 
-<div class="grid">
-<div class="card">
-<b>VZOR AI CORE</b><br><small style="color:#888">vzor-core/skills/delta.py — anti-recursive</small>
-<p style="font-size:12px">Самоопирающееся облако. Спиральная архитектура. Вызов памяти по кодовому слову.</p>
-<a class="btn" href="https://angora2000plus-svg.github.io/VZOR-SmartGlasses-26PREMIUM/">→ VZOR SmartGlasses PREMIUM</a>
-<a class="btn white" href="https://angora2000plus-svg.github.io/VZOR-SmartGlasses-26PREMIUM/tech-passport.html">ТЕХПАСПОРТ</a>
-</div>
-<div class="card prem">
-<b>MEMORY CLOUD RECALL</b>
-<input id="recallInput" placeholder="кодовое слово: рига2026">
-<button onclick="recallMemory()" style="margin-top:8px;background:#0066ff;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer">Вызвать М из облака очков</button>
-<div id="log" style="font-size:11px;margin-top:10px;color:#444"></div>
+<div class="hero">
+<canvas id="c" width="500" height="200"></canvas>
+<div class="status" id="cloudStatus">CLOUD: self-supporting — waiting for glasses → spiral ↑ → notebook</div>
+<div class="links">
+<a href="https://angora2000plus-svg.github.io/VZOR-SmartGlasses-26PREMIUM/">→ VZOR SmartGlasses 26 PREMIUM</a>
+<a class="white" href="https://angora2000plus-svg.github.io/VZOR-SmartGlasses-26PREMIUM/tech-passport.html">ТЕХПАСПОРТ</a>
 </div>
 </div>
+
+<div class="notebook">
+<div class="nb-head"><span>CONTEXT NOTEBOOK / ЗАПИСНАЯ КНИЖКА // VZOR AI + GLASSES</span><span style="color:#0066ff">● LIVE SYNC</span></div>
+
+<div class="nb-input">
+<input id="momentInput" placeholder="Момент из очков: встреча, идея...">
+<input id="codeInput" placeholder="код: рига2026" style="max-width:120px">
+<button onclick="saveMemory()">Сжать → М</button>
+</div>
+
+<div class="nb-input">
+<input id="recallInput" placeholder="Кодовое слово чтобы вызвать память...">
+<button onclick="recallMemory()" style="background:#000">Вызвать М</button>
+</div>
+
+<div id="log"></div>
+</div>
+
+<div class="foot">VZOR AI / WHITE EDITION / NOTEBOOK + CORNER GLASSES ICON / COMPATIBLE WITH VZOR-SmartGlasses-26PREMIUM / LENS: CLEAR / TINTED / CHAMELEON</div>
 
 <script>
-const c=document.getElementById('c'),ctx=c.getContext('2d'),mBox=document.getElementById('mBox'),log=document.getElementById('log');let t=0;
+const c=document.getElementById('c'), ctx=c.getContext('2d'), mBox=document.getElementById('mBox'), logEl=document.getElementById('log'), cloudStatus=document.getElementById('cloudStatus'), cornerGlasses=document.getElementById('cornerGlasses');
+let t=0;
 let memories=JSON.parse(localStorage.getItem('vzor_cloud')||localStorage.getItem('vzor_cloud_shared')||'{}');
-function draw(){ctx.clearRect(0,0,400,200);ctx.save();ctx.translate(200,100);t+=0.02;let up=Math.sin(t)>0.3;ctx.strokeStyle=up?'#0066ff':'#ddd';ctx.lineWidth=up?2:1;if(up)ctx.shadowBlur=10,ctx.shadowColor='#0066ff';ctx.beginPath();for(let i=0;i<120;i++){let a=i*0.2+t*1.8,r=i*0.6,yOff=up?-Math.sin(t*3+i*0.07)*12:0,x=Math.cos(a)*r,y=Math.sin(a)*r+yOff;if(i==0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();ctx.restore();if(up&&Math.random()<0.02){mBox.classList.add('active');setTimeout(()=>mBox.classList.remove('active'),400);}requestAnimationFrame(draw);}draw();
-function recallMemory(){let code=document.getElementById('recallInput').value.trim().toLowerCase();memories=JSON.parse(localStorage.getItem('vzor_cloud')||localStorage.getItem('vzor_cloud_shared')||'{}');if(memories[code]){log.innerHTML=`<div style="border-left:3px solid #0066ff;padding-left:8px;background:#f0f7ff"><b>MEMORIZED ${code} [M]</b><br>${memories[code].text}<br><small>${memories[code].time}</small></div>`;mBox.classList.add('active');setTimeout(()=>mBox.classList.remove('active'),700);}else log.innerHTML=`<div style="color:#c00">${code} — не найдено. Сначала создай его в SmartGlasses</div>`;}
+
+function render(){
+  const entries=Object.entries(memories);
+  if(!entries.length){ logEl.innerHTML='<div class="nb-line" style="color:#999">> архив пуст — создай момент в очках или здесь, кодовое слово → М → очки в углу мигнут</div>'; return; }
+  logEl.innerHTML=entries.map(([k,v])=>{
+    let tagClass = (v.lens||'CHAMELEON').includes('CLEAR') ? 'clear' : (v.lens||'').includes('TINT') ? 'tint' : 'cham';
+    return `<div class="nb-line"><span><b>${k}</b> → ${v.text} <span class="tag ${tagClass}">${v.lens||'CHAMELEON'}</span></span><small style="color:#999">${v.time}</small></div>`;
+  }).join('');
+}
+function draw(){
+  ctx.clearRect(0,0,500,200); ctx.save(); ctx.translate(250,100); t+=0.02;
+  let up=Math.sin(t)>0.32; ctx.strokeStyle=up?'#0066ff':'#ddd'; ctx.lineWidth=up?2.1:1;
+  if(up){ctx.shadowBlur=12;ctx.shadowColor='#0066ff';}
+  ctx.beginPath(); for(let i=0;i<140;i++){let a=i*0.2+t*1.9,r=i*0.68,yOff=up?-Math.sin(t*3.2+i*0.07)*16:0,x=Math.cos(a)*r,y=Math.sin(a)*r+yOff; if(i==0)ctx.moveTo(x,y); else ctx.lineTo(x,y);} ctx.stroke(); ctx.restore();
+  if(up && Math.random()<0.025){
+    mBox.classList.add('active'); cornerGlasses.style.boxShadow='0 0 18px #0066ff'; cornerGlasses.style.borderColor='#0066ff';
+    cloudStatus.innerText='CLOUD: spiral ↑ from glasses → notebook → M memorized → archive';
+    setTimeout(()=>{mBox.classList.remove('active'); cornerGlasses.style.boxShadow='0 6px 18px rgba(0,0,0,0.08)'; cornerGlasses.style.borderColor='#000'; cloudStatus.innerText='CLOUD: memorized — notebook + glasses in sync';},500);
+  }
+  requestAnimationFrame(draw);
+}
+draw(); render();
+
+function saveMemory(){
+  const text=document.getElementById('momentInput').value.trim();
+  const code=document.getElementById('codeInput').value.trim().toLowerCase();
+  if(!text||!code) return alert('Момент и код!');
+  memories[code]={text, time:new Date().toLocaleString(), lens:'CHAMELEON', source:'vzors-ai-notebook'};
+  localStorage.setItem('vzor_cloud', JSON.stringify(memories));
+  localStorage.setItem('vzor_cloud_shared', JSON.stringify(memories));
+  render(); mBox.classList.add('active'); cornerGlasses.animate([{transform:'scale(1.2)'},{transform:'scale(1)'}],{duration:300}); setTimeout(()=>mBox.classList.remove('active'),600);
+  document.getElementById('momentInput').value=''; document.getElementById('codeInput').value='';
+}
+function recallMemory(){
+  const code=document.getElementById('recallInput').value.trim().toLowerCase();
+  memories=JSON.parse(localStorage.getItem('vzor_cloud')||localStorage.getItem('vzor_cloud_shared')||'{}');
+  if(memories[code]){
+    const m=memories[code];
+    logEl.innerHTML=`<div class="nb-line" style="background:#f0f7ff;border-left:3px solid #0066ff"><span><b style="color:#0066ff">MEMORIZED ${code} [M] 👓</b> → ${m.text}</span><small>${m.time}</small></div>`+logEl.innerHTML;
+    mBox.classList.add('active'); cornerGlasses.style.borderColor='#0066ff'; setTimeout(()=>{mBox.classList.remove('active'); cornerGlasses.style.borderColor='#000';},800);
+  } else logEl.innerHTML=`<div class="nb-line" style="color:#c00">${code} — не найдено в облаке очков</div>`+logEl.innerHTML;
+}
 </script>
 </body>
 </html>
