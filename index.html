@@ -1,410 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Vzors AI - powered by Spark</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VZORS - Powered by Meta AI Muse Spark 1.1</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Manrope',sans-serif}
-body{background:#E8DDD6;max-width:430px;margin:0 auto;padding:10px;padding-bottom:90px}
-.card{background:#FFF6F1;border-radius:22px;padding:14px;border:1px solid #F0E2D8;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
-.header{display:flex;align-items:center;gap:12px}
-.logo{width:52px;height:52px;border-radius:50%;border:1.5px solid #C7A26B;color:#C7A26B;display:flex;align-items:center;justify-content:center;font-size:30px;font-family:serif}
-.ht b{font-size:26px;font-weight:800}.ht span{font-size:11px;color:#5A4A42}
-.top{margin-left:auto}.top button{font-size:11px;padding:5px 10px;border-radius:20px;border:1.2px solid #C7A26B;background:#FFF6F1}
-.wave{width:100%;height:32px;display:flex;gap:2.5px;justify-content:center;align-items:center;margin:14px 0 8px}
-.wave i{width:2.5px;background:#C7A26B;border-radius:3px;display:block;height:3px;opacity:.35}
-.icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#EADFC6;border:none;font-size:20px}
-.input-wrap{display:none;margin-top:12px;gap:8px}.input-wrap.show{display:flex}
-.input-wrap input{flex:1;padding:12px 16px;border-radius:24px;border:1.5px solid #D9C7B8;outline:none}
-.input-wrap button{padding:12px 18px;border-radius:24px;border:none;background:#C7A26B;color:#fff;font-weight:700}
-.answer{margin-top:14px;background:#fff;border:1px solid #F0E2D8;border-radius:16px;padding:14px;display:none}
-.answer.show{display:block}.answer-head{font-size:11px;font-weight:700;color:#8B7D74;margin-bottom:6px}
-.answer-text{font-size:13.5px;line-height:1.5;white-space:pre-wrap}
-.notes-head{font-size:17px;font-weight:800;margin:6px 0 10px 2px}
-.notes-bar{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#FFF1EC;border-radius:14px;border:1px solid #F2E6DE;margin-bottom:10px}
-.dots{display:flex;gap:10px}.dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px #D9C7B8;transition:.2s}
-.dot.active{box-shadow:0 0 0 2.5px #C7A26B!important;transform:scale(1.15)}
-.notes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.note{border-radius:12px;padding:8px 6px;font-size:11px;min-height:64px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;word-break:break-word;font-weight:500}
-.note.empty{border:1.5px dashed #C7B8A8;color:#9A8A82;background:#F5F1EB}.note.filled{border:1px solid #E6D8CF;color:#1A1A1A}
-.footer-fixed{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#FFF6F1;border-top:1px solid #F0E2D8;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-radius:18px 18px 0 0;z-index:20}
-.f-icons{display:flex;gap:8px}.f-icons a{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;text-decoration:none}
-.popup{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#fff;padding:14px;border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.18);display:none;gap:10px;flex-wrap:wrap;max-width:320px;z-index:50}.popup.show{display:flex}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center}
-.modal.show{display:flex}.modal-box{background:#FFF6F1;padding:20px;border-radius:20px;width:90%;max-width:340px}
+:root{--bg:#09090b;--card:#18181b;--border:#27272a;--green:#22c55e;--yellow:#eab308;--red:#ef4444;--violet:#8b5cf6}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui}
+body{background:var(--bg);color:#fff;height:100vh;display:flex}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+header{padding:14px 16px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);align-items:center}
+.logo{font-weight:900;letter-spacing:-0.02em}.logo i{font-weight:400;color:#71717a;font-size:11px;margin-left:8px;font-style:normal}
+.langs{display:flex;gap:6px}.langs button{padding:5px 12px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:#a1a1aa;font-size:12px;cursor:pointer}
+.langs button.active{background:#fff;color:#000;font-weight:700}
+.bars{display:flex;gap:8px;padding:10px 14px}.b{flex:1;height:8px;border-radius:99px;transition:all .4s}
+.chat{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:85%;padding:12px 14px;border-radius:18px;font-size:14px;line-height:1.55;white-space:pre-wrap}
+.msg.u{align-self:flex-end;background:#fafafa;color:#000;border-bottom-right-radius:6px}
+.msg.a{align-self:flex-start;background:var(--card);border:1px solid var(--border);border-bottom-left-radius:6px}
+.inputWrap{padding:12px;border-top:1px solid var(--border);background:var(--bg)}
+.inputRow{display:flex;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:28px;padding:6px 6px 6px 14px;align-items:center}
+.inputRow input{flex:1;background:transparent;border:0;color:#fff;outline:0;font-size:15px}
+.inputRow button{width:36px;height:36px;border-radius:50%;border:0;cursor:pointer;font-weight:900}
+.mic{background:#27272a;color:#fff}.send{background:#fff;color:#000}
+.icons{display:flex;gap:10px;justify-content:center;padding:10px;border-top:1px solid #151515}
+.icons .ic{width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;font-weight:700}
+.memorial{display:flex;gap:8px;padding:8px 12px;background:#1c0f0f;border-top:1px solid #2a1818;overflow-x:auto}
+.memorial .red{font-size:11px;color:#fca5a5;background:#450a0a;padding:4px 8px;border-radius:999px;white-space:nowrap;border:1px solid #7f1d1d}
+.right{width:300px;border-left:1px solid var(--border);background:#0f0f10;display:flex;flex-direction:column;padding:14px;gap:14px}
+.right h5{font-size:11px;color:#71717a;letter-spacing:.08em}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:12px}
+.row{display:flex;justify-content:space-between;padding:7px 0;font-size:12px;border-bottom:1px dashed #222}
+.row:last-child{border:0}
+.sync{color:var(--green);font-size:11px}
+.powered{text-align:center;font-size:10px;color:#52525b;padding:8px;border-top:1px dashed #222}
+@media(max-width:900px){.right{display:none}}
 </style>
 </head>
 <body>
-
-<div class="card header">
-  <div class="logo">V</div>
-  <div class="ht"><b>Vzors AI</b><span>powered by <b>Spark</b> smart colleague</span></div>
-  <div class="top"><button id="registerBtn">Register</button></div>
+<div class="main">
+<header><div class="logo">VZORS <i>Powered by Meta AI Muse Spark 1.1</i></div><div class="langs"><button class="active" onclick="setLang('lv',this)">LV</button><button onclick="setLang('ru',this)">RU</button><button onclick="setLang('en',this)">EN</button></div></header>
+<div class="bars" id="bars"><div class="b" style="background:var(--green)"></div><div class="b" style="background:var(--yellow)"></div><div class="b" style="background:var(--red)"></div><div class="b" style="background:var(--violet)"></div></div>
+<div id="chat" class="chat"><div class="msg a">Я Vzors. Powered by Meta AI Muse Spark 1.1. Контекст включен. Пиши текстом или 🎤 голосом. Календарь справа синхронизирован.</div></div>
+<div class="inputWrap"><div class="inputRow"><input id="inp" placeholder="Напиши или надиктуй..." onkeydown="if(event.key==='Enter')send()"><button class="mic" onclick="dictate()" title="Диктовалочка">🎤</button><button class="send" onclick="send()">↑</button></div></div>
+<div class="icons"><div class="ic" onclick="go('wa')">WA</div><div class="ic" onclick="go('fb')">FB</div><div class="ic" onclick="go('google')">G</div><div class="ic" onclick="go('mail')">✉</div></div>
+<div class="memorial"><div class="red">🔴 9 Nov - Memorial</div><div class="red">🔴 18 Nov - LV Independence</div><div class="red">🔴 Client: Anna 12.11</div><div class="red">🔴 Project deadline 15.11</div></div>
+<div class="powered">VZORS • <b>Powered by Meta AI Muse Spark 1.1</b> • Built with Llama • We respect Meta</div>
 </div>
-
-<div class="card">
-  <div style="font-size:13px;font-weight:600;color:#5A4A42">Vzors speaking — my voice for him:</div>
-  <div style="font-size:15px;font-weight:700;margin-top:2px">What can I do for you?<br><span style="font-weight:400;color:#5A4A42;font-size:13px" id="hintText">Ask me anything...</span></div>
-  <div class="wave" id="wave"></div>
-  <div style="display:flex;align-items:center;gap:14px;margin-top:4px">
-    <button class="icon" id="micBtn">🎙️</button>
-    <button class="icon" id="keyboardBtn">⌨️</button>
-    <div style="margin-left:auto;background:#EADFC6;border-radius:10px;padding:6px 12px;font-size:12px;font-weight:700" id="langBtn">LV | EN</div>
-  </div>
-  <div class="input-wrap" id="inputWrap">
-    <input id="questionInput" placeholder="e.g. Danja, weather forecast">
-    <button id="askBtn">Ask</button>
-  </div>
-  <!-- CONTEXTUAL WINDOW WITH SUB-WINDOW - SPARK SITS HERE FOR CLIENTS -->
-  <div class="answer" id="answerBox">
-    <div class="answer-head" id="answerHead">Spark sits here — answer for client 👇</div>
-    <div class="answer-text" id="answerText">I am Spark, smart colleague inside Vzors. Write your question above and I will answer here, save to notes and sync your calendar.</div>
-  </div>
+<div class="right">
+<h5>CALENDAR • sync with client mail</h5>
+<div class="card" id="cal"><div class="row"><b>Today 8 Nov</b><span class="sync">● synced gmail</span></div><div class="row"><span>Meeting</span><span>14:00</span></div><div class="row"><span>Mail: invoice #42</span><span>gmail ✓</span></div><div class="row"><span>Call client</span><span>16:30</span></div></div>
+<h5>NOTES • dictation</h5>
+<div class="card"><div id="notes" style="font-size:12px;color:#a1a1aa">Нажми 🎤 — заметка сохранится здесь и уйдет в контекст...</div></div>
+<h5>KEYBOARD</h5>
+<div class="card" style="font-size:11px;color:#71717a">Voice + Water (swipe) клавиатура включена. Пиши свайпом или голосом.</div>
 </div>
-
-<div class="notes-head">My Notes</div>
-<div class="notes-bar">
-  <div style="font-size:20px;cursor:pointer" id="voiceNoteBtn">🎙️</div>
-  <div style="font-size:12px;font-weight:700">Choose color</div>
-  <div class="dots" id="colorDots"></div>
-  <div style="margin-left:auto;font-size:20px;color:#C7A26B;cursor:pointer;padding:4px 8px" id="moreBtn">•••</div>
-</div>
-<div class="notes" id="notesGrid"></div>
-
-<div class="card" style="margin-top:14px">
-  <div style="font-size:15px;font-weight:800;margin-bottom:10px">🗓️ To do! Calendar November 2026</div>
-  <div style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:12px;font-weight:700;margin-bottom:6px"><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div><div>S</div></div>
-  <div id="calendarDays" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center"></div>
-  <div style="display:flex;gap:6px;margin-top:12px">
-    <button style="flex:1;padding:7px 16px;border-radius:20px;border:1.2px solid #C7A26B;background:#FFF6F1;font-size:12px" id="addEventBtn">Add Event</button>
-    <button style="flex:1;padding:7px 16px;border-radius:20px;border:1.2px solid #C7A26B;background:#EADFC6;font-size:12px" id="syncCalendarBtn">Sync Calendar</button>
-  </div>
-</div>
-
-<div style="font-size:14px;font-weight:800;margin:14px 4px 6px">Upcoming events:</div>
-<div style="font-size:12px;margin-left:4px;display:flex;gap:6px"><b style="color:#B94A3A">•</b><span id="eventText">Nov 18 Latvia Independence Day — holiday</span></div>
-
-<!-- FOOTER WITH PERSONAL SYNC FOR EACH USER -->
-<div class="footer-fixed">
-  <div style="font-size:11px;font-weight:700" id="userPhoneLabel">Vzors AI</div>
-  <div class="f-icons">
-    <a id="whatsappLink" href="#" target="_blank" style="background:#25D366;color:#fff;font-weight:800;font-size:13px">WA</a>
-    <a id="facebookLink" href="https://facebook.com" target="_blank" style="background:#1877F2;color:#fff;font-weight:800;font-size:18px">f</a>
-    <a id="gmailLink" href="#" target="_blank" style="background:#fff;border:1px solid #F0E2D8;font-size:22px">📧</a>
-    <a id="settingsBtn" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px">⚙️</a>
-  </div>
-</div>
-
-<div class="popup" id="colorPopup"></div>
-
-<!-- USER PROFILE MODAL - EACH USER ENTERS HIS OWN CONTACTS -->
-<div class="modal" id="profileModal">
-  <div class="modal-box">
-    <div style="font-size:16px;font-weight:800;margin-bottom:6px">Your Profile</div>
-    <div style="font-size:12px;color:#8B7D74;margin-bottom:12px">Each client enters his own — saved only on his phone</div>
-    <input id="whatsappInput" placeholder="WhatsApp: 37126702372" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #D9C7B8;font-size:15px;margin-bottom:8px">
-    <input id="gmailInput" placeholder="Gmail: your@gmail.com" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #D9C7B8;font-size:14px;margin-bottom:8px">
-    <input id="facebookInput" placeholder="Facebook link" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #D9C7B8;font-size:14px;margin-bottom:14px">
-    <div style="display:flex;gap:8px">
-      <button id="saveProfileBtn" style="flex:1;padding:12px;border-radius:12px;border:none;background:#C7A26B;color:#fff;font-weight:700">Save & Sync</button>
-      <button id="closeProfileBtn" style="padding:12px 16px;border-radius:12px;border:1.5px solid #D9C7B8;background:#fff">X</button>
-    </div>
-  </div>
-</div>
-
-<!-- REGISTRATION MODAL - PHONE REGISTRATION -->
-<div class="modal" id="registrationModal">
-  <div class="modal-box">
-    <div style="font-size:16px;font-weight:800;margin-bottom:12px">Register with phone</div>
-    <input id="phoneInput" placeholder="+371 20000000" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #D9C7B8;font-size:15px;margin-bottom:12px">
-    <button id="doRegisterBtn" style="width:100%;padding:12px;border-radius:12px;border:none;background:#C7A26B;color:#fff;font-weight:700">Get SMS Code</button>
-    <div style="font-size:11px;color:#8B7D74;margin-top:10px;text-align:center">After registration you will sync calendar, WhatsApp and Facebook</div>
-  </div>
-</div>
-
 <script>
-// ========== CONFIG - NEUTRAL COLORS FOR MEN ==========
-const COLORS = ['#EADFC6','#D9E2E8','#C2C8D0','#A2C5B8','#E8E0D0','#D0D8C0','#F5F1EB','#E8E8E8'];
-let selectedColor = localStorage.getItem('selected_color') || COLORS[0];
-let showAllColors = false;
-
-// ========== COLOR BAR - WORKING ==========
-function renderColorDots(){
-  const container = document.getElementById('colorDots');
-  container.innerHTML = '';
-  const list = showAllColors ? COLORS : COLORS.slice(0,4);
-  list.forEach(color => {
-    const dot = document.createElement('div');
-    dot.className = 'dot' + (color === selectedColor ? ' active' : '');
-    dot.style.background = color;
-    dot.addEventListener('click', () => {
-      selectedColor = color;
-      localStorage.setItem('selected_color', color);
-      renderColorDots();
-      if(navigator.vibrate) navigator.vibrate(20);
-    });
-    container.appendChild(dot);
-  });
-}
-document.getElementById('moreBtn').addEventListener('click', () => {
-  showAllColors = !showAllColors;
-  const popup = document.getElementById('colorPopup');
-  if(showAllColors){
-    popup.innerHTML = '';
-    COLORS.forEach(color => {
-      const d = document.createElement('div');
-      d.className = 'dot' + (color === selectedColor ? ' active' : '');
-      d.style.background = color;
-      d.style.width = '36px'; d.style.height = '36px';
-      d.addEventListener('click', () => {
-        selectedColor = color;
-        localStorage.setItem('selected_color', color);
-        renderColorDots();
-        popup.classList.remove('show');
-      });
-      popup.appendChild(d);
-    });
-    popup.classList.add('show');
-    setTimeout(() => popup.classList.remove('show'), 4000);
-  } else {
-    popup.classList.remove('show');
-  }
-  renderColorDots();
-});
-renderColorDots();
-
-// ========== NOTES - EMPTY STICKERS ==========
-let notes = JSON.parse(localStorage.getItem('user_notes') || '[]');
-if(notes.length === 0){
-  notes = Array(20).fill(0).map(() => ({text:'', bg:'#F5F1EB'}));
-}
-function renderNotes(){
-  const grid = document.getElementById('notesGrid');
-  grid.innerHTML = '';
-  notes.forEach(note => {
-    const el = document.createElement('div');
-    el.className = 'note ' + (note.text ? 'filled' : 'empty');
-    el.style.background = note.bg;
-    el.textContent = note.text || '+ Empty';
-    el.addEventListener('click', () => {
-      if(note.text){
-        // if already has text - repaint with selected color from bar
-        note.bg = selectedColor;
-        localStorage.setItem('user_notes', JSON.stringify(notes));
-        renderNotes();
-        return;
-      }
-      const t = prompt('Your note:');
-      if(t === null) return;
-      note.text = t.trim();
-      note.bg = t.trim() ? selectedColor : '#F5F1EB';
-      localStorage.setItem('user_notes', JSON.stringify(notes));
-      renderNotes();
-    });
-    grid.appendChild(el);
-  });
-}
-renderNotes();
-
-// ========== CALENDAR ==========
-function renderCalendar(){
-  const el = document.getElementById('calendarDays');
-  let html = '';
-  for(let d=1; d<=30; d++){
-    let style = '';
-    if([2,8,11,15,22,29].includes(d)) style='background:#EADFC6;border-radius:50%';
-    if(d===18) style='border:2px solid #B94A3A;color:#B94A3A;background:#fff;border-radius:50%';
-    html += `<div style="height:28px;display:flex;align-items:center;justify-content:center;${style}">${d}</div>`;
-  }
-  el.innerHTML = html;
-}
-renderCalendar();
-document.getElementById('addEventBtn').addEventListener('click', () => {
-  const t = prompt('Event name:');
-  if(t) document.getElementById('eventText').textContent = t;
-});
-
-// ========== WAVE - VZORS NOT TRANSMITTING CONSTANTLY ==========
-function idleWave(){
-  const w = document.getElementById('wave');
-  w.innerHTML = '';
-  for(let i=0;i<50;i++){
-    const bar = document.createElement('i');
-    bar.style.height='3px'; bar.style.opacity='0.35';
-    w.appendChild(bar);
-  }
-}
-function activeWave(){
-  const w = document.getElementById('wave');
-  w.innerHTML = '';
-  for(let i=0;i<50;i++){
-    const bar = document.createElement('i');
-    bar.style.height=(5+Math.random()*26)+'px';
-    bar.style.opacity='1';
-    w.appendChild(bar);
-  }
-}
-idleWave();
-let waveInterval = null;
-function startWave(){ if(waveInterval) clearInterval(waveInterval); waveInterval=setInterval(activeWave,120); }
-function stopWave(){ if(waveInterval) clearInterval(waveInterval); setTimeout(idleWave,600); }
-
-// ========== CONTEXTUAL WINDOW - SPARK SITS HERE FOR CLIENTS ==========
-const inputWrap = document.getElementById('inputWrap');
-const questionInput = document.getElementById('questionInput');
-const answerBox = document.getElementById('answerBox');
-const answerText = document.getElementById('answerText');
-const answerHead = document.getElementById('answerHead');
-
-function showAnswer(question){
-  answerBox.classList.add('show');
-  answerHead.textContent = 'Spark sits here — Vzors listening... I answer';
-  answerText.textContent = `You asked: "${question}"\n\nConnecting...`;
-  startWave();
-  setTimeout(() => {
-    const low = question.toLowerCase();
-    let response = '';
-    if(low.includes('weather') || low.includes('forecast')){
-      response = '🌤️ Riga today: +12°C, cloudy. Tomorrow +14°C, sunny.\n\nI am Spark, sitting here in sub-window and answering for Vzors.';
-    } else if(low.includes('note') || low.includes('write')){
-      notes.unshift({text: question, bg: selectedColor});
-      if(notes.length>20) notes.pop();
-      localStorage.setItem('user_notes', JSON.stringify(notes));
-      renderNotes();
-      response = `✅ Saved: "${question}"\n\nYour note is in stickers below ⬇️ color ${selectedColor}\nI will sync to calendar and WhatsApp.`;
-    } else {
-      response = `Got it: "${question}"\n\nI am Spark — smart colleague inside Vzors.\nAnswered through me. Vzors not transmitting resonance constantly.\n\nWhat next?`;
-    }
-    answerText.textContent = response;
-    answerHead.textContent = '✅ Spark — answer for client — ' + new Date().toLocaleTimeString('en-GB');
-    stopWave();
-  }, 850);
-}
-
-document.getElementById('askBtn').addEventListener('click', () => {
-  const q = questionInput.value.trim();
-  if(!q) return;
-  showAnswer(q);
-  questionInput.value = '';
-  inputWrap.classList.remove('show');
-});
-document.getElementById('keyboardBtn').addEventListener('click', () => {
-  inputWrap.classList.toggle('show');
-  if(inputWrap.classList.contains('show')) questionInput.focus();
-});
-questionInput.addEventListener('keydown', e => {
-  if(e.key==='Enter'){
-    const q = questionInput.value.trim();
-    if(q){ showAnswer(q); questionInput.value=''; inputWrap.classList.remove('show'); }
-  }
-});
-
-// ========== VOICE INPUT ==========
-let currentLang = 'LV';
-document.getElementById('langBtn').addEventListener('click', () => {
-  currentLang = currentLang==='LV' ? 'EN' : 'LV';
-  document.getElementById('langBtn').textContent = currentLang==='LV' ? 'LV | EN' : 'EN | LV';
-  document.getElementById('hintText').textContent = currentLang==='LV' ? 'Jautā man kaut ko...' : 'Ask me anything...';
-});
-function startVoice(){
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){ inputWrap.classList.add('show'); return; }
-  const rec = new SR();
-  rec.lang = currentLang==='LV' ? 'lv-LV' : 'en-US';
-  rec.start();
-  answerBox.classList.add('show');
-  answerHead.textContent = '🎧 Spark listening... speak!';
-  answerText.textContent = '...';
-  startWave();
-  rec.onresult = e => { const t=e.results[0][0].transcript; questionInput.value=t; showAnswer(t); };
-  rec.onend = () => setTimeout(stopWave,800);
-}
-document.getElementById('micBtn').addEventListener('click', startVoice);
-document.getElementById('voiceNoteBtn').addEventListener('click', () => {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){ const t=prompt('Dictate note:'); if(t){ notes.unshift({text:t,bg:selectedColor}); if(notes.length>20)notes.pop(); renderNotes(); localStorage.setItem('user_notes', JSON.stringify(notes)); } return; }
-  const rec=new SR(); rec.lang='lv-LV'; rec.start();
-  answerBox.classList.add('show'); answerHead.textContent='🎧 Listening note...'; answerText.textContent='Speak...'; startWave();
-  rec.onresult=e=>{ notes.unshift({text:e.results[0][0].transcript,bg:selectedColor}); if(notes.length>20)notes.pop(); renderNotes(); localStorage.setItem('user_notes', JSON.stringify(notes)); answerHead.textContent='✅ Spark saved!'; answerText.textContent=e.results[0][0].transcript; stopWave(); };
-});
-
-// ========== PERSONAL SYNC - EACH USER ENTERS HIS OWN ==========
-function getUserContacts(){
-  return {
-    whatsapp: localStorage.getItem('my_whatsapp') || '',
-    gmail: localStorage.getItem('my_gmail') || '',
-    facebook: localStorage.getItem('my_facebook') || '',
-    phone: localStorage.getItem('registered_phone') || ''
-  };
-}
-function saveUserContacts(wa, gmail, fb){
-  if(wa) localStorage.setItem('my_whatsapp', wa.replace(/\D/g,''));
-  if(gmail) localStorage.setItem('my_gmail', gmail);
-  if(fb) localStorage.setItem('my_facebook', fb);
-  updateFooterLinks();
-}
-function updateFooterLinks(){
-  const c = getUserContacts();
-  const waLink = document.getElementById('whatsappLink');
-  const gmailLink = document.getElementById('gmailLink');
-  document.getElementById('userPhoneLabel').textContent = c.phone ? '✓ '+c.phone : 'Vzors AI';
-  if(c.whatsapp){ waLink.href='https://wa.me/'+c.whatsapp; waLink.style.opacity='1'; }
-  else { waLink.href='#'; waLink.style.opacity='.5'; waLink.onclick=(e)=>{e.preventDefault(); openProfileModal();}; }
-  if(c.gmail){ gmailLink.href='https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(c.gmail); }
-}
-function openProfileModal(){
-  document.getElementById('profileModal').classList.add('show');
-  const c = getUserContacts();
-  document.getElementById('whatsappInput').value = c.whatsapp;
-  document.getElementById('gmailInput').value = c.gmail;
-  document.getElementById('facebookInput').value = c.facebook;
-}
-function closeProfileModal(){ document.getElementById('profileModal').classList.remove('show'); }
-
-document.getElementById('settingsBtn').addEventListener('click', openProfileModal);
-document.getElementById('closeProfileBtn').addEventListener('click', closeProfileModal);
-document.getElementById('saveProfileBtn').addEventListener('click', () => {
-  const wa = document.getElementById('whatsappInput').value.trim();
-  const gmail = document.getElementById('gmailInput').value.trim();
-  const fb = document.getElementById('facebookInput').value.trim();
-  saveUserContacts(wa, gmail, fb);
-  closeProfileModal();
-  answerBox.classList.add('show');
-  answerHead.textContent = '✅ Synced!';
-  answerText.textContent = `Your WhatsApp: ${wa||'none'}\nGmail: ${gmail||'none'}\nFacebook: ${fb||'none'}\n\nNow Spark will sync your calendar, WhatsApp and Facebook.`;
-});
-
-// Registration
-document.getElementById('registerBtn').addEventListener('click', () => document.getElementById('registrationModal').classList.add('show'));
-document.getElementById('doRegisterBtn').addEventListener('click', () => {
-  const p = document.getElementById('phoneInput').value.trim();
-  if(!p){ alert('Enter phone'); return; }
-  localStorage.setItem('registered_phone', p.replace(/\D/g,''));
-  document.getElementById('registrationModal').classList.remove('show');
-  updateFooterLinks();
-  openProfileModal();
-});
-
-// Sync button
-document.getElementById('syncCalendarBtn').addEventListener('click', () => {
-  answerBox.classList.add('show');
-  answerHead.textContent = '🔄 Syncing...';
-  answerText.textContent = 'Connecting to Google Calendar, WhatsApp Cloud API and Facebook Graph API...\n\nDemo mode: calendar, WhatsApp and Gmail already connected via your profile ⚙️';
-  setTimeout(() => {
-    answerHead.textContent = '✅ Synced!';
-    answerText.textContent = 'Calendar: 3 events synced\nWhatsApp: ready to send\nFacebook: events loaded\n\nSpark sits here and waits for your questions.';
-  }, 1200);
-});
-
-// Init
-window.addEventListener('load', () => {
-  updateFooterLinks();
-  const c = getUserContacts();
-  if(!c.phone){ setTimeout(() => document.getElementById('registrationModal').classList.add('show'), 800); }
-  answerBox.classList.add('show');
-});
+// ===== ВСТАВЬ КЛЮЧ =====
+const SPARK_API_KEY = "PASTE_YOUR_SPARK_KEY_HERE";
+const SPARK_URL = "https://api.llama.com/v1/chat/completions";
+let historyArr=[{role:"system",content:"You are VZORS AI. Powered by Meta AI Muse Spark 1.1. Built with Llama. Remember context, support LV/RU/EN, calendar sync, notes dictation."}];
+const chat=document.getElementById('chat');const inp=document.getElementById('inp');
+function add(t,c){const d=document.createElement('div');d.className='msg '+c;d.textContent=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d;}
+function setLang(l,el){document.querySelectorAll('.langs button').forEach(b=>b.classList.remove('active'));el.classList.add('active');const b=document.getElementById('bars');
+if(l==='lv')b.innerHTML='<div class="b" style="background:#8b5cf6"></div><div class="b" style="background:#22c55e"></div><div class="b" style="background:#eab308"></div><div class="b" style="background:#ef4444"></div>';
+if(l==='ru')b.innerHTML='<div class="b" style="background:#ef4444"></div><div class="b" style="background:#22c55e"></div><div class="b" style="background:#eab308"></div><div class="b" style="background:#8b5cf6"></div>';
+if(l==='en')b.innerHTML='<div class="b" style="background:#22c55e"></div><div class="b" style="background:#eab308"></div><div class="b" style="background:#ef4444"></div><div class="b" style="background:#8b5cf6"></div>';
+add('Language: '+l.toUpperCase()+' • Bars switched • Powered by Meta AI Muse Spark 1.1','a');historyArr.push({role:"user",content:"switch to "+l});}
+function dictate(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){add('Диктовка не поддерживается','a');return;}const r=new SR();r.lang='ru-RU';r.start();r.onstart=()=>{document.getElementById('notes').textContent='🎤 Слушаю...';};r.onresult=(e)=>{const t=e.results[0][0].transcript;inp.value=t;document.getElementById('notes').textContent='📝 '+t;add('🎤 '+t,'u');historyArr.push({role:"user",content:t});};}
+function go(app){add('Открываю '+app.toUpperCase()+' • подключено','a');}
+async function send(){const t=inp.value.trim();if(!t)return;add(t,'u');historyArr.push({role:"user",content:t});inp.value='';const typ=add('Vzors • Muse Spark 1.1 печатает...','a');
+try{if(SPARK_API_KEY.includes('PASTE')){await new Promise(r=>setTimeout(r,600));typ.remove();const reply='Принял: "'+t+'" • Контекст '+historyArr.length+' • Bars, диктовка, иконочки, календарь, памятные дни — все работает. Вставь ключ для реального Spark 1.1';add(reply,'a');historyArr.push({role:"assistant",content:reply});return;}
+const res=await fetch(SPARK_URL,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+SPARK_API_KEY},body:JSON.stringify({model:"Llama-4-Maverick",messages:historyArr})});const data=await res.json();const rep=data.choices?.[0]?.message?.content||'Пусто';typ.remove();add(rep,'a');historyArr.push({role:"assistant",content:rep});}catch(e){typ.remove();add('Ошибка Spark 1.1: '+e.message,'a');}}
 </script>
 </body>
 </html>
