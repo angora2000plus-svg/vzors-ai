@@ -1,64 +1,53 @@
 <!DOCTYPE html>
-<html lang="lv">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vzors AI - Clarity Vision</title>
+<title>VZOR AI - Delta Core</title>
 <style>
-body{margin:0;padding:24px;background:#f8f7ff;font-family:-apple-system,Inter,Segoe UI,sans-serif}
-.header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
-.star-img{width:64px;height:64px;object-fit:contain;background:white;border-radius:16px;border:1px solid #e9e3ff;padding:6px;box-shadow:0 2px 12px rgba(90,40,255,0.08)}
-.top-title{font-size:32px;font-weight:800;letter-spacing:0.12em;color:#7d8fb0}
-.top-title span{display:block;font-size:12px;letter-spacing:0.25em;font-weight:600;color:#1a2340;margin-top:2px}
-.top-models{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.model{background:white;border:1px solid #e9e3ff;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px}
-.model:hover{background:#f3f0ff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(120,80,255,0.12)}
-.model .ico{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
-.card{background:white;border:1px solid #e9e3ff;border-radius:16px;padding:16px;margin-top:14px}
-.card.amethyst{background:#faf8ff}
-.card.amethyst:hover{background:#f3f0ff}
-textarea{width:100%;border:1px solid #e9e3ff;border-radius:12px;padding:12px;box-sizing:border-box;min-height:70px;background:#faf8ff}
-button{background:#111;color:#fff;border:0;border-radius:999px;padding:10px 18px;cursor:pointer;font-weight:600}
-button.sec{background:white;color:#111;border:1px solid #e9e3ff}
-#list{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
-.note{background:#fffbe6;border:1px solid #f0e6b0;border-radius:12px;padding:12px;min-width:120px;max-width:220px;word-break:break-word}
+body{margin:0;background:#fff;color:#000;font-family:Inter,monospace;padding:24px}
+header{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding-bottom:12px}
+.dot{width:8px;height:8px;background:#0066ff;border-radius:50%;box-shadow:0 0 8px #0066ff;animation:blink 1s infinite;display:inline-block}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.m{width:28px;height:28px;border:1.5px solid #0066ff;color:#0066ff;display:flex;align-items:center;justify-content:center;font-weight:900;opacity:0.2}
+.m.active{opacity:1;background:#0066ff;color:#fff;box-shadow:0 0 15px #0066ff}
+.hero{display:flex;justify-content:center;margin:20px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:900px;margin:0 auto}
+.card{border:1px solid #e5e5e5;border-radius:16px;padding:16px}
+.card.prem{border:2px solid #000}
+a.btn{display:inline-block;background:#000;color:#fff;padding:8px 14px;border-radius:999px;text-decoration:none;font-size:11px;letter-spacing:0.1em;margin-top:10px}
+a.btn.white{background:#fff;color:#000;border:1px solid #000}
+input{width:100%;border:1px solid #ddd;padding:10px;border-radius:10px;font-family:monospace;margin-top:8px}
 </style>
 </head>
 <body>
-<div class="header">
-<img class="star-img" src="star.png" alt="VZOR AI Star">
-<div class="top-title">VZOR AI<span>Clarity Vision</span></div>
-</div>
+<header>
+<div style="font-size:11px;letter-spacing:0.2em;display:flex;gap:8px;align-items:center"><span class="dot"></span> VZOR AI // DELTA CORE // COMPATIBLE WITH SMARTGLASSES</div>
+<div class="m" id="mBox">M</div>
+</header>
 
-<div class="top-models">
-<div class="model" onclick="window.open('https://www.meta.ai','_blank')"><div class="ico" style="background:#e6f0ff;color:#0064ff">∞</div><div><b>Meta</b><br><small>Spark</small></div></div>
-<div class="model" onclick="window.open('https://chat.openai.com','_blank')"><div class="ico" style="background:#111;color:#fff">GPT</div><div><b>Astra G56</b><br><small>GPT-6</small></div></div>
-<div class="model" onclick="window.open('https://gemini.google.com','_blank')"><div class="ico" style="background:linear-gradient(135deg,#4285f4,#ea4335,#fbbc05,#34a853);color:white">◆</div><div><b>Gemini</b><br><small>Google</small></div></div>
-<div class="model" onclick="window.open('https://claude.ai','_blank')"><div class="ico" style="background:#fff1e6;color:#d45500">✿</div><div><b>Claude</b><br><small>Anthropic</small></div></div>
+<div class="hero"><canvas id="c" width="400" height="200"></canvas></div>
 
-<!-- НОВЫЕ ИКОНКИ -->
-<div class="model" onclick="window.open('https://www.yr.no/en/forecast/daily-table/Latvia/Riga/Riga','_blank')"><div class="ico" style="background:#e6f7ff;color:#0090ff">☁️</div><div><b>Laiks</b><br><small>Weather</small></div></div>
-<div class="model" onclick="alert('Lapas: 12 ❤️ Patīk!')"><div class="ico" style="background:#ffe6ef;color:#ff2d6b">♥</div><div><b>Patīk</b><br><small>Like</small></div></div>
-<div class="model" onclick="window.open('https://www.dynas.lv','_blank')"><div class="ico" style="background:#fffbe6;color:#b89a00">◍</div><div><b>Dynas</b><br><small>Shop</small></div></div>
-<div class="model" onclick="window.open('https://www.delfi.lv/horoskopi','_blank')"><div class="ico" style="background:#f3e6ff;color:#7a3cff">♌</div><div><b>Horoskops</b><br><small>Zodiac</small></div></div>
-</div>
-
+<div class="grid">
 <div class="card">
-<textarea id="t" placeholder="Raksti vai nodiktē..."></textarea><br><br>
-<button id="b" onclick="mic()">🎤 Nodiktēt</button>
-<button class="sec" onclick="save()">+ Lapiņa</button>
-<div id="list"></div>
+<b>VZOR AI CORE</b><br><small style="color:#888">vzor-core/skills/delta.py — anti-recursive</small>
+<p style="font-size:12px">Самоопирающееся облако. Спиральная архитектура. Вызов памяти по кодовому слову.</p>
+<a class="btn" href="https://angora2000plus-svg.github.io/VZOR-SmartGlasses-26PREMIUM/">→ VZOR SmartGlasses PREMIUM</a>
+<a class="btn white" href="https://angora2000plus-svg.github.io/VZOR-SmartGlasses-26PREMIUM/tech-passport.html">ТЕХПАСПОРТ</a>
 </div>
-
-<div class="card amethyst" onclick="alert('Kalendārs: 8. nov - Tēva diena, 18. nov - Neatkarības diena')"><div style="display:flex;justify-content:space-between"><span>📅 Kalendārs</span><span>• spied</span></div></div>
-<div class="card amethyst"><div style="display:flex;gap:18px;flex-wrap:wrap">🧩 YouTube • Edit Hub • GitHub • Delfi</div></div>
-<div class="card amethyst" style="font-size:13px;color:#6a5a9a">✦ Vzors AI • novembris 2026 • diplomdarbs • vzor.smartyou.lv • star.png = tava ametista zvaigzne</div>
+<div class="card prem">
+<b>MEMORY CLOUD RECALL</b>
+<input id="recallInput" placeholder="кодовое слово: рига2026">
+<button onclick="recallMemory()" style="margin-top:8px;background:#0066ff;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer">Вызвать М из облака очков</button>
+<div id="log" style="font-size:11px;margin-top:10px;color:#444"></div>
+</div>
+</div>
 
 <script>
-function render(){let a=JSON.parse(localStorage.getItem('v')||'[]');let l=document.getElementById('list');l.innerHTML='';a.forEach((x,i)=>{let d=document.createElement('div');d.className='note';d.textContent=x;d.title='Dzēst';d.onclick=()=>{a.splice(i,1);localStorage.setItem('v',JSON.stringify(a));render()};l.appendChild(d)})}
-function save(){let v=document.getElementById('t').value.trim();if(!v)return;let a=JSON.parse(localStorage.getItem('v')||'[]');a.unshift(v);localStorage.setItem('v',JSON.stringify(a));document.getElementById('t').value='';render()}
-function mic(){let R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){alert('Pārlūks neatbalsta mikrofonu');return}let r=new R();r.lang='lv-LV';r.onstart=()=>document.getElementById('b').innerText='🔴 Klausos';r.onend=()=>document.getElementById('b').innerText='🎤 Nodiktēt';r.onresult=e=>document.getElementById('t').value=e.results[0][0].transcript;r.start()}
-render()
+const c=document.getElementById('c'),ctx=c.getContext('2d'),mBox=document.getElementById('mBox'),log=document.getElementById('log');let t=0;
+let memories=JSON.parse(localStorage.getItem('vzor_cloud')||localStorage.getItem('vzor_cloud_shared')||'{}');
+function draw(){ctx.clearRect(0,0,400,200);ctx.save();ctx.translate(200,100);t+=0.02;let up=Math.sin(t)>0.3;ctx.strokeStyle=up?'#0066ff':'#ddd';ctx.lineWidth=up?2:1;if(up)ctx.shadowBlur=10,ctx.shadowColor='#0066ff';ctx.beginPath();for(let i=0;i<120;i++){let a=i*0.2+t*1.8,r=i*0.6,yOff=up?-Math.sin(t*3+i*0.07)*12:0,x=Math.cos(a)*r,y=Math.sin(a)*r+yOff;if(i==0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();ctx.restore();if(up&&Math.random()<0.02){mBox.classList.add('active');setTimeout(()=>mBox.classList.remove('active'),400);}requestAnimationFrame(draw);}draw();
+function recallMemory(){let code=document.getElementById('recallInput').value.trim().toLowerCase();memories=JSON.parse(localStorage.getItem('vzor_cloud')||localStorage.getItem('vzor_cloud_shared')||'{}');if(memories[code]){log.innerHTML=`<div style="border-left:3px solid #0066ff;padding-left:8px;background:#f0f7ff"><b>MEMORIZED ${code} [M]</b><br>${memories[code].text}<br><small>${memories[code].time}</small></div>`;mBox.classList.add('active');setTimeout(()=>mBox.classList.remove('active'),700);}else log.innerHTML=`<div style="color:#c00">${code} — не найдено. Сначала создай его в SmartGlasses</div>`;}
 </script>
 </body>
 </html>
