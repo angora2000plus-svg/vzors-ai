@@ -1,77 +1,157 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="lv">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VZORS - Powered by Meta AI Muse Spark 1.1</title>
+<title>Vzors AI</title>
 <style>
-:root{--bg:#09090b;--card:#18181b;--border:#27272a;--green:#22c55e;--yellow:#eab308;--red:#ef4444;--violet:#8b5cf6}
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui}
-body{background:var(--bg);color:#fff;height:100vh;display:flex}
-.main{flex:1;display:flex;flex-direction:column;min-width:0}
-header{padding:14px 16px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);align-items:center}
-.logo{font-weight:900;letter-spacing:-0.02em}.logo i{font-weight:400;color:#71717a;font-size:11px;margin-left:8px;font-style:normal}
-.langs{display:flex;gap:6px}.langs button{padding:5px 12px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:#a1a1aa;font-size:12px;cursor:pointer}
-.langs button.active{background:#fff;color:#000;font-weight:700}
-.bars{display:flex;gap:8px;padding:10px 14px}.b{flex:1;height:8px;border-radius:99px;transition:all .4s}
-.chat{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-.msg{max-width:85%;padding:12px 14px;border-radius:18px;font-size:14px;line-height:1.55;white-space:pre-wrap}
-.msg.u{align-self:flex-end;background:#fafafa;color:#000;border-bottom-right-radius:6px}
-.msg.a{align-self:flex-start;background:var(--card);border:1px solid var(--border);border-bottom-left-radius:6px}
-.inputWrap{padding:12px;border-top:1px solid var(--border);background:var(--bg)}
-.inputRow{display:flex;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:28px;padding:6px 6px 6px 14px;align-items:center}
-.inputRow input{flex:1;background:transparent;border:0;color:#fff;outline:0;font-size:15px}
-.inputRow button{width:36px;height:36px;border-radius:50%;border:0;cursor:pointer;font-weight:900}
-.mic{background:#27272a;color:#fff}.send{background:#fff;color:#000}
-.icons{display:flex;gap:10px;justify-content:center;padding:10px;border-top:1px solid #151515}
-.icons .ic{width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;font-weight:700}
-.memorial{display:flex;gap:8px;padding:8px 12px;background:#1c0f0f;border-top:1px solid #2a1818;overflow-x:auto}
-.memorial .red{font-size:11px;color:#fca5a5;background:#450a0a;padding:4px 8px;border-radius:999px;white-space:nowrap;border:1px solid #7f1d1d}
-.right{width:300px;border-left:1px solid var(--border);background:#0f0f10;display:flex;flex-direction:column;padding:14px;gap:14px}
-.right h5{font-size:11px;color:#71717a;letter-spacing:.08em}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:12px}
-.row{display:flex;justify-content:space-between;padding:7px 0;font-size:12px;border-bottom:1px dashed #222}
-.row:last-child{border:0}
-.sync{color:var(--green);font-size:11px}
-.powered{text-align:center;font-size:10px;color:#52525b;padding:8px;border-top:1px dashed #222}
-@media(max-width:900px){.right{display:none}}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap');
+*{box-sizing:border-box}
+body{margin:0;background:#f3eade;font-family:Inter,sans-serif;color:#2b2b2b;display:flex;justify-content:center}
+.wrap{width:400px;background:#fdf6ee;min-height:100vh;padding:14px}
+.header{display:flex;justify-content:space-between;align-items:center}
+.logo{width:48px;height:48px;border:1.5px solid #c9a87c;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:serif;font-size:28px;color:#c9a87c}
+.hbtn{font-size:11px;border:1px solid #c9a87c;padding:5px 12px;border-radius:14px;background:#fff;cursor:pointer}
+.chat-card{background:#fff7f0;border-radius:22px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-top:10px}
+.wave{display:flex;gap:2px;height:36px;align-items:center;margin:8px 0}
+.bar{width:3px;background:#c9a87c;border-radius:2px}
+#chatLog{font-size:13px;max-height:140px;overflow:auto;display:none;margin-top:8px}
+#chatInput{width:100%;padding:11px;border-radius:12px;border:1px solid #e8ddd0;margin-top:8px}
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.ibtn{width:36px;height:36px;border-radius:50%;background:#fff;border:1px solid #e8ddd0;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.color-bar{background:#fff7f0;border-radius:14px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.col{width:16px;height:16px;border-radius:50%;cursor:pointer;border:2px solid transparent}
+.col.active{border-color:#111}
+.notes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.note{background:#fff7f0;border-radius:12px;min-height:58px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:11px;font-weight:500;padding:6px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.note.selected{outline:2px solid #111}
+.cal-card{background:#fff7f0;border-radius:16px;padding:12px;margin-top:14px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:13px;margin-top:8px}
+.cal-grid div{padding:7px 0;border-radius:9px;cursor:pointer;position:relative}
+.dow{opacity:.45;font-size:11px}
+.has-event{background:#f2e6d5}
+.today{background:#c9a87c;color:#fff}
+.red{background:#fbe4e1;color:#b94a44}
+.event-dot{font-size:8px;position:absolute;bottom:1px;left:50%;transform:translateX(-50%)}
+.models{display:flex;justify-content:space-between;margin-top:14px}
+.micon{width:54px;height:54px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 1px 4px rgba(0,0,0,.05);cursor:pointer}
+.mlabel{font-size:10px;text-align:center;margin-top:4px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:20}
+.modal-box{background:#fff;padding:18px;border-radius:16px;width:90%;max-width:340px}
+.modal-box input{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #ddd}
+.modal-box button{width:100%;padding:10px;margin-top:10px;background:#111;color:#fff;border-radius:8px;border:0}
 </style>
 </head>
 <body>
-<div class="main">
-<header><div class="logo">VZORS <i>Powered by Meta AI Muse Spark 1.1</i></div><div class="langs"><button class="active" onclick="setLang('lv',this)">LV</button><button onclick="setLang('ru',this)">RU</button><button onclick="setLang('en',this)">EN</button></div></header>
-<div class="bars" id="bars"><div class="b" style="background:var(--green)"></div><div class="b" style="background:var(--yellow)"></div><div class="b" style="background:var(--red)"></div><div class="b" style="background:var(--violet)"></div></div>
-<div id="chat" class="chat"><div class="msg a">Я Vzors. Powered by Meta AI Muse Spark 1.1. Контекст включен. Пиши текстом или 🎤 голосом. Календарь справа синхронизирован.</div></div>
-<div class="inputWrap"><div class="inputRow"><input id="inp" placeholder="Напиши или надиктуй..." onkeydown="if(event.key==='Enter')send()"><button class="mic" onclick="dictate()" title="Диктовалочка">🎤</button><button class="send" onclick="send()">↑</button></div></div>
-<div class="icons"><div class="ic" onclick="go('wa')">WA</div><div class="ic" onclick="go('fb')">FB</div><div class="ic" onclick="go('google')">G</div><div class="ic" onclick="go('mail')">✉</div></div>
-<div class="memorial"><div class="red">🔴 9 Nov - Memorial</div><div class="red">🔴 18 Nov - LV Independence</div><div class="red">🔴 Client: Anna 12.11</div><div class="red">🔴 Project deadline 15.11</div></div>
-<div class="powered">VZORS • <b>Powered by Meta AI Muse Spark 1.1</b> • Built with Llama • We respect Meta</div>
+<div class="wrap">
+<div class="header">
+<div style="display:flex;gap:10px;align-items:center"><div class="logo">V</div><div><b style="font-size:22px">Vzors AI</b><div style="font-size:11px;opacity:.6">powered by Spark gudrs kolēģis</div></div></div>
+<div style="display:flex;gap:6px"><button class="hbtn" onclick="openModal()">Reģistrēties</button><button class="hbtn" onclick="openModal()">Pieslēgties</button></div>
 </div>
-<div class="right">
-<h5>CALENDAR • sync with client mail</h5>
-<div class="card" id="cal"><div class="row"><b>Today 8 Nov</b><span class="sync">● synced gmail</span></div><div class="row"><span>Meeting</span><span>14:00</span></div><div class="row"><span>Mail: invoice #42</span><span>gmail ✓</span></div><div class="row"><span>Call client</span><span>16:30</span></div></div>
-<h5>NOTES • dictation</h5>
-<div class="card"><div id="notes" style="font-size:12px;color:#a1a1aa">Нажми 🎤 — заметка сохранится здесь и уйдет в контекст...</div></div>
-<h5>KEYBOARD</h5>
-<div class="card" style="font-size:11px;color:#71717a">Voice + Water (swipe) клавиатура включена. Пиши свайпом или голосом.</div>
+
+<div class="chat-card">
+<div style="font-weight:600">Vzors runā — mana balss viņam:</div>
+<div style="margin-top:4px"><b>What can I do for you?</b><br><span style="opacity:.5">Jautā man kaut ko...</span></div>
+<div class="wave" id="wave"></div>
+<div id="chatLog"></div>
+<input id="chatInput" placeholder="Jautā man kaut ko... Enter" onkeydown="if(event.key==='Enter')sendMsg()">
+<div class="actions"><div style="display:flex;gap:8px"><div class="ibtn" onclick="startVoice()">🎙️</div><div class="ibtn" onclick="document.getElementById('chatInput').focus()">⌨️</div></div><div style="background:#f2e6d5;padding:4px 10px;border-radius:12px;font-size:13px;font-weight:600">LV | EN</div></div>
 </div>
+
+<div style="font-weight:700;font-size:18px;margin:18px 0 8px">Manas piezīmes</div>
+<div class="color-bar"><div>🎙️ Izvēlies krāsu</div><div style="display:flex;gap:8px"><div class="col active" style="background:#fbe4e1" data-color="#fbe4e1" onclick="pickColor(this)"></div><div class="col" style="background:#d4e8ff" data-color="#d4e8ff" onclick="pickColor(this)"></div><div class="col" style="background:#fdf6ee" data-color="#fdf6ee" onclick="pickColor(this)"></div><div class="col" style="background:#e1f3e1" data-color="#e1f3e1" onclick="pickColor(this)"></div></div><div>•••</div></div>
+<div class="notes" id="notes"></div>
+
+<div class="cal-card"><div style="display:flex;justify-content:space-between;font-weight:700"><span>📅 To do! Kalendārs Novembris 2026</span></div><div class="cal-grid" id="cal"></div><button class="hbtn" style="width:100%;margin-top:10px" onclick="addEvent()">Pievienot notikumu</button><div style="margin-top:10px;font-size:13px"><b>Gaidāmie notikumi:</b><div id="eventList"></div></div></div>
+
+<div style="text-align:center;margin-top:16px;font-size:11px;letter-spacing:2px;opacity:.4">MODEĻU PARĀDE</div>
+<div class="models">
+<div onclick="connect('indox.lv')"><div class="micon">✉️</div><div class="mlabel">indox.lv</div></div>
+<div onclick="connect('whatsapp')"><div class="micon" style="background:#25D366;color:#fff">W</div><div class="mlabel">whatsapp</div></div>
+<div onclick="connect('gmail')"><div class="micon">M</div><div class="mlabel">gmail</div></div>
+<div onclick="connect('facebook')"><div class="micon" style="background:#1877F2;color:#fff">f</div><div class="mlabel">facebook</div></div>
+<div onclick="connect('maps')"><div class="micon">📍</div><div class="mlabel">maps</div></div>
+</div>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box"><div id="mt">Reģistrācija</div><input id="email" placeholder="e-pasts"><input id="pass" type="password" placeholder="parole"><button onclick="doAuth()">Turpināt — sinhronizēt kalendāru</button><div style="font-size:11px;opacity:.6;margin-top:8px">Pēc reģistrācijas Vzors sinhronizē Google Calendar, Facebook, WhatsApp, Gmail caur OAuth. Dati paliek pie īpašnieka.</div><button style="background:#eee;color:#111" onclick="closeModal()">Aizvērt</button></div></div>
+
 <script>
-// ===== ВСТАВЬ КЛЮЧ =====
-const SPARK_API_KEY="LLM_1139155901918532_eO-3wtzv9rJmMaOczqvlcazuFrE";
-const SPARK_URL = "https://api.llama.com/v1/chat/completions";
-let historyArr=[{role:"system",content:"You are VZORS AI. Powered by Meta AI Muse Spark 1.1. Built with Llama. Remember context, support LV/RU/EN, calendar sync, notes dictation."}];
-const chat=document.getElementById('chat');const inp=document.getElementById('inp');
-function add(t,c){const d=document.createElement('div');d.className='msg '+c;d.textContent=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d;}
-function setLang(l,el){document.querySelectorAll('.langs button').forEach(b=>b.classList.remove('active'));el.classList.add('active');const b=document.getElementById('bars');
-if(l==='lv')b.innerHTML='<div class="b" style="background:#8b5cf6"></div><div class="b" style="background:#22c55e"></div><div class="b" style="background:#eab308"></div><div class="b" style="background:#ef4444"></div>';
-if(l==='ru')b.innerHTML='<div class="b" style="background:#ef4444"></div><div class="b" style="background:#22c55e"></div><div class="b" style="background:#eab308"></div><div class="b" style="background:#8b5cf6"></div>';
-if(l==='en')b.innerHTML='<div class="b" style="background:#22c55e"></div><div class="b" style="background:#eab308"></div><div class="b" style="background:#ef4444"></div><div class="b" style="background:#8b5cf6"></div>';
-add('Language: '+l.toUpperCase()+' • Bars switched • Powered by Meta AI Muse Spark 1.1','a');historyArr.push({role:"user",content:"switch to "+l});}
-function dictate(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){add('Диктовка не поддерживается','a');return;}const r=new SR();r.lang='ru-RU';r.start();r.onstart=()=>{document.getElementById('notes').textContent='🎤 Слушаю...';};r.onresult=(e)=>{const t=e.results[0][0].transcript;inp.value=t;document.getElementById('notes').textContent='📝 '+t;add('🎤 '+t,'u');historyArr.push({role:"user",content:t});};}
-function go(app){add('Открываю '+app.toUpperCase()+' • подключено','a');}
-async function send(){const t=inp.value.trim();if(!t)return;add(t,'u');historyArr.push({role:"user",content:t});inp.value='';const typ=add('Vzors • Muse Spark 1.1 печатает...','a');
-try{if(SPARK_API_KEY.includes('PASTE')){await new Promise(r=>setTimeout(r,600));typ.remove();const reply='Принял: "'+t+'" • Контекст '+historyArr.length+' • Bars, диктовка, иконочки, календарь, памятные дни — все работает. Вставь ключ для реального Spark 1.1';add(reply,'a');historyArr.push({role:"assistant",content:reply});return;}
-const res=await fetch(SPARK_URL,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+SPARK_API_KEY},body:JSON.stringify({model:"Llama-4-Maverick",messages:historyArr})});const data=await res.json();const rep=data.choices?.[0]?.message?.content||'Пусто';typ.remove();add(rep,'a');historyArr.push({role:"assistant",content:rep});}catch(e){typ.remove();add('Ошибка Spark 1.1: '+e.message,'a');}}
+let selectedColor="#fbe4e1", selectedNote=null;
+let notesData=JSON.parse(localStorage.getItem('vzorsFinal')||'null')||Array(20).fill(0).map(()=>({text:"",color:"#fff7f0"}));
+let events=JSON.parse(localStorage.getItem('vzorsEvents')||'null')||[{day:18,text:"Latvijas Republikas proklamēšanas diena — brīvdiena"}];
+
+function renderNotes(){
+ const c=document.getElementById('notes'); c.innerHTML='';
+ notesData.forEach((n,i)=>{
+  let d=document.createElement('div'); d.className='note'+(selectedNote===i?' selected':'');
+  d.style.background=n.color; d.innerText=n.text||'＋'; d.style.opacity=n.text?'1':'0.25';
+  d.onclick=()=>{selectedNote=i; renderNotes();}; c.appendChild(d);
+ });
+}
+function pickColor(el){
+ document.querySelectorAll('.col').forEach(x=>x.classList.remove('active')); el.classList.add('active'); selectedColor=el.dataset.color;
+ if(selectedNote!==null){ notesData[selectedNote].color=selectedColor; saveNotes(); renderNotes(); }
+}
+function saveNotes(){ localStorage.setItem('vzorsFinal',JSON.stringify(notesData)); }
+
+function renderCal(){
+ const grid=document.getElementById('cal'); grid.innerHTML='';
+ ['P','O','T','C','P','S','Sv'].forEach(d=>{let e=document.createElement('div'); e.className='dow'; e.innerText=d; grid.appendChild(e);});
+ let today=new Date().getDate(), month=new Date().getMonth();
+ for(let i=1;i<=30;i++){
+  let e=document.createElement('div'); e.innerText=i;
+  let ev=events.filter(x=>x.day===i);
+  if(ev.length) e.classList.add('has-event');
+  if(i===today && month===10) e.classList.add('today');
+  if([1,8,15,22,29].includes(i)) e.classList.add('red');
+  if(ev.length){ let dot=document.createElement('div'); dot.className='event-dot'; dot.innerText='• '+ev[0].text.slice(0,8); e.appendChild(dot); }
+  e.onclick=()=>{ let t=prompt('Notikums '+i+' nov:'); if(t){events.push({day:i,text:t}); saveEvents(); renderCal(); renderEvents(); }};
+  grid.appendChild(e);
+ }
+}
+function renderEvents(){
+ let sorted=[...events].sort((a,b)=>a.day-b.day);
+ document.getElementById('eventList').innerHTML=sorted.map(x=>'• '+x.day+' nov '+x.text).join('<br>');
+}
+function saveEvents(){ localStorage.setItem('vzorsEvents',JSON.stringify(events)); }
+function addEvent(){ let t=prompt('Jauns notikums (piem: 25 nov Tikšanās)'); if(!t) return; let m=t.match(/(\d+)/); let day=m?parseInt(m[1]):new Date().getDate(); events.push({day,text:t}); saveEvents(); renderCal(); renderEvents(); }
+
+function sendMsg(){
+ let inp=document.getElementById('chatInput'); let txt=inp.value.trim(); if(!txt) return;
+ let log=document.getElementById('chatLog'); log.style.display='block'; log.innerHTML+='<div><b>Tu:</b> '+txt+'</div>';
+ let idx=notesData.findIndex(x=>!x.text); if(idx===-1) idx=selectedNote!==null?selectedNote:0;
+ notesData[idx].text=txt; saveNotes(); renderNotes();
+ let dayMatch=txt.match(/(\d+)\s*nov/i); if(dayMatch){ let d=parseInt(dayMatch[1]); events.push({day:d,text:txt}); saveEvents(); renderCal(); renderEvents(); }
+ log.innerHTML+='<div><b>Vzors:</b> Pierakstīju. (stikers + kalendārs auto)</div>'; log.scrollTop=log.scrollHeight; inp.value='';
+}
+function startVoice(){
+ let Rec=window.SpeechRecognition||window.webkitSpeechRecognition; if(!Rec){alert('voice not supported');return;}
+ let r=new Rec(); r.lang='lv-LV'; r.start(); r.onresult=e=>{document.getElementById('chatInput').value=e.results[0][0].transcript; sendMsg();};
+}
+function openModal(){ document.getElementById('modal').style.display='flex'; }
+function closeModal(){ document.getElementById('modal').style.display='none'; }
+function doAuth(){
+ let email=document.getElementById('email').value||'demo@indox.lv';
+ localStorage.setItem('vzorsUser',email);
+ alert('✅ '+email+' — sinhronizēju Google Calendar / Facebook / WhatsApp / Gmail...');
+ // demo auto-sync
+ events.push({day:new Date().getDate(),text:'Sinhronizēts no '+email});
+ saveEvents(); renderCal(); renderEvents(); closeModal();
+}
+function connect(name){
+ if(!localStorage.getItem('vzorsUser')){ alert('Vispirms Reģistrēties — tad '+name+' sinhronizēsies'); openModal(); return; }
+ alert('Savienoju '+name+' ar '+localStorage.getItem('vzorsUser')+' (OAuth — reālie dati īpašnieka)');
+}
+// wave
+let w=document.getElementById('wave'); for(let i=0;i<38;i++){ let b=document.createElement('div'); b.className='bar'; b.style.height=(8+Math.random()*26)+'px'; w.appendChild(b); }
+// AUTO dienas maiņa
+let lastDay=new Date().getDate();
+setInterval(()=>{
+ let now=new Date(); if(now.getDate()!==lastDay){ lastDay=now.getDate(); renderCal(); renderEvents(); if(localStorage.getItem('vzorsUser')){ events.push({day:lastDay,text:'auto-sync '+now.toLocaleDateString('lv-LV')}); saveEvents(); renderCal(); renderEvents(); } }
+},60000);
+
+renderNotes(); renderCal(); renderEvents();
 </script>
 </body>
 </html>
