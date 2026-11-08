@@ -1,93 +1,17 @@
-const express = require('express');
-const app = express();
-app.use(express.json());
-
-// CORS
-app.use((req,res,next)=>{
- res.header('Access-Control-Allow-Origin','*');
- res.header('Access-Control-Allow-Headers','Content-Type, Authorization');
- res.header('Access-Control-Allow-Methods','GET,POST,OPTIONS');
- if(req.method==='OPTIONS') return res.sendStatus(200);
- next();
-});
-
-// Память клиентов: телефон -> токены Google
-const clients = new Map();
-
-// 1. РЕГИСТРАЦИЯ ПО ТЕЛЕФОНУ
-app.post('/api/register', (req,res)=>{
-  const { phone, name } = req.body;
-  if(!phone) return res.status(400).json({error:'Need phone'});
-  const id = phone.replace(/\D/g,'');
-  clients.set(id, { phone, name, created: new Date(), googleTokens: null });
-  res.json({ok:true, clientId:id});
-});
-
-// 2. ТВОЙ INBOX.LV - РАБОЧИЙ
-app.post('/api/inbox/caldav', async (req,res)=>{
-  const {email,password,month} = req.body;
-  if(!email || !password) return res.status(400).json({error:'Need email and password'});
-  try{
-    const auth = Buffer.from(email+':'+password).toString('base64');
-    const user = email.split('@')[0];
-    const m = month || new Date().toISOString().slice(0,7);
-    const start = `${m}-01T00:00:00Z`;
-    const end = `${m}-30T23:59:59Z`;
-    const reportUrl = `https://m.inbox.lv/caldav/${user}/calendar/`;
-    const reportBody = `<?xml version="1.0" encoding="utf-8"?><c:calendar-query xmlns:d="DAV:" xmlns:c="urn:ietf:params:xml:ns:caldav"><d:prop><d:getetag/><c:calendar-data/></d:prop><c:filter><c:comp-filter name="VCALENDAR"><c:comp-filter name="VEVENT"><c:time-range start="${start}" end="${end}"/></c:comp-filter></c:comp-filter></c:filter></c:calendar-query>`;
-    const resp = await fetch(reportUrl, { method:'REPORT', headers:{'Authorization':'Basic '+auth,'Content-Type':'application/xml','Depth':'1'}, body: reportBody });
-    const icsText = await resp.text();
-    let events = [];
-    let regex = /BEGIN:VEVENT[\s\S]*?SUMMARY:(.*?)[\r\n][\s\S]*?DTSTART[^:]*:(\d{4})(\d{2})(\d{2})/g;
-    let match;
-    while((match = regex.exec(icsText)) !== null){ events.push({day: parseInt(match[4],10), summary: match[1].trim()}); }
-    if(events.length===0){
-      let icsExport = await fetch(`https://m.inbox.lv/caldav/${user}/calendar/?export`,{ headers:{'Authorization':'Basic '+auth}});
-      let txt = await icsExport.text();
-      while((match = regex.exec(txt)) !== null){ events.push({day: parseInt(match[4],10), summary: match[1].trim()}); }
-    }
-    res.json({events, raw: icsText.slice(0,500)});
-  }catch(e){ console.error(e); res.status(500).json({error:e.message}); }
-});
-
-// 3. GOOGLE КАЛЕНДАРЬ - ДЛЯ КЛИЕНТА
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const REDIRECT_URI = process.env.REDIRECT_URI || 'https://vzors-ai.vercel.app/api/google/callback';
-
-app.get('/api/google/auth', (req,res)=>{
-  const clientId = req.query.clientId || 'default';
-  if(!GOOGLE_CLIENT_ID) return res.status(500).send('Set GOOGLE_CLIENT_ID in Vercel');
-  const scope = encodeURIComponent('https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events');
-  const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=${scope}&access_type=offline&prompt=consent&state=${clientId}`;
-  res.redirect(url);
-});
-
-app.get('/api/google/callback', async (req,res)=>{
-  const { code, state } = req.query;
-  try{
-    const tokenResp = await fetch('https://oauth2.googleapis.com/token', {
-      method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'},
-      body: new URLSearchParams({ code, client_id: GOOGLE_CLIENT_ID, client_secret: GOOGLE_CLIENT_SECRET, redirect_uri: REDIRECT_URI, grant_type: 'authorization_code' })
-    });
-    const tokens = await tokenResp.json();
-    if(tokens.error) return res.status(400).json(tokens);
-    clients.set(state, { phone: state, googleTokens: tokens });
-    res.send(`<h1>✅ Google подключен!</h1><p>Клиент: ${state}</p><p>Вернитесь в приложение VZORS.</p><script>setTimeout(()=>window.close(),4000)</script>`);
-  }catch(e){ res.status(500).json({error:e.message}); }
-});
-
-app.get('/api/google/events', async (req,res)=>{
-  const c = clients.get(req.query.clientId);
-  const token = c?.googleTokens?.access_token || req.query.access_token;
-  if(!token) return res.status(400).json({error:'Need Google auth first'});
-  const r = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${new Date().toISOString()}&maxResults=50&singleEvents=true&orderBy=startTime`, { headers:{'Authorization':'Bearer '+token}});
-  const data = await r.json();
-  res.json(data);
-});
-
-// Health
-app.get('/api/health', (req,res)=>res.json({ok:true, time: new Date()}));
-app.get('/', (req,res)=>res.send('VZORS AI backend is running! Inbox + Google + Phone ready'));
-
-module.exports = app;
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vzors AI</title><style>@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');*{margin:0;padding:0;box-sizing:border-box;font-family:'Manrope',sans-serif}body{background:#EADFD9;max-width:430px;margin:0 auto;padding:10px} .card{background:#FFF6F1;border-radius:22px;padding:14px;border:1px solid #F2E6DE;margin-bottom:12px} .hdr{display:flex;align-items:center;gap:10px} .logo{width:46px;height:46px;border-radius:50%;border:2px solid #C7A26B;color:#C7A26B;display:flex;align-items:center;justify-content:center;font-size:26px} .ht b{font-size:23px;font-weight:800} .ht span{font-size:11px;color:#8B7D74} .top{margin-left:auto;display:flex;gap:6px;flex-direction:column} .top button{font-size:10px;padding:5px 10px;border-radius:20px;border:1.2px solid #C7A26B;background:#FFF6F1;cursor:pointer} .wave{width:100%;height:28px;display:flex;gap:2px;justify-content:center;align-items:center} .wave i{width:2px;background:#D6A97A;border-radius:2px;display:block} .notes-bar{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#FFF6F1;border-radius:16px;border:1px solid #F2E6DE;margin-bottom:10px} .dot{width:13px;height:13px;border-radius:50%;cursor:pointer;box-shadow:0 0 0 1px #E6D5C5} .dot.active{box-shadow:0 0 0 2px #C7A26B} .notes{display:grid;grid-template-columns:repeat(5,1fr);gap:7px} .note{background:#FFEDE6;border-radius:10px;padding:8px;font-size:10px;min-height:56px;cursor:pointer} .week{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:11px;font-weight:700;color:#8B7D74;margin:6px 0} .days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px} .days div{height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:12px;cursor:pointer} .days .hol{color:#C07A5A} .days .beige{background:#EADFC6} .days .red{border:2px solid #B94A3A;color:#B94A3A;font-weight:700} .add{display:block;margin:14px auto 0;padding:6px 14px;border-radius:20px;border:1.2px solid #C7A26B;background:#fff;font-size:11px;cursor:pointer} .up-item{font-size:11px;margin-top:8px;display:flex;gap:6px} .up-item i{width:6px;height:6px;background:#B94A3A;border-radius:50%;display:inline-block;margin-top:5px} .models{display:flex;justify-content:space-between;gap:6px;margin-top:8px} .m-item{flex:1;text-align:center;cursor:pointer} .m-ico{width:44px;height:44px;border-radius:12px;background:#fff;border:1px solid #F2E6DE;display:flex;align-items:center;justify-content:center;margin:0 auto 4px}</style></head><body>
+<div class="card hdr"><div class="logo">V</div><div class="ht"><b>Vzors AI</b><span>powered by <b>Spark</b> smart colleague</span></div><div class="top"><div><button onclick="register()">Register</button><button onclick="login()">Login</button></div><small>(already have account)</small></div></div>
+<div class="card"><div style="font-size:13px;font-weight:700">Vzors speaks — my voice to him:</div><div style="font-size:13px;font-weight:600;margin-top:4px">What can I do for you?</div><div style="font-size:12px;color:#8B7D74">Ask me something...</div><div class="wave" id="wave"></div><div style="display:flex;gap:12px;margin-top:6px;align-items:center"><div style="font-size:18px;cursor:pointer" onclick="startVzorsVoice()">🎙️</div><div style="border:1px solid #D9C7B8;border-radius:6px;padding:2px 8px;background:#fff;cursor:pointer" onclick="askVzors()">⌨️</div><div style="margin-left:auto;background:#E8D9C2;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:600">LV | EN</div></div><div id="vzAnswer" style="font-size:11px;margin-top:8px;display:none"></div></div>
+<div style="font-size:14px;font-weight:800;margin:6px 4px 8px">My Notes:</div><div class="notes-bar"><div style="cursor:pointer" onclick="dictateNote()">🎙️</div><h4 style="font-size:13px">Choose color</h4><div style="display:flex;gap:7px" id="dots"></div><div style="margin-left:auto;color:#C7A26B;cursor:pointer" onclick="moreColors()">•••</div></div><div class="notes" id="notes"></div>
+<div class="card"><div style="font-weight:700;font-size:14px;margin-bottom:8px">📅 To do! Calendar November 2026</div><div class="week"><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div><div>S</div></div><div class="days" id="days"></div><button class="add" onclick="addEvent()">Add event +</button><div id="calInfo" style="font-size:11px;margin-top:8px"></div></div>
+<div class="card"><b style="font-size:13px">Upcoming events:</b><div id="upcoming"><div class="up-item"><i></i><span><b>18 Nov</b> Latvian Independence Day — holiday</span></div></div></div>
+<div class="card"><div style="font-size:11px;letter-spacing:1.2px;color:#9B8B82;text-align:center;margin-bottom:10px;font-weight:600">MODEL PARADE</div><div class="models"><div class="m-item" onclick="connectInbox()"><div class="m-ico">✉️</div><span style="font-size:9px">inbox.lv</span></div><div class="m-item" onclick="alert('WhatsApp soon')"><div class="m-ico" style="background:#25D366;color:#fff">W</div><span style="font-size:9px">whatsapp</span></div><div class="m-item" onclick="connectGoogle()"><div class="m-ico">M</div><span style="font-size:9px">gmail</span></div><div class="m-item" onclick="alert('Facebook soon')"><div class="m-ico" style="background:#1877F2;color:#fff">f</div><span style="font-size:9px">facebook</span></div><div class="m-item" onclick="alert('Maps soon')"><div class="m-ico">🗺️</div><span style="font-size:9px">maps</span></div></div></div>
+<script>
+const colors=['#FFB3A0','#FFD6C2','#A2D5E8','#FFF1B0','#C2E8B0','#FFD6E6','#FFEDE6','#EADFC6'];let sel=colors[6];let CLIENT=localStorage.getItem('vzors_client')||'';
+function renderDots(){document.getElementById('dots').innerHTML=colors.slice(0,4).map(c=>`<div class="dot ${c==sel?'active':''}" style="background:${c}" onclick="pick('${c}')"></div>`).join('')}function pick(c){sel=c;renderDots()}function moreColors(){sel=colors[Math.floor(Math.random()*colors.length)];renderDots()}renderDots();
+let notes=JSON.parse(localStorage.getItem('vzors_notes')||'[]');if(!notes.length){notes=[{c:"Team meeting",bg:"#FFEDE6"},{c:"New design",bg:"#FFEDE6"},{c:"Budget Q4",bg:"#FFEDE6"},{c:"UI mockups",bg:"#FFEDE6"},{c:"Client presentation",bg:"#FFEDE6"},{c:"Marketing plan",bg:"#FFEDE6"},{c:"Campaign November",bg:"#FFEDE6"},{c:"Product descriptions",bg:"#FFEDE6"},{c:"Shop content",bg:"#FFEDE6"},{c:"Social posts",bg:"#FFEDE6"},{c:"Email draft",bg:"#FFEDE6"},{c:"Blog post",bg:"#FFEDE6"},{c:"Testing list",bg:"#FFEDE6"},{c:"Design feedback",bg:"#FFEDE6"},{c:"Tomorrow tasks",bg:"#FFEDE6"}]}
+function renderNotes(){document.getElementById('notes').innerHTML=notes.map((n,i)=>`<div class="note" style="background:${n.bg}" onclick="editNote(${i})">${n.c}</div>`).join('');localStorage.setItem('vzors_notes',JSON.stringify(notes))}renderNotes();
+function editNote(i){let t=prompt('Edit:',notes[i].c);if(t!==null){notes[i].c=t;notes[i].bg=sel;renderNotes()}}function dictateNote(){if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)){let t=prompt('Dictate note:');if(t){notes.unshift({c:t,bg:sel});renderNotes()}return}let rec=new (webkitSpeechRecognition||SpeechRecognition)();rec.lang='en-US';rec.start();rec.onresult=e=>{notes.unshift({c:e.results[0][0].transcript,bg:sel});renderNotes()}}
+function renderDays(){let h='';for(let i=0;i<6;i++)h+=`<div></div>`;for(let d=1;d<=30;d++){let cls='';if([1,8,15,22,29].includes(d))cls='hol';if([1,2,11].includes(d))cls+=' beige';if(d==18)cls=' red beige';h+=`<div class="${cls}" onclick="selectDay(${d})">${d}</div>`}document.getElementById('days').innerHTML=h}renderDays();
+function selectDay(d){document.getElementById('calInfo').innerText=d==18?'🇱🇻 18 Nov - Latvian Independence Day - holiday!':d+' Nov - selected'}function genWave(){let w=document.getElementById('wave');let html='';for(let i=0;i<48;i++){let ht=4+Math.random()*20;html+=`<i style="height:${ht}px"></i>`}w.innerHTML=html}genWave();setInterval(genWave,400);
+async function register(){let phone=prompt('Phone +371:');if(!phone)return;let name=prompt('Name:')||'Client';let r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,name})});let d=await r.json();CLIENT=d.clientId;localStorage.setItem('vzors_client',CLIENT);alert('Registered '+CLIENT)}function login(){register()}function connectGoogle(){if(!CLIENT){alert('Register first!');return}window.open('/api/google/auth?clientId='+CLIENT,'_blank','width=500,height=600')}async function connectInbox(){let email=prompt('inbox.lv email:');if(!email)return;let pass=prompt('Password:');if(!pass)return;let r=await fetch('/api/inbox/caldav',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass,month:'2026-11'})});let d=await r.json();document.getElementById('calInfo').innerHTML=(d.events||[]).map(e=>`${e.day}. ${e.summary}<br>`).join('')||'No events'}function addEvent(){let t=prompt('New event:');if(t)document.getElementById('upcoming').innerHTML+=`<div class="up-item"><i></i><span><b>New -</b> ${t}</span></div>`}function startVzorsVoice(){let q=prompt('Ask VZORS:');if(q){document.getElementById('vzAnswer').style.display='block';document.getElementById('vzAnswer').innerText='VZORS: '+q+' - processing... (powered by Spark)'}}function askVzors(){startVzorsVoice()}
+</script></body></html>
