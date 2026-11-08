@@ -6,36 +6,47 @@
 <title>Vzors AI</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500&display=swap');
-*{box-sizing:border-box}body{margin:0;background:#F5F1EB;display:flex;justify-content:center;font-family:Inter,sans-serif;color:#2B2233}
+*{box-sizing:border-box}
+body{margin:0;background:#F5F1EB;display:flex;justify-content:center;font-family:Inter,sans-serif;color:#2B2233}
 .wrap{width:100%;max-width:420px;background:#fff;min-height:100vh;padding:14px 14px 28px;border-radius:28px;box-shadow:0 0 40px rgba(0,0,0,.06)}
 .header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 14px;border-bottom:1px solid #F0E9DA}
 .logo-v{font-family:'Playfair Display',serif;font-size:56px;color:#C9A87C;font-weight:700;line-height:1}
 .beacon{background:#fff;border:1px solid #EFEFEF;border-radius:18px;padding:10px 12px;display:flex;gap:12px;align-items:center;margin-top:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.beacon-img{width:72px;height:56px;border-radius:12px;object-fit:cover}
 .chat{background:#fff;border:1px solid #F0F0F0;border-radius:18px;padding:12px;margin-top:12px}
-.bubble{background:#F3F1EE;border-radius:16px 16px 16px 4px;padding:9px 11px;font-size:13px;margin:7px 0;max-width:85%}
+.bubble{background:#F3F1EE;border-radius:16px 16px 16px 4px;padding:9px 11px;font-size:13px;margin:7px 0;max-width:88%}
 .bubble.me{background:#F9E8B5;border-radius:16px 16px 4px 16px;margin-left:auto}
 .cal{background:#fff;border:1px solid #F0F0F0;border-radius:18px;padding:12px;margin-top:12px}
-.grid{display:grid;grid-template-columns:60px repeat(7,1fr);gap:2px;text-align:center;font-size:13px;margin-top:8px}
-.cell{padding:8px 0;border-radius:50%}.cell.active{background:#E8D9B5}
+.grid{display:grid;grid-template-columns:60px repeat(7,1fr);gap:6px;text-align:center;font-size:14px;margin-top:8px}
+.cell{padding:8px 0;border-radius:12px;background:#F5F1EB}
+.cell.active{background:#E8D9B5}
 .notes{display:flex;gap:12px;align-items:center;margin-top:12px;background:#fff;border:1px solid #F0F0F0;border-radius:18px;padding:12px}
-.mic{width:52px;height:52px;border-radius:50%;background:#C9A87C;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
-.sticker{flex:1;border-radius:14px;min-height:68px;border:1.5px dashed #D6C9B3;display:flex;align-items:center;justify-content:center;font-size:13px;color:#C4B59E;background:#FFF8F0}
-.icons{display:flex;gap:16px;margin-top:14px;padding:12px 8px}
+.mic{width:52px;height:52px;border-radius:50%;background:#C9A87C;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex-shrink:0}
+.sticker{flex:1;border-radius:14px;min-height:68px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.sticker.pink{background:#FFF0F3;color:#D8A0A8}
+.sticker.yellow{background:#FFF8D6;color:#C9A87C}
+.icons{display:flex;gap:16px;margin-top:14px;padding:12px 8px;align-items:center;background:#fff;border:1px solid #F0F0F0;border-radius:24px}
 .fb{width:44px;height:44px;background:#1877F2;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
 .wa{width:44px;height:44px;background:#25D366;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center}
-.empty{width:44px;height:44px;border:1.5px dashed #C4B8A3;border-radius:12px;display:flex;align-items:center;justify-content:center}
-.footer{font-size:9px;opacity:.35;text-align:center;margin-top:18px}
+.empty{width:44px;height:44px;border:1.5px dashed #C4B8A3;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#9A8A74}
+.footer{font-size:9px;opacity:.35;text-align:center;margin-top:18px;letter-spacing:.5px}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="header"><div style="display:flex;gap:12px;align-items:center"><div class="logo-v">V</div><div style="font-size:28px">Vzors AI</div></div><div style="opacity:.6">🔔 👤</div></div>
-<div class="beacon"><div style="width:72px;height:56px;border-radius:12px;background:linear-gradient(180deg,#E6F0FF,#fff);display:flex;align-items:center;justify-content:center">🗼</div><div><b>14°C · Sunny</b><div style="font-size:12px;opacity:.6">Seaside · Calm winds 8 km/h · Humidity 62%</div></div></div>
-<div class="chat"><div style="font-size:13px;opacity:.6;margin-bottom:8px">Chat · Today</div><div class="bubble">Explain quantum computing in simple terms <span style="opacity:.5;font-size:10px;float:right">10:02</span></div><div class="bubble me">Sure! Think of it as computers using tiny particles that can be 0 and 1 at the same time...</div></div>
-<div class="cal"><div style="display:flex;justify-content:space-between"><span>««</span><b>November 2026</b><span>»»</span></div><div class="grid"><div></div><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>week1</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div class="cell active">12</div><div>7</div><div>week2</div><div>8</div><div>9</div><div>10</div><div>11</div><div>11</div><div>12</div><div>13</div><div>week3</div><div>15</div><div>16</div><div>17</div><div>17</div><div>18</div><div>19</div><div>20</div><div>week4</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>26</div><div>27</div><div>28</div><div>week5</div><div>29</div><div>30</div></div></div>
-<div class="notes"><div class="mic">🎙️</div><div class="sticker">+ Sticker</div><div class="sticker" style="background:#FFFBE6">+ Sticker</div></div>
-<div class="icons"><div class="fb">f</div><div class="wa">✆</div><div class="empty">+</div><div class="empty">+</div><div class="empty"></div></div>
-<div class="footer">built with llama · Vzors AI · Rīga</div>
+
+<div class="beacon"><img class="beacon-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200" alt="seaside"><div><b style="font-size:22px">14°C</b><div>Sunny · Seaside</div><div style="font-size:12px;opacity:.6;margin-top:4px">Calm winds 8 km/h · Humidity 62%</div></div></div>
+
+<div class="chat"><div style="display:flex;gap:6px;align-items:center;margin-bottom:8px"><span>💬</span><b>Chat Today</b></div><div class="bubble">Explain quantum computing in simple terms <span style="float:right;opacity:.5;font-size:10px">10:02</span></div><div class="bubble me">Sure! Think of it as computers using tiny particles that can be 0 and 1 at the same time.</div></div>
+
+<div class="cal"><div style="display:flex;justify-content:space-between"><span>‹</span><b>November 2026</b><span>›</span></div><div class="grid"><div></div><div style="opacity:.4">Sun</div><div style="opacity:.4">Mon</div><div style="opacity:.4">Tue</div><div style="opacity:.4">Wed</div><div style="opacity:.4">Thu</div><div style="opacity:.4">Fri</div><div style="opacity:.4">Sat</div><div style="opacity:.6">week1</div><div class="cell">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell">4</div><div class="cell active">5</div><div class="cell">6</div><div class="cell">7</div><div style="opacity:.6">week2</div><div class="cell active">8</div><div class="cell active">9</div><div class="cell">10</div><div class="cell">11</div><div class="cell active">12</div><div class="cell">13</div><div class="cell">14</div><div style="opacity:.6">week3</div><div class="cell">15</div><div class="cell">16</div><div class="cell">17</div><div class="cell">18</div><div class="cell active">19</div><div class="cell">20</div><div class="cell">21</div><div style="opacity:.6">week4</div><div class="cell">22</div><div class="cell">23</div><div class="cell active">24</div><div class="cell">25</div><div class="cell active">26</div><div class="cell">27</div><div class="cell">28</div><div style="opacity:.6">week5</div><div class="cell">29</div><div class="cell">30</div></div></div>
+
+<div class="notes"><div class="sticker pink">+ Sticker</div><div class="sticker yellow">+ Sticker</div><div class="mic">🎙️</div></div>
+
+<div class="icons"><div class="fb">f</div><div class="wa">✆</div><div class="empty">+</div><div class="empty">+</div><div class="empty">+</div></div>
+
+<div class="footer">built with llama · Vzors AI · moonwhite · Rīga</div>
 </div>
 </body>
 </html>
