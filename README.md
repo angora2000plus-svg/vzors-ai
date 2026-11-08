@@ -1,15 +1,22 @@
-# Vzors AI
+# Vzors AI — gūdris koļēģis
 
-Personīgais organizers ar piezīmju kvadrātiņiem, kalendāru un balss diktēšanu.
+Живое веб-приложение 1 в 1 как на макете.
 
-Faili:
-- Index-Organizer.html - galvenais organizers
-- GLASSES_GUIDE.md - Premium Glasses savienošana
+## Что внутри
+- **Manas piezīmes** — добавление заметок по Enter, сохранение в localStorage, удаление
+- **STICKERS** — 8 оригинальных стикеров, тонкие черные линии как в макете
+- **SAVIENOTIE** — 8 оригинальных логотипов (inbox.lv, whatsapp, gmail, google, gooail, facebook, maps x2), вшиты в код как base64, кликабельны
+- **Novembris 2026 Kalendars** — сетка с красными точками, кликабельные дни
+- **Pasākumi** — Tēva diena, Lāčplēša diena
+- **MODEĻU PARADE** — выбор модели
 
-## Extended Changes for Defense Tuesday
+## Как запустить
+1. Открой `index.html` в браузере
+2. Готово. Никаких зависимостей, кроме Tailwind CDN
 
-1. System name: VZOR-26 PREMIUM -> Vzors AI
-2. README.md: Fixed overlay bug (removed HTML from markdown)
-3. Index-Organizer.html: Clean file, top bar = Vzors AI
-4. Glasses block: Separate - BRILLES: Premium (accessory)
-5. Purpose: Emergent Contest Indonesia -> Final Defense Riga
+## Технологии
+- HTML + Tailwind CDN + Vanilla JS
+- Все иконки SAVIENOTIE — оригинальные, вырезаны из макета и встроены как base64
+
+## Автор
+Vzors AI — Рига, 2026
