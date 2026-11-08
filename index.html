@@ -2,127 +2,80 @@
 <html lang="lv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vzors AI</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vzors AI - powered by Spark gudrs kolēģis</title>
+<script src="https://accounts.google.com/gsi/client" async></script>
+<script src="https://apis.google.com/js/api.js" async></script>
+<style>
+:root{--rose:#F8E8E8;--rose2:#F3D8D8;--beige:#E8D9B0;--gold:#B89B5E;--blue:#D6EAF8}
+*{box-sizing:border-box;font-family:Inter,-apple-system,sans-serif}
+body{margin:0;background:#F9F5F2;display:flex;justify-content:center;padding:20px}
+.phone{width:390px;background:#FFFCFA;border-radius:28px;box-shadow:0 20px 60px rgba(0,0,0,.12);padding:18px 14px 14px}
+.header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.logo{width:52px;height:52px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:26px;font-weight:600}
+.brand h1{margin:0;font-size:28px}.brand p{margin:2px 0 0;font-size:12px;opacity:.7}
+.btn-small{border:1px solid var(--beige);border-radius:12px;padding:4px 8px;font-size:11px;background:var(--rose);cursor:pointer}
+.chat-card{background:var(--rose);border-radius:18px;padding:14px;margin-bottom:16px}
+.wave{height:24px;background:linear-gradient(90deg,var(--gold),transparent);opacity:.5;border-radius:4px;margin:8px 0}
+.notes-header{display:flex;justify-content:space-between;align-items:center;background:var(--rose);padding:10px 12px;border-radius:12px;margin-bottom:10px}
+.dot{width:14px;height:14px;border-radius:50%;cursor:pointer;border:1.5px solid #ccc}
+.dot.active{outline:2px solid var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+.note{aspect-ratio:1;background:var(--rose);border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;padding:6px}
+.calendar{background:var(--rose);border-radius:18px;padding:12px;margin-bottom:12px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:12px;gap:4px;margin-top:8px}
+.d{padding:5px;border-radius:50%;cursor:pointer}.d.event{background:var(--beige)}.d.active{background:#C94A3A;color:#fff}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.2);display:none;align-items:center;justify-content:center;z-index:10}
+.modal-card{background:#FFFCFA;width:360px;border-radius:20px;padding:22px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.2)}
+.color-choose{display:flex;gap:10px;justify-content:center;margin:16px 0}
+.color-opt{width:86px;padding:10px;border-radius:16px;border:2px solid #eee;cursor:pointer;background:var(--rose)}
+.color-opt.selected{border-color:var(--gold)}
+.btn-big{width:100%;padding:12px;border-radius:14px;border:none;background:linear-gradient(90deg,var(--beige),var(--rose2));font-weight:700;cursor:pointer;margin-top:8px}
+</style>
 </head>
-<body class="bg-[#F2F0F5] flex justify-center p-3">
-<div class="w-[390px] bg-white rounded-[32px] p-4 shadow-sm">
-
-  <!-- HEADER -->
-  <div class="flex justify-between items-center">
-    <div class="flex items-center gap-2">
-      <div class="w-9 h-9 bg-[#8A6CFF] rounded-full flex items-center justify-center text-white text-[18px]">✦</div>
-      <div class="text-[28px] font-extrabold">Vzors AI</div>
-    </div>
-    <div class="text-[11px] text-center leading-none text-[#6b6b7a]">👓<br>gūdrs<br>koļēģis</div>
-  </div>
-
-  <!-- MONTH TITLE -->
-  <div class="flex items-center justify-center gap-6 mt-6">
-    <button id="prev" class="w-8 h-8 rounded-full bg-[#F3F1F6]">‹</button>
-    <div class="text-center">
-      <h1 id="ttl" class="text-[26px] font-extrabold">Novembris ir klāt</h1>
-      <div id="weather" class="text-[13px] text-[#8a8a9a] mt-1">⛅ laika ziņas: 1.8°C Rīga</div>
-    </div>
-    <button id="next" class="w-8 h-8 rounded-full bg-[#F3F1F6]">›</button>
-  </div>
-
-  <div class="grid grid-cols-2 gap-3 mt-6">
-
-    <!-- LEFT -->
-    <div class="bg-[#EDE6F5] rounded-[22px] p-3">
-      <b class="text-[#3d2c5a]">Manas piezīmes</b>
-      <div class="bg-white rounded-[14px] mt-3 p-3 flex gap-2 shadow-sm">
-        <textarea id="input" placeholder="Runā vai raksti — pievieno piezīmi..." class="flex-1 bg-transparent outline-none text-[11px] h-8 resize-none placeholder:text-[#9a8ab0]"></textarea>
-        <button id="mic">🎤</button>
-      </div>
-      <div id="voiceStatus" class="hidden text-[10px] text-[#8A6CFF] text-center mt-2">🎙️ Klausos...</div>
-
-      <div class="text-[10px] tracking-widest text-center text-[#9a8ab0] mt-5">STICKERS</div>
-      <div id="grid" class="grid grid-cols-4 gap-2 mt-2"></div>
-
-      <div class="text-[10px] tracking-widest text-center text-[#9a8ab0] mt-6">SAVIENOTIE</div>
-      <div class="grid grid-cols-4 gap-2 mt-2 text-[8px] text-center leading-none">
-        <button onclick="window.open('https://inbox.lv')"><div class="w-[52px] h-[52px] bg-white rounded-[14px] flex items-center justify-center text-[20px] shadow-sm">✉️</div><div class="mt-1">inbox.lv</div></button>
-        <button onclick="window.open('https://web.whatsapp.com')"><div class="w-[52px] h-[52px] bg-[#25D366] rounded-[14px] flex items-center justify-center text-white font-bold shadow-sm">W</div><div class="mt-1">whatsapp</div></button>
-        <button onclick="window.open('https://mail.google.com')"><div class="w-[52px] h-[52px] bg-[#FF8A3D] rounded-[14px] flex items-center justify-center shadow-sm">🌸</div><div class="mt-1">gmail</div></button>
-        <button onclick="window.open('https://google.com')"><div class="w-[52px] h-[52px] bg-white rounded-[14px] flex items-center justify-center font-bold text-[#4285F4] text-[18px] shadow-sm">G</div><div class="mt-1">google</div></button>
-        <button onclick="window.open('https://google.com')"><div class="w-[52px] h-[52px] bg-white rounded-[14px] flex items-center justify-center font-bold text-[#4285F4] text-[18px] shadow-sm">G</div><div class="mt-1">gooail</div></button>
-        <button onclick="window.open('https://facebook.com')"><div class="w-[52px] h-[52px] bg-[#1877F2] rounded-[14px] flex items-center justify-center text-white font-bold text-[18px] shadow-sm">f</div><div class="mt-1">facebook</div></button>
-        <button onclick="window.open('https://maps.google.com')"><div class="w-[52px] h-[52px] bg-white rounded-[14px] flex items-center justify-center shadow-sm">📍</div><div class="mt-1">maps</div></button>
-        <button onclick="window.open('https://maps.google.com')"><div class="w-[52px] h-[52px] bg-white rounded-[14px] flex items-center justify-center shadow-sm">🗺️</div><div class="mt-1">maps</div></button>
-      </div>
-    </div>
-
-    <!-- RIGHT -->
-    <div class="bg-white border border-[#F0EDF3] rounded-[22px] p-3">
-      <div class="flex justify-between items-center">
-        <button id="cPrev" class="w-6 h-6 rounded-full bg-[#F5F3F7]">‹</button>
-        <div class="text-[12px] font-bold text-center leading-tight">Novembris 2026<br>Kalendārs</div>
-        <button id="cNext" class="w-6 h-6 rounded-full bg-[#F5F3F7]">›</button>
-      </div>
-      <div class="grid grid-cols-7 text-[9px] text-[#9a8ab0] text-center mt-4"><div>P</div><div>O</div><div>T</div><div>C</div><div>P</div><div>S</div><div>Sv</div></div>
-      <div id="days" class="grid grid-cols-7 text-[12px] text-center mt-2 gap-y-1"></div>
-      <div class="mt-5"><b class="text-[15px]">Pasākumi</b><div id="events" class="mt-3 text-[12px]"></div></div>
-      <div class="bg-[#F0EDF3] rounded-xl p-3 mt-5">
-        <div class="text-[9px] tracking-widest text-center text-[#9a8ab0]">MODEĻU PARĀDE</div>
-        <div class="flex justify-between mt-2">
-          <button class="w-8 h-8 bg-white rounded-full shadow-sm">♾️</button>
-          <button class="w-8 h-8 bg-white rounded-full shadow-sm">🌀</button>
-          <button class="w-8 h-8 bg-white rounded-full shadow-sm">⬢</button>
-          <button class="w-8 h-8 bg-white rounded-full shadow-sm">✦</button>
-          <button class="w-8 h-8 bg-[#FF8A3D] rounded-full shadow-sm">✿</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
+<body>
+<div class="phone">
+<div class="header"><div class="logo">V</div><div style="flex:1"><h1>Vzors AI</h1><p>powered by Spark gudrs kolēģis</p></div><div><button class="btn-small" onclick="openReg()">Reģistrēties</button><button class="btn-small" onclick="openReg()">Pieslēgties</button></div></div>
+<div class="chat-card"><b>Vzors runā — mana balss viņam:</b><br>What can I do for you? <span style="float:right;background:var(--beige);padding:4px 8px;border-radius:8px;font-size:11px;cursor:pointer" onclick="toggleLang()" id="langBtn">LV | EN</span><div class="wave"></div><small id="userInfo"></small></div>
+<h3 style="margin:6px 0">Manas piezīmes</h3>
+<div class="notes-header"><span>🎙️ Izvēlies krāsu</span><div><span class="dot" style="background:#F3D8D8" id="dot-rose" onclick="setColor('rose')"></span> <span class="dot" style="background:#D6EAF8" id="dot-blue" onclick="setColor('blue')"></span> <span class="dot" style="background:#fff" id="dot-white" onclick="setColor('white')"></span></div><span>...</span></div>
+<div class="grid" id="notesGrid"></div>
+<div class="calendar" id="calBlock"><div>📅 To do! Kalendārs Novembris 2026</div><div class="cal-grid" id="cal"></div><center><button class="btn-small" style="margin-top:8px" onclick="addEv()">Pievienot notikumu</button></center></div>
+<div style="font-size:12px"><b>Gaidāmie notikumi:</b><div id="gaidamie"></div></div>
 </div>
 
-<script>
-let cur = 10;
-const months = ["Janvāris","Februāris","Marts","Aprīlis","Maijs","Jūnijs","Jūlijs","Augusts","Septembris","Oktobris","Novembris","Decembris"];
-const icons = ["✨","♡","⚡","🍃","☕","🐱","✓","☾"];
-const bgs = ["bg-[#FFD6E0]/70","bg-[#FFF1A8]/70","bg-[#A8E6FF]/70","bg-[#C8F5C8]/70","bg-[#E6D6FF]/70","bg-[#FFDAB8]/70","bg-[#B8F0E0]/70","bg-[#F5E6D0]/70"];
+<div class="modal" id="regModal"><div class="modal-card">
+<h2 style="margin:0">Reģistrācija Vzors AI</h2><p style="opacity:.7;font-size:13px">Izvēlies krāsu saskarnei:</p>
+<div class="color-choose">
+<div class="color-opt selected" id="opt-rose" onclick="pick('rose')"><b>Rozā</b><br><small>(meitenēm)</small></div>
+<div class="color-opt" style="background:var(--blue)" id="opt-blue" onclick="pick('blue')"><b>Gaiši zils</b><br><small>(puišiem)</small></div>
+<div class="color-opt" style="background:#fff" id="opt-white" onclick="pick('white')"><b>Balts</b><br><small>(universāls)</small></div>
+</div>
+<input id="email" placeholder="Ievadi e-pastu ar kalendāru: gmail / inbox.lv">
+<input id="inboxPass" type="password" placeholder="inbox.lv parole (ja inbox.lv)" style="display:none">
+<button id="gBtn" class="btn-small" style="width:100%;padding:8px;margin-top:6px">🔗 Pieslēgt Google Calendar</button>
+<div id="syncStatus" style="font-size:11px;margin-top:8px;min-height:16px;text-align:left"></div>
+<button class="btn-big" onclick="sync()">Turpināt</button>
+</div></div>
 
-function renderCal(){
-  days.innerHTML="";
-  let first = new Date(2026,cur,1).getDay();
-  let off = first==0?6:first-1;
-  for(let i=0;i<off;i++) days.innerHTML+="<div></div>";
-  for(let d=1; d<=new Date(2026,cur+1,0).getDate(); d++){
-    let dot = [17,20,21,22,24,28].includes(d) ? '<div class="w-1 h-1 bg-[#E07A5F] rounded-full mx-auto"></div>' : '';
-    days.innerHTML+=`<div class="py-1">${d}${dot}</div>`;
-  }
-}
-function addSticker(text,i){
-  let el=document.createElement("div");
-  el.className=bgs[i%8]+" rounded-[12px] p-2 min-h-[52px] relative overflow-hidden border border-white/60";
-  el.innerHTML=`<div class="absolute inset-0 flex items-center justify-center text-[22px] opacity-[0.12] pointer-events-none">${icons[i%8]}</div><div class="relative z-10 text-[10px] leading-[1.2] break-words">${text}</div><button onclick="this.parentNode.remove()" class="relative z-10 text-[7px] text-[#9a8ab0] mt-1 ml-auto block">[delete]</button>`;
-  grid.prepend(el);
-}
-function voice(){
-  let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR) return;
-  let rec=new SR(); rec.lang='lv-LV';
-  voiceStatus.classList.remove("hidden"); rec.start();
-  rec.onresult=e=>{addSticker(e.results[0][0].transcript,grid.children.length); voiceStatus.classList.add("hidden");};
-  rec.onend=()=>voiceStatus.classList.add("hidden");
-}
-input.onkeydown=e=>{
-  if(e.key==='Enter'){e.preventDefault(); if(e.target.value.trim()){addSticker(e.target.value,grid.children.length); e.target.value="";}}
-};
-mic.onclick=voice;
-prev.onclick=()=>{cur--; if(cur<0)cur=11; ttl.textContent=months[cur]+" ir klāt"; renderCal();};
-next.onclick=()=>{cur++; if(cur>11)cur=0; ttl.textContent=months[cur]+" ir klāt"; renderCal();};
-cPrev.onclick=()=>prev.click(); cNext.onclick=()=>next.click();
-events.innerHTML='<div class="flex gap-2"><div class="w-2 h-2 bg-[#E07A5F] rounded-full mt-1.5"></div><div>Tēva diena — 15. nov<br><span class="text-[#8a8a9a] text-[11px]">Svēkti</span></div></div><div class="flex gap-2 mt-3"><div class="w-2 h-2 bg-[#E07A5F] rounded-full mt-1.5"></div><div>Lāčplēša diena — 18. nov<br><span class="text-[#8a8a9a] text-[11px]">Atceres diena</span></div></div>';
-renderCal();
-fetch('https://api.open-meteo.com/v1/forecast?latitude=56.95&longitude=24.11&current_weather=true').then(r=>r.json()).then(d=>{if(d.current_weather) weather.textContent=`⛅ laika ziņas: ${d.current_weather.temperature}°C Rīga`;});
+<script>
+const GOOGLE_CLIENT_ID='YOUR_CLIENT_ID.apps.googleusercontent.com';
+const notes=["Tikšanās ar komandu","jauns dizains","Budžets Q4","UI mockups","Klienta prezentācija","Klienta prezentācija","Mārketinga plāns","Kampaņa Novembris","Produkta apraksti","Veikala","Veikala saturs","Sociālie ieraksti","E-pasta melraksts","Bloga raksts","Bloga raksts","Testēšanas saraksts","Testēšanas","Dizaina atsauksmes","Rītdienas uzdevumi","Rītdienas uzdevumi"];
+let grid=document.getElementById('notesGrid');notes.forEach(t=>{let d=document.createElement('div');d.className='note';d.textContent=t;grid.appendChild(d);});
+let events={};try{events=JSON.parse(localStorage.getItem('vzors_events')||'{}')}catch(e){events={}}
+let cur='rose', gToken=null;
+function renderCal(){let cal=document.getElementById('cal');cal.innerHTML='';['P','O','T','C','P','S','Sv'].forEach(d=>{let e=document.createElement('div');e.textContent=d;e.style.fontWeight='700';cal.appendChild(e);});for(let i=1;i<=30;i++){let el=document.createElement('div');el.className='d';if(events[i])el.classList.add('event');if(i==18)el.classList.add('active');el.textContent=i;el.title=events[i]||'';el.onclick=()=>addEv(i);cal.appendChild(el);}let g=document.getElementById('gaidamie');g.innerHTML='';Object.keys(events).sort((a,b)=>a-b).forEach(k=>{let d=document.createElement('div');d.textContent='• '+k+' nov — '+events[k];if(k==18)d.style.color='#C94A3A';g.appendChild(d);});}
+function setColor(c){cur=c;let col=c==='rose'?'#F8E8E8':c==='blue'?'#D6EAF8':'#FFFFFF';document.querySelectorAll('.note,.chat-card,.calendar,.notes-header,#calBlock').forEach(el=>el.style.background=col);localStorage.setItem('vzors_color',c);document.querySelectorAll('.dot').forEach(x=>x.classList.remove('active'));document.getElementById('dot-'+c).classList.add('active');}
+function pick(c){cur=c;document.querySelectorAll('.color-opt').forEach(x=>x.classList.remove('selected'));document.getElementById('opt-'+c).classList.add('selected');}
+function openReg(){document.getElementById('regModal').style.display='flex';}
+function toggleLang(){let b=document.getElementById('langBtn');b.textContent=b.textContent==='LV | EN'?'EN | LV':'LV | EN';}
+document.getElementById('email').addEventListener('input',e=>{document.getElementById('inboxPass').style.display=e.target.value.includes('inbox.lv')?'block':'none';});
+gapi?.load?.('client',async()=>{await gapi.client.init({discoveryDocs:["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]});});
+document.getElementById('gBtn').onclick=()=>{let c=google.accounts.oauth2.initTokenClient({client_id:GOOGLE_CLIENT_ID,scope:'https://www.googleapis.com/auth/calendar.readonly',callback:r=>{gToken=r.access_token;document.getElementById('syncStatus').textContent='✅ Google pieslēgts';}});c.requestAccessToken();};
+async function sync(){let email=document.getElementById('email').value.trim().toLowerCase();let st=document.getElementById('syncStatus');if(!email.includes('@')){st.textContent='❌ Ievadi e-pastu';return;}st.textContent='🔄 Sinhronizē '+email+'...';try{if(email.includes('gmail.com')){if(!gToken){st.textContent='⚠️ Spied 🔗 Pieslēgt Google Calendar';return;}gapi.client.setToken({access_token:gToken});let res=await gapi.client.calendar.events.list({calendarId:'primary',timeMin:'2026-11-01T00:00:00Z',timeMax:'2026-11-30T23:59:59Z',singleEvents:true});(res.result.items||[]).forEach(ev=>{let d=new Date(ev.start.dateTime||ev.start.date);if(d.getMonth()===10)events[d.getDate()]=(events[d.getDate()]||'')+ev.summary+'; ';});}else if(email.includes('inbox.lv')){let pass=document.getElementById('inboxPass').value;let r=await fetch('/api/inbox/caldav',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass,month:'2026-11'})});let j=await r.json();j.events.forEach(e=>{events[e.day]=(events[e.day]||'')+e.summary+'; ';});}else{events={...events,2:"Tikšanās 10:00",8:"Klienta prezentācija",18:"Latvijas proklamēšanas diena — brīvdiena"};}localStorage.setItem('vzors_events',JSON.stringify(events));localStorage.setItem('vzors_email',email);localStorage.setItem('vzors_color',cur);renderCal();st.textContent='✅ Sinhronizēts! '+Object.keys(events).length+' dienas';document.getElementById('userInfo').textContent='Pieslēgts: '+email;setTimeout(()=>document.getElementById('regModal').style.display='none',1000);}catch(e){st.textContent='❌ Kļūda: '+e.message;}}
+function addEv(d){let day=d||prompt('Diena 1-30:');if(!day)return;let txt=prompt('Notikums:');if(!txt)return;events[day]=txt;localStorage.setItem('vzors_events',JSON.stringify(events));renderCal();}
+renderCal();setColor(localStorage.getItem('vzors_color')||'rose');
+window.onload=()=>{document.getElementById('regModal').style.display='flex';};
 </script>
 </body>
 </html>
-   
-
-     
