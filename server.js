@@ -79,6 +79,6 @@ app.post('/api/inbox/caldav', async (req,res)=>{
 
 // Health check для Vercel
 app.get('/api/health', (req,res)=>res.json({ok:true, time: new Date()}));
+app.get('/', (req,res)=>res.send('VZORS AI backend is running! Visit /api/health'));
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, ()=>console.log(`Vzors backend on ${PORT}`));
+module.exports = app;
