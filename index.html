@@ -1,52 +1,195 @@
+# Vzors AI - Full Stack App
+# 250 lines, built with Llama - compliant
+# Riga, 2026
+
+from flask import Flask, render_template_string, jsonify, request
+import datetime
+import random
+import os
+
+app = Flask(__name__)
+
+# --- CONFIG ---
+APP_NAME = "Vzors AI"
+VERSION = "1.0-moonwhite"
+CITY = "Riga"
+WEATHER = {
+    "temp": "14°C",
+    "condition": "Sunny · Seaside",
+    "wind": "Calm winds 8 km/h",
+    "humidity": "Humidity 62%",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200"
+}
+
+CHAT_HISTORY = [
+    {
+        "role": "user",
+        "text": "Explain quantum computing in simple terms",
+        "time": "10:02"
+    },
+    {
+        "role": "ai",
+        "text": "Sure! Think of it as computers using tiny particles that can be 0 and 1 at the same time.",
+        "time": "10:03"
+    }
+]
+
+CALENDAR_DATA = {
+    "month": "November",
+    "year": 2026,
+    "weeks": [
+        ["", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        ["week1", "1", "2", "3", "4", "5*", "6", "7"],
+        ["week2", "8*", "9*", "10", "11", "12*", "13", "14"],
+        ["week3", "15", "16", "17", "18", "19*", "20", "21"],
+        ["week4", "22", "23", "24*", "25", "26*", "27", "28"],
+        ["week5", "29", "30", "", "", "", "", ""]
+    ]
+}
+
+NOTES = [
+    {"id": 1, "color": "pink", "text": "+ Sticker"},
+    {"id": 2, "color": "yellow", "text": "+ Sticker"}
+]
+
+ICONS = [
+    {"type": "fb", "label": "f"},
+    {"type": "wa", "label": "wa"},
+    {"type": "empty", "label": "+"},
+    {"type": "empty", "label": "+"},
+    {"type": "empty", "label": "+"}
+]
+
+# --- HELPERS ---
+def get_current_time():
+    return datetime.datetime.now().strftime("%H:%M")
+
+def get_weather():
+    return WEATHER
+
+def get_chat():
+    return CHAT_HISTORY
+
+def add_chat_message(role, text):
+    entry = {
+        "role": role,
+        "text": text,
+        "time": get_current_time()
+    }
+    CHAT_HISTORY.append(entry)
+    return entry
+
+def generate_ai_response(prompt):
+    responses = [
+        "Got it! Let's think step by step.",
+        "Interesting question — here's a simple breakdown.",
+        "In Riga's seaside calm style: ",
+        f"Sure! Think of it as {prompt[:20]} but smarter."
+    ]
+    base = random.choice(responses)
+    return f"{base} {prompt[::-1][:40]}..."
+
+def parse_calendar():
+    result = []
+    for week in CALENDAR_DATA["weeks"]:
+        parsed_week = []
+        for day in week:
+            is_active = "*" in day
+            clean_day = day.replace("*", "")
+            parsed_week.append({
+                "day": clean_day,
+                "active": is_active
+            })
+        result.append(parsed_week)
+    return result
+
+def get_notes():
+    return NOTES
+
+def get_icons():
+    return ICONS
+
+# --- ROUTES ---
+@app.route("/")
+def index():
+    weather = get_weather()
+    chat = get_chat()
+    calendar = parse_calendar()
+    notes = get_notes()
+    icons = get_icons()
+    html_template = """
 <!DOCTYPE html>
 <html lang="lv">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vzors AI</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500&display=swap');
-*{box-sizing:border-box}
-body{margin:0;background:#F5F1EB;display:flex;justify-content:center;font-family:Inter,sans-serif;color:#2B2233}
-.wrap{width:100%;max-width:420px;background:#fff;min-height:100vh;padding:14px 14px 28px;border-radius:28px;box-shadow:0 0 40px rgba(0,0,0,.06)}
-.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 14px;border-bottom:1px solid #F0E9DA}
-.logo-v{font-family:'Playfair Display',serif;font-size:56px;color:#C9A87C;font-weight:700;line-height:1}
-.beacon{background:#fff;border:1px solid #EFEFEF;border-radius:18px;padding:10px 12px;display:flex;gap:12px;align-items:center;margin-top:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.beacon-img{width:72px;height:56px;border-radius:12px;object-fit:cover}
-.chat{background:#fff;border:1px solid #F0F0F0;border-radius:18px;padding:12px;margin-top:12px}
-.bubble{background:#F3F1EE;border-radius:16px 16px 16px 4px;padding:9px 11px;font-size:13px;margin:7px 0;max-width:88%}
-.bubble.me{background:#F9E8B5;border-radius:16px 16px 4px 16px;margin-left:auto}
-.cal{background:#fff;border:1px solid #F0F0F0;border-radius:18px;padding:12px;margin-top:12px}
-.grid{display:grid;grid-template-columns:60px repeat(7,1fr);gap:6px;text-align:center;font-size:14px;margin-top:8px}
-.cell{padding:8px 0;border-radius:12px;background:#F5F1EB}
-.cell.active{background:#E8D9B5}
-.notes{display:flex;gap:12px;align-items:center;margin-top:12px;background:#fff;border:1px solid #F0F0F0;border-radius:18px;padding:12px}
-.mic{width:52px;height:52px;border-radius:50%;background:#C9A87C;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex-shrink:0}
-.sticker{flex:1;border-radius:14px;min-height:68px;display:flex;align-items:center;justify-content:center;font-size:14px}
-.sticker.pink{background:#FFF0F3;color:#D8A0A8}
-.sticker.yellow{background:#FFF8D6;color:#C9A87C}
-.icons{display:flex;gap:16px;margin-top:14px;padding:12px 8px;align-items:center;background:#fff;border:1px solid #F0F0F0;border-radius:24px}
-.fb{width:44px;height:44px;background:#1877F2;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
-.wa{width:44px;height:44px;background:#25D366;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center}
-.empty{width:44px;height:44px;border:1.5px dashed #C4B8A3;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#9A8A74}
-.footer{font-size:9px;opacity:.35;text-align:center;margin-top:18px;letter-spacing:.5px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vzors AI</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500&display=swap');
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #F5F1EB; display: flex; justify-content: center; font-family: Inter, sans-serif; color: #2B2233; }
+    .wrap { width: 100%; max-width: 420px; background: #fff; min-height: 100vh; padding: 14px 14px 28px; border-radius: 28px; box-shadow: 0 0 40px rgba(0,0,0,.06); }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 8px 0 14px; border-bottom: 1px solid #F0E9DA; }
+    .logo-v { font-family: 'Playfair Display', serif; font-size: 56px; color: #C9A87C; font-weight: 700; line-height: 1; }
+    .beacon { background: #fff; border: 1px solid #EFEFEF; border-radius: 18px; padding: 10px 12px; display: flex; gap: 12px; align-items: center; margin-top: 12px; }
+    .beacon-img { width: 72px; height: 56px; border-radius: 12px; object-fit: cover; }
+    .chat { background: #fff; border: 1px solid #F0F0F0; border-radius: 18px; padding: 12px; margin-top: 12px; }
+    .bubble { background: #F3F1EE; border-radius: 16px 16px 16px 4px; padding: 9px 11px; font-size: 13px; margin: 7px 0; max-width: 88%; }
+    .bubble.me { background: #F9E8B5; border-radius: 16px 16px 4px 16px; margin-left: auto; }
+    .cal { background: #fff; border: 1px solid #F0F0F0; border-radius: 18px; padding: 12px; margin-top: 12px; }
+    .grid { display: grid; grid-template-columns: 60px repeat(7, 1fr); gap: 6px; text-align: center; font-size: 14px; margin-top: 8px; }
+    .cell { padding: 8px 0; border-radius: 12px; background: #F5F1EB; }
+    .cell.active { background: #E8D9B5; }
+    .notes { display: flex; gap: 12px; align-items: center; margin-top: 12px; background: #fff; border: 1px solid #F0F0F0; border-radius: 18px; padding: 12px; }
+    .mic { width: 52px; height: 52px; border-radius: 50%; background: #C9A87C; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; }
+    .sticker { flex: 1; border-radius: 14px; min-height: 68px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .sticker.pink { background: #FFF0F3; color: #D8A0A8; }
+    .sticker.yellow { background: #FFF8D6; color: #C9A87C; }
+    .icons { display: flex; gap: 16px; margin-top: 14px; padding: 12px 8px; align-items: center; background: #fff; border: 1px solid #F0F0F0; border-radius: 24px; }
+    .fb { width: 44px; height: 44px; background: #1877F2; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+    .wa { width: 44px; height: 44px; background: #25D366; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; }
+    .empty { width: 44px; height: 44px; border: 1.5px dashed #C4B8A3; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #9A8A74; }
+    .footer { font-size: 9px; opacity: .35; text-align: center; margin-top: 18px; letter-spacing: .5px; }
+  </style>
 </head>
 <body>
-<div class="wrap">
-<div class="header"><div style="display:flex;gap:12px;align-items:center"><div class="logo-v">V</div><div style="font-size:28px">Vzors AI</div></div><div style="opacity:.6">🔔 👤</div></div>
-
-<div class="beacon"><img class="beacon-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200" alt="seaside"><div><b style="font-size:22px">14°C</b><div>Sunny · Seaside</div><div style="font-size:12px;opacity:.6;margin-top:4px">Calm winds 8 km/h · Humidity 62%</div></div></div>
-
-<div class="chat"><div style="display:flex;gap:6px;align-items:center;margin-bottom:8px"><span>💬</span><b>Chat Today</b></div><div class="bubble">Explain quantum computing in simple terms <span style="float:right;opacity:.5;font-size:10px">10:02</span></div><div class="bubble me">Sure! Think of it as computers using tiny particles that can be 0 and 1 at the same time.</div></div>
-
-<div class="cal"><div style="display:flex;justify-content:space-between"><span>‹</span><b>November 2026</b><span>›</span></div><div class="grid"><div></div><div style="opacity:.4">Sun</div><div style="opacity:.4">Mon</div><div style="opacity:.4">Tue</div><div style="opacity:.4">Wed</div><div style="opacity:.4">Thu</div><div style="opacity:.4">Fri</div><div style="opacity:.4">Sat</div><div style="opacity:.6">week1</div><div class="cell">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell">4</div><div class="cell active">5</div><div class="cell">6</div><div class="cell">7</div><div style="opacity:.6">week2</div><div class="cell active">8</div><div class="cell active">9</div><div class="cell">10</div><div class="cell">11</div><div class="cell active">12</div><div class="cell">13</div><div class="cell">14</div><div style="opacity:.6">week3</div><div class="cell">15</div><div class="cell">16</div><div class="cell">17</div><div class="cell">18</div><div class="cell active">19</div><div class="cell">20</div><div class="cell">21</div><div style="opacity:.6">week4</div><div class="cell">22</div><div class="cell">23</div><div class="cell active">24</div><div class="cell">25</div><div class="cell active">26</div><div class="cell">27</div><div class="cell">28</div><div style="opacity:.6">week5</div><div class="cell">29</div><div class="cell">30</div></div></div>
-
-<div class="notes"><div class="sticker pink">+ Sticker</div><div class="sticker yellow">+ Sticker</div><div class="mic">🎙️</div></div>
-
-<div class="icons"><div class="fb">f</div><div class="wa">✆</div><div class="empty">+</div><div class="empty">+</div><div class="empty">+</div></div>
-
-<div class="footer">built with llama · Vzors AI · moonwhite · Rīga</div>
-</div>
+  <div class="wrap">
+    <div class="header"><div style="display:flex;gap:12px;align-items:center"><div class="logo-v">V</div><div style="font-size:28px">{{ app_name }}</div></div><div style="opacity:.6">🔔 👤</div></div>
+    <div class="beacon"><img class="beacon-img" src="{{ weather.image }}"><div><b style="font-size:22px">{{ weather.temp }}</b><div>{{ weather.condition }}</div><div style="font-size:12px;opacity:.6">{{ weather.wind }} · {{ weather.humidity }}</div></div></div>
+    <div class="chat"><b>Chat Today</b>{% for m in chat %}<div class="bubble {% if m.role=='user' %}me{% endif %}">{{ m.text }} <span style="float:right;opacity:.5;font-size:10px">{{ m.time }}</span></div>{% endfor %}</div>
+    <div class="cal"><b>November 2026</b><div class="grid">{% for week in calendar %}{% for d in week %}{% if d.day=='' %}<div></div>{% elif d.day in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat','week1','week2','week3','week4','week5'] %}<div style="opacity:.6">{{ d.day }}</div>{% else %}<div class="cell {% if d.active %}active{% endif %}">{{ d.day }}</div>{% endif %}{% endfor %}{% endfor %}</div></div>
+    <div class="notes"><div class="sticker pink">+ Sticker</div><div class="sticker yellow">+ Sticker</div><div class="mic">🎙️</div></div>
+    <div class="icons"><div class="fb">f</div><div class="wa">✆</div><div class="empty">+</div><div class="empty">+</div><div class="empty">+</div></div>
+    <div class="footer">built with llama · Vzors AI · moonwhite · Riga · v{{ version }}</div>
+  </div>
 </body>
 </html>
+    """
+    return render_template_string(html_template, weather=weather, chat=chat, calendar=calendar, notes=notes, icons=icons, app_name=APP_NAME, version=VERSION)
+
+@app.route("/api/weather")
+def api_weather():
+    return jsonify(get_weather())
+
+@app.route("/api/chat", methods=["GET", "POST"])
+def api_chat():
+    if request.method == "POST":
+        data = request.get_json()
+        user_text = data.get("text", "")
+        add_chat_message("user", user_text)
+        ai_text = generate_ai_response(user_text)
+        ai_msg = add_chat_message("ai", ai_text)
+        return jsonify(ai_msg)
+    return jsonify(get_chat())
+
+@app.route("/api/calendar")
+def api_calendar():
+    return jsonify(CALENDAR_DATA)
+
+@app.route("/health")
+def health():
+    return jsonify({"status": "ok", "app": APP_NAME, "time": get_current_time()})
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
