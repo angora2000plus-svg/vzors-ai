@@ -1,22 +1,22 @@
-# Vzors AI — gūdris koļēģis
+# Vzors AI — your wise colleague
 
-Живое веб-приложение 1 в 1 как на макете.
+Live web app, pixel-perfect to the mockup.
 
-## Что внутри
-- **Manas piezīmes** — добавление заметок по Enter, сохранение в localStorage, удаление
-- **STICKERS** — 8 оригинальных стикеров, тонкие черные линии как в макете
-- **SAVIENOTIE** — 8 оригинальных логотипов (inbox.lv, whatsapp, gmail, google, gooail, facebook, maps x2), вшиты в код как base64, кликабельны
-- **Novembris 2026 Kalendars** — сетка с красными точками, кликабельные дни
-- **Pasākumi** — Tēva diena, Lāčplēša diena
-- **MODEĻU PARADE** — выбор модели
+## Features
+- **Manas piezīmes (My Notes)** — add notes with Enter, saved to localStorage, deletable
+- **STICKERS** — 8 original stickers, thin black line icons exactly as in the mockup
+- **SAVIENOTIE (Connected)** — 8 original logos (inbox.lv, whatsapp, gmail, google, gooail, facebook, maps x2), embedded as base64, fully clickable
+- **Novembris 2026 Kalendars** — calendar grid with red dots, clickable days
+- **Pasākumi (Events)** — Tēva diena, Lāčplēša diena
+- **MODEĻU PARADE** — model switcher
 
-## Как запустить
-1. Открой `index.html` в браузере
-2. Готово. Никаких зависимостей, кроме Tailwind CDN
+## How to run
+1. Open `index.html` in your browser
+2. Done. No build step, only Tailwind CDN
 
-## Технологии
+## Tech
 - HTML + Tailwind CDN + Vanilla JS
-- Все иконки SAVIENOTIE — оригинальные, вырезаны из макета и встроены как base64
+- All SAVIENOTIE icons are originals cropped from the mockup and embedded as base64
 
-## Автор
-Vzors AI — Рига, 2026
+## Author
+Vzors AI — Riga, 2026
