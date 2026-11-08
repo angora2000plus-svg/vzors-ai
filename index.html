@@ -1,194 +1,410 @@
 <!DOCTYPE html>
-<html lang="lv">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Vzors AI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vzors AI - powered by Spark</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Manrope',sans-serif}
-body{background:#EADFD9;max-width:430px;margin:0 auto;padding:10px}
-.card{background:#FFF6F1;border-radius:22px;padding:14px;border:1px solid #EADFD9;margin-bottom:12px}
-.hdr{display:flex;align-items:center;gap:10px}
-.logo{width:46px;height:46px;border-radius:50%;border:2px solid #C7A26B;color:#C7A26B;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800}
-.ht b{font-size:21px;font-weight:800;display:block;line-height:1.1}
-.ht span{font-size:11px;color:#8B7D74}
-.top{margin-left:auto;display:flex;gap:6px}
-.top button{font-size:10px;padding:6px 12px;border-radius:20px;border:1.2px solid #C7A26B;background:#FFF6F1;cursor:pointer}
-.wave{width:100%;height:32px;display:flex;gap:3px;justify-content:center;align-items:center;margin:10px 0}
-.wave i{width:3px;background:#D6A97A;border-radius:3px;display:block}
-.notes-bar{display:flex;align-items:center;gap:10px;padding:12px;background:#FFF6F1;border-radius:16px;border:1px solid #F2E6DE;margin-bottom:10px}
-.dot{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px #D9C7B8;flex-shrink:0}
-.dot.active{box-shadow:0 0 0 2.5px #C7A26B;transform:scale(1.15)}
+body{background:#E8DDD6;max-width:430px;margin:0 auto;padding:10px;padding-bottom:90px}
+.card{background:#FFF6F1;border-radius:22px;padding:14px;border:1px solid #F0E2D8;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.header{display:flex;align-items:center;gap:12px}
+.logo{width:52px;height:52px;border-radius:50%;border:1.5px solid #C7A26B;color:#C7A26B;display:flex;align-items:center;justify-content:center;font-size:30px;font-family:serif}
+.ht b{font-size:26px;font-weight:800}.ht span{font-size:11px;color:#5A4A42}
+.top{margin-left:auto}.top button{font-size:11px;padding:5px 10px;border-radius:20px;border:1.2px solid #C7A26B;background:#FFF6F1}
+.wave{width:100%;height:32px;display:flex;gap:2.5px;justify-content:center;align-items:center;margin:14px 0 8px}
+.wave i{width:2.5px;background:#C7A26B;border-radius:3px;display:block;height:3px;opacity:.35}
+.icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#EADFC6;border:none;font-size:20px}
+.input-wrap{display:none;margin-top:12px;gap:8px}.input-wrap.show{display:flex}
+.input-wrap input{flex:1;padding:12px 16px;border-radius:24px;border:1.5px solid #D9C7B8;outline:none}
+.input-wrap button{padding:12px 18px;border-radius:24px;border:none;background:#C7A26B;color:#fff;font-weight:700}
+.answer{margin-top:14px;background:#fff;border:1px solid #F0E2D8;border-radius:16px;padding:14px;display:none}
+.answer.show{display:block}.answer-head{font-size:11px;font-weight:700;color:#8B7D74;margin-bottom:6px}
+.answer-text{font-size:13.5px;line-height:1.5;white-space:pre-wrap}
+.notes-head{font-size:17px;font-weight:800;margin:6px 0 10px 2px}
+.notes-bar{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#FFF1EC;border-radius:14px;border:1px solid #F2E6DE;margin-bottom:10px}
+.dots{display:flex;gap:10px}.dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px #D9C7B8;transition:.2s}
+.dot.active{box-shadow:0 0 0 2.5px #C7A26B!important;transform:scale(1.15)}
 .notes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.note{border-radius:12px;padding:10px;font-size:11px;min-height:64px;cursor:pointer;border:1.5px dashed #D9C7B8;display:flex;align-items:center;justify-content:center;color:#9A8A82;text-align:center;word-break:break-word}
-.note.filled{border-style:solid;color:#3A2E28;justify-content:flex-start;text-align:left;font-weight:500;background:#FFEDE6}
-.week{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:11px;font-weight:700;color:#8B7D74;margin:8px 0}
-.days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.days div{height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:12px;cursor:pointer}
-.days .hol{color:#C07A5A}.days .beige{background:#EADFC6}.days .red{border:2px solid #B94A3A;color:#B94A3A;font-weight:700}
-.chat-input{display:flex;gap:6px;margin-top:10px}
-.chat-input input{flex:1;padding:12px 16px;border-radius:24px;border:1.5px solid #D9C7B8;font-size:13px;outline:none}
-.chat-input button{padding:12px 16px;border-radius:24px;border:none;background:#C7A26B;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
-.answer-box{background:#fff;border-radius:14px;padding:14px;margin-top:12px;border:1px solid #EADFD9;min-height:50px;font-size:13px;line-height:1.5;display:none}
-.answer-box.show{display:block}
-#colorPopup{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#fff;padding:14px 18px;border-radius:24px;box-shadow:0 10px 30px rgba(0,0,0,0.18);display:none;gap:10px;z-index:999}
-#colorPopup.show{display:flex;flex-wrap:wrap;justify-content:center;max-width:280px}
+.note{border-radius:12px;padding:8px 6px;font-size:11px;min-height:64px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;word-break:break-word;font-weight:500}
+.note.empty{border:1.5px dashed #C7B8A8;color:#9A8A82;background:#F5F1EB}.note.filled{border:1px solid #E6D8CF;color:#1A1A1A}
+.footer-fixed{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#FFF6F1;border-top:1px solid #F0E2D8;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-radius:18px 18px 0 0;z-index:20}
+.f-icons{display:flex;gap:8px}.f-icons a{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.popup{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#fff;padding:14px;border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.18);display:none;gap:10px;flex-wrap:wrap;max-width:320px;z-index:50}.popup.show{display:flex}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center}
+.modal.show{display:flex}.modal-box{background:#FFF6F1;padding:20px;border-radius:20px;width:90%;max-width:340px}
 </style>
 </head>
 <body>
 
-<div class="card hdr">
+<div class="card header">
   <div class="logo">V</div>
-  <div class="ht"><b>Vzors AI</b><span>powered by <b>Spark</b> gudrs kolēģis</span></div>
-  <div class="top"><button>Reģistrēties</button><button>Pieslēgties</button></div>
+  <div class="ht"><b>Vzors AI</b><span>powered by <b>Spark</b> smart colleague</span></div>
+  <div class="top"><button id="registerBtn">Register</button></div>
 </div>
 
 <div class="card">
-  <div style="font-size:13px;font-weight:700">Vzors runā — mana balss viņam:</div>
-  <div style="font-size:12px;color:#8B7D74;margin-top:4px">What can I do for you?</div>
+  <div style="font-size:13px;font-weight:600;color:#5A4A42">Vzors speaking — my voice for him:</div>
+  <div style="font-size:15px;font-weight:700;margin-top:2px">What can I do for you?<br><span style="font-weight:400;color:#5A4A42;font-size:13px" id="hintText">Ask me anything...</span></div>
   <div class="wave" id="wave"></div>
-  <div class="chat-input">
-    <input id="vzQ" placeholder="Jautā man kaut ko..." autocomplete="off">
-    <button onclick="askVzors()">Ask</button>
-    <button onclick="startVoice()" style="background:#EADFD9;color:#5A4A3A;font-size:16px">🎙️</button>
+  <div style="display:flex;align-items:center;gap:14px;margin-top:4px">
+    <button class="icon" id="micBtn">🎙️</button>
+    <button class="icon" id="keyboardBtn">⌨️</button>
+    <div style="margin-left:auto;background:#EADFC6;border-radius:10px;padding:6px 12px;font-size:12px;font-weight:700" id="langBtn">LV | EN</div>
   </div>
-  <div id="vzAnswer" class="answer-box"></div>
+  <div class="input-wrap" id="inputWrap">
+    <input id="questionInput" placeholder="e.g. Danja, weather forecast">
+    <button id="askBtn">Ask</button>
+  </div>
+  <!-- CONTEXTUAL WINDOW WITH SUB-WINDOW - SPARK SITS HERE FOR CLIENTS -->
+  <div class="answer" id="answerBox">
+    <div class="answer-head" id="answerHead">Spark sits here — answer for client 👇</div>
+    <div class="answer-text" id="answerText">I am Spark, smart colleague inside Vzors. Write your question above and I will answer here, save to notes and sync your calendar.</div>
+  </div>
 </div>
 
-<div style="font-size:14px;font-weight:800;margin:8px 4px">Manas piezīmes:</div>
+<div class="notes-head">My Notes</div>
 <div class="notes-bar">
-  <div style="font-size:20px;cursor:pointer" onclick="dictateNote()">🎙️</div>
-  <div style="font-size:12px;font-weight:700">Izvēlies krāsu:</div>
-  <div style="display:flex;gap:10px" id="dots"></div>
-  <div style="margin-left:auto;font-size:20px;color:#C7A26B;cursor:pointer;font-weight:800;padding:4px" onclick="toggleMore()">•••</div>
+  <div style="font-size:20px;cursor:pointer" id="voiceNoteBtn">🎙️</div>
+  <div style="font-size:12px;font-weight:700">Choose color</div>
+  <div class="dots" id="colorDots"></div>
+  <div style="margin-left:auto;font-size:20px;color:#C7A26B;cursor:pointer;padding:4px 8px" id="moreBtn">•••</div>
 </div>
-<div class="notes" id="notes"></div>
-<div style="text-align:center;margin-top:12px;display:flex;gap:8px;justify-content:center">
-  <button onclick="addEmpty()" style="padding:8px 16px;border-radius:20px;border:1.5px solid #C7A26B;background:#fff;font-size:12px;font-weight:600;cursor:pointer">+ Tukša lapiņa</button>
-  <button onclick="clearAll()" style="padding:8px 12px;border:none;background:transparent;font-size:11px;color:#8B7D74;cursor:pointer">Notīrīt</button>
-</div>
+<div class="notes" id="notesGrid"></div>
 
 <div class="card" style="margin-top:14px">
-  <div style="font-weight:700;font-size:14px;margin-bottom:8px">📅 To do! Calendar November 2026</div>
-  <div class="week"><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div><div>S</div></div>
-  <div class="days" id="days"></div>
-  <div id="calInfo" style="font-size:11px;margin-top:10px;color:#5A4A3A;min-height:14px"></div>
+  <div style="font-size:15px;font-weight:800;margin-bottom:10px">🗓️ To do! Calendar November 2026</div>
+  <div style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:12px;font-weight:700;margin-bottom:6px"><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div><div>S</div></div>
+  <div id="calendarDays" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center"></div>
+  <div style="display:flex;gap:6px;margin-top:12px">
+    <button style="flex:1;padding:7px 16px;border-radius:20px;border:1.2px solid #C7A26B;background:#FFF6F1;font-size:12px" id="addEventBtn">Add Event</button>
+    <button style="flex:1;padding:7px 16px;border-radius:20px;border:1.2px solid #C7A26B;background:#EADFC6;font-size:12px" id="syncCalendarBtn">Sync Calendar</button>
+  </div>
 </div>
 
-<div id="colorPopup"></div>
+<div style="font-size:14px;font-weight:800;margin:14px 4px 6px">Upcoming events:</div>
+<div style="font-size:12px;margin-left:4px;display:flex;gap:6px"><b style="color:#B94A3A">•</b><span id="eventText">Nov 18 Latvia Independence Day — holiday</span></div>
+
+<!-- FOOTER WITH PERSONAL SYNC FOR EACH USER -->
+<div class="footer-fixed">
+  <div style="font-size:11px;font-weight:700" id="userPhoneLabel">Vzors AI</div>
+  <div class="f-icons">
+    <a id="whatsappLink" href="#" target="_blank" style="background:#25D366;color:#fff;font-weight:800;font-size:13px">WA</a>
+    <a id="facebookLink" href="https://facebook.com" target="_blank" style="background:#1877F2;color:#fff;font-weight:800;font-size:18px">f</a>
+    <a id="gmailLink" href="#" target="_blank" style="background:#fff;border:1px solid #F0E2D8;font-size:22px">📧</a>
+    <a id="settingsBtn" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px">⚙️</a>
+  </div>
+</div>
+
+<div class="popup" id="colorPopup"></div>
+
+<!-- USER PROFILE MODAL - EACH USER ENTERS HIS OWN CONTACTS -->
+<div class="modal" id="profileModal">
+  <div class="modal-box">
+    <div style="font-size:16px;font-weight:800;margin-bottom:6px">Your Profile</div>
+    <div style="font-size:12px;color:#8B7D74;margin-bottom:12px">Each client enters his own — saved only on his phone</div>
+    <input id="whatsappInput" placeholder="WhatsApp: 37126702372" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #D9C7B8;font-size:15px;margin-bottom:8px">
+    <input id="gmailInput" placeholder="Gmail: your@gmail.com" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #D9C7B8;font-size:14px;margin-bottom:8px">
+    <input id="facebookInput" placeholder="Facebook link" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #D9C7B8;font-size:14px;margin-bottom:14px">
+    <div style="display:flex;gap:8px">
+      <button id="saveProfileBtn" style="flex:1;padding:12px;border-radius:12px;border:none;background:#C7A26B;color:#fff;font-weight:700">Save & Sync</button>
+      <button id="closeProfileBtn" style="padding:12px 16px;border-radius:12px;border:1.5px solid #D9C7B8;background:#fff">X</button>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTRATION MODAL - PHONE REGISTRATION -->
+<div class="modal" id="registrationModal">
+  <div class="modal-box">
+    <div style="font-size:16px;font-weight:800;margin-bottom:12px">Register with phone</div>
+    <input id="phoneInput" placeholder="+371 20000000" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid #D9C7B8;font-size:15px;margin-bottom:12px">
+    <button id="doRegisterBtn" style="width:100%;padding:12px;border-radius:12px;border:none;background:#C7A26B;color:#fff;font-weight:700">Get SMS Code</button>
+    <div style="font-size:11px;color:#8B7D74;margin-top:10px;text-align:center">After registration you will sync calendar, WhatsApp and Facebook</div>
+  </div>
+</div>
 
 <script>
-/* ЦВЕТА - РАБОТАЕТ */
-const COLORS=['#FFB3A0','#FFD6C2','#A2D5E8','#FFF1B0','#C2E8B0','#FFD6E6','#FFEDE6','#EADFC6'];
-let sel = localStorage.getItem('vz_sel') || COLORS[6];
-let showAllDots = false;
+// ========== CONFIG - NEUTRAL COLORS FOR MEN ==========
+const COLORS = ['#EADFC6','#D9E2E8','#C2C8D0','#A2C5B8','#E8E0D0','#D0D8C0','#F5F1EB','#E8E8E8'];
+let selectedColor = localStorage.getItem('selected_color') || COLORS[0];
+let showAllColors = false;
 
-function renderDots(){
-  const list = showAllDots ? COLORS : COLORS.slice(0,4);
-  document.getElementById('dots').innerHTML = list.map(c => 
-    `<div class="dot ${c===sel?'active':''}" style="background:${c}" onclick="pick('${c}')"></div>`
-  ).join('');
+// ========== COLOR BAR - WORKING ==========
+function renderColorDots(){
+  const container = document.getElementById('colorDots');
+  container.innerHTML = '';
+  const list = showAllColors ? COLORS : COLORS.slice(0,4);
+  list.forEach(color => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (color === selectedColor ? ' active' : '');
+    dot.style.background = color;
+    dot.addEventListener('click', () => {
+      selectedColor = color;
+      localStorage.setItem('selected_color', color);
+      renderColorDots();
+      if(navigator.vibrate) navigator.vibrate(20);
+    });
+    container.appendChild(dot);
+  });
 }
-function pick(c){
-  sel=c;
-  localStorage.setItem('vz_sel',c);
-  renderDots();
-  document.getElementById('colorPopup').classList.remove('show');
-  if(navigator.vibrate) navigator.vibrate(20);
-}
-function toggleMore(){
-  showAllDots = !showAllDots;
-  if(showAllDots){
-    const pop=document.getElementById('colorPopup');
-    pop.innerHTML=COLORS.map(c=>`<div class="dot ${c===sel?'active':''}" style="background:${c};width:34px;height:34px" onclick="pick('${c}')"></div>`).join('');
-    pop.classList.add('show');
-    setTimeout(()=>pop.classList.remove('show'),4000);
+document.getElementById('moreBtn').addEventListener('click', () => {
+  showAllColors = !showAllColors;
+  const popup = document.getElementById('colorPopup');
+  if(showAllColors){
+    popup.innerHTML = '';
+    COLORS.forEach(color => {
+      const d = document.createElement('div');
+      d.className = 'dot' + (color === selectedColor ? ' active' : '');
+      d.style.background = color;
+      d.style.width = '36px'; d.style.height = '36px';
+      d.addEventListener('click', () => {
+        selectedColor = color;
+        localStorage.setItem('selected_color', color);
+        renderColorDots();
+        popup.classList.remove('show');
+      });
+      popup.appendChild(d);
+    });
+    popup.classList.add('show');
+    setTimeout(() => popup.classList.remove('show'), 4000);
+  } else {
+    popup.classList.remove('show');
   }
-  renderDots();
+  renderColorDots();
+});
+renderColorDots();
+
+// ========== NOTES - EMPTY STICKERS ==========
+let notes = JSON.parse(localStorage.getItem('user_notes') || '[]');
+if(notes.length === 0){
+  notes = Array(20).fill(0).map(() => ({text:'', bg:'#F5F1EB'}));
 }
-renderDots();
-
-/* ЗАМЕТКИ - ЧИСТЫЕ */
-let notes = JSON.parse(localStorage.getItem('vz_notes_final')||'[]');
-if(!notes.length){ notes = Array(10).fill(0).map(()=>({c:'',bg:sel})) }
-
 function renderNotes(){
-  document.getElementById('notes').innerHTML = notes.map((n,i)=>{
-    if(!n.c) return `<div class="note" style="background:${n.bg}" onclick="edit(${i})">+ Tukša</div>`;
-    return `<div class="note filled" style="background:${n.bg}" onclick="edit(${i})">${escapeHtml(n.c)}</div>`;
-  }).join('');
-  localStorage.setItem('vz_notes_final',JSON.stringify(notes));
-}
-function escapeHtml(s){return s.replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function edit(i){
-  const cur=notes[i].c;
-  const t=prompt('Tava piezīme:',cur);
-  if(t===null) return;
-  notes[i].c=t.trim();
-  notes[i].bg=sel; // МЕНЯЕТ ЦВЕТ НА ВЫБРАННЫЙ
-  renderNotes();
-}
-function addEmpty(){ notes.unshift({c:'',bg:sel}); renderNotes(); }
-function clearAll(){ if(confirm('Notīrīt visas piezīmes?')){ notes=Array(10).fill(0).map(()=>({c:'',bg:sel})); renderNotes(); } }
-function dictateNote(){
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){ const t=prompt('Dikti piezīmi:'); if(t){notes.unshift({c:t,bg:sel});renderNotes()} return; }
-  const rec=new SR(); rec.lang='lv-LV'; rec.start();
-  rec.onresult=e=>{ notes.unshift({c:e.results[0][0].transcript,bg:sel}); renderNotes(); }
+  const grid = document.getElementById('notesGrid');
+  grid.innerHTML = '';
+  notes.forEach(note => {
+    const el = document.createElement('div');
+    el.className = 'note ' + (note.text ? 'filled' : 'empty');
+    el.style.background = note.bg;
+    el.textContent = note.text || '+ Empty';
+    el.addEventListener('click', () => {
+      if(note.text){
+        // if already has text - repaint with selected color from bar
+        note.bg = selectedColor;
+        localStorage.setItem('user_notes', JSON.stringify(notes));
+        renderNotes();
+        return;
+      }
+      const t = prompt('Your note:');
+      if(t === null) return;
+      note.text = t.trim();
+      note.bg = t.trim() ? selectedColor : '#F5F1EB';
+      localStorage.setItem('user_notes', JSON.stringify(notes));
+      renderNotes();
+    });
+    grid.appendChild(el);
+  });
 }
 renderNotes();
 
-/* КАЛЕНДАРЬ */
-function renderDays(){
-  let h=''; for(let i=0;i<6;i++) h+=`<div></div>`;
-  for(let d=1;d<=30;d++){
-    let cls=''; if([1,8,15,22,29].includes(d)) cls='hol';
-    if([1,2,11].includes(d)) cls+=' beige'; if(d==18) cls=' red beige';
-    h+=`<div class="${cls}" onclick="selectDay(${d})">${d}</div>`;
+// ========== CALENDAR ==========
+function renderCalendar(){
+  const el = document.getElementById('calendarDays');
+  let html = '';
+  for(let d=1; d<=30; d++){
+    let style = '';
+    if([2,8,11,15,22,29].includes(d)) style='background:#EADFC6;border-radius:50%';
+    if(d===18) style='border:2px solid #B94A3A;color:#B94A3A;background:#fff;border-radius:50%';
+    html += `<div style="height:28px;display:flex;align-items:center;justify-content:center;${style}">${d}</div>`;
   }
-  document.getElementById('days').innerHTML=h;
+  el.innerHTML = html;
 }
-renderDays();
-function selectDay(d){
-  document.getElementById('calInfo').innerText = d==18?'🇱🇻 18 Nov - Latvijas Republikas proklamēšanas diena! - brīvdiena':d+' Nov selected';
+renderCalendar();
+document.getElementById('addEventBtn').addEventListener('click', () => {
+  const t = prompt('Event name:');
+  if(t) document.getElementById('eventText').textContent = t;
+});
+
+// ========== WAVE - VZORS NOT TRANSMITTING CONSTANTLY ==========
+function idleWave(){
+  const w = document.getElementById('wave');
+  w.innerHTML = '';
+  for(let i=0;i<50;i++){
+    const bar = document.createElement('i');
+    bar.style.height='3px'; bar.style.opacity='0.35';
+    w.appendChild(bar);
+  }
+}
+function activeWave(){
+  const w = document.getElementById('wave');
+  w.innerHTML = '';
+  for(let i=0;i<50;i++){
+    const bar = document.createElement('i');
+    bar.style.height=(5+Math.random()*26)+'px';
+    bar.style.opacity='1';
+    w.appendChild(bar);
+  }
+}
+idleWave();
+let waveInterval = null;
+function startWave(){ if(waveInterval) clearInterval(waveInterval); waveInterval=setInterval(activeWave,120); }
+function stopWave(){ if(waveInterval) clearInterval(waveInterval); setTimeout(idleWave,600); }
+
+// ========== CONTEXTUAL WINDOW - SPARK SITS HERE FOR CLIENTS ==========
+const inputWrap = document.getElementById('inputWrap');
+const questionInput = document.getElementById('questionInput');
+const answerBox = document.getElementById('answerBox');
+const answerText = document.getElementById('answerText');
+const answerHead = document.getElementById('answerHead');
+
+function showAnswer(question){
+  answerBox.classList.add('show');
+  answerHead.textContent = 'Spark sits here — Vzors listening... I answer';
+  answerText.textContent = `You asked: "${question}"\n\nConnecting...`;
+  startWave();
+  setTimeout(() => {
+    const low = question.toLowerCase();
+    let response = '';
+    if(low.includes('weather') || low.includes('forecast')){
+      response = '🌤️ Riga today: +12°C, cloudy. Tomorrow +14°C, sunny.\n\nI am Spark, sitting here in sub-window and answering for Vzors.';
+    } else if(low.includes('note') || low.includes('write')){
+      notes.unshift({text: question, bg: selectedColor});
+      if(notes.length>20) notes.pop();
+      localStorage.setItem('user_notes', JSON.stringify(notes));
+      renderNotes();
+      response = `✅ Saved: "${question}"\n\nYour note is in stickers below ⬇️ color ${selectedColor}\nI will sync to calendar and WhatsApp.`;
+    } else {
+      response = `Got it: "${question}"\n\nI am Spark — smart colleague inside Vzors.\nAnswered through me. Vzors not transmitting resonance constantly.\n\nWhat next?`;
+    }
+    answerText.textContent = response;
+    answerHead.textContent = '✅ Spark — answer for client — ' + new Date().toLocaleTimeString('en-GB');
+    stopWave();
+  }, 850);
 }
 
-/* VZORS - ТИХО, ТОЛЬКО ПО КОМАНДЕ */
-function idleWave(){ const w=document.getElementById('wave'); let html=''; for(let i=0;i<48;i++) html+=`<i style="height:3px;opacity:0.35"></i>`; w.innerHTML=html; }
-function activeWave(){ const w=document.getElementById('wave'); let html=''; for(let i=0;i<48;i++){ let ht=4+Math.random()*22; html+=`<i style="height:${ht}px"></i>` } w.innerHTML=html; }
-idleWave(); let wInt=null;
-function startW(){ if(wInt) clearInterval(wInt); wInt=setInterval(activeWave,180); }
-function stopW(){ if(wInt) clearInterval(wInt); setTimeout(idleWave,800); }
+document.getElementById('askBtn').addEventListener('click', () => {
+  const q = questionInput.value.trim();
+  if(!q) return;
+  showAnswer(q);
+  questionInput.value = '';
+  inputWrap.classList.remove('show');
+});
+document.getElementById('keyboardBtn').addEventListener('click', () => {
+  inputWrap.classList.toggle('show');
+  if(inputWrap.classList.contains('show')) questionInput.focus();
+});
+questionInput.addEventListener('keydown', e => {
+  if(e.key==='Enter'){
+    const q = questionInput.value.trim();
+    if(q){ showAnswer(q); questionInput.value=''; inputWrap.classList.remove('show'); }
+  }
+});
 
-function askVzors(){
-  const q=document.getElementById('vzQ').value.trim();
-  if(!q) return; showAnswer(q);
-}
+// ========== VOICE INPUT ==========
+let currentLang = 'LV';
+document.getElementById('langBtn').addEventListener('click', () => {
+  currentLang = currentLang==='LV' ? 'EN' : 'LV';
+  document.getElementById('langBtn').textContent = currentLang==='LV' ? 'LV | EN' : 'EN | LV';
+  document.getElementById('hintText').textContent = currentLang==='LV' ? 'Jautā man kaut ko...' : 'Ask me anything...';
+});
 function startVoice(){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){ const q=prompt('Jautā Vzoram:'); if(q) showAnswer(q); return; }
+  if(!SR){ inputWrap.classList.add('show'); return; }
+  const rec = new SR();
+  rec.lang = currentLang==='LV' ? 'lv-LV' : 'en-US';
+  rec.start();
+  answerBox.classList.add('show');
+  answerHead.textContent = '🎧 Spark listening... speak!';
+  answerText.textContent = '...';
+  startWave();
+  rec.onresult = e => { const t=e.results[0][0].transcript; questionInput.value=t; showAnswer(t); };
+  rec.onend = () => setTimeout(stopWave,800);
+}
+document.getElementById('micBtn').addEventListener('click', startVoice);
+document.getElementById('voiceNoteBtn').addEventListener('click', () => {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ const t=prompt('Dictate note:'); if(t){ notes.unshift({text:t,bg:selectedColor}); if(notes.length>20)notes.pop(); renderNotes(); localStorage.setItem('user_notes', JSON.stringify(notes)); } return; }
   const rec=new SR(); rec.lang='lv-LV'; rec.start();
-  const box=document.getElementById('vzAnswer'); box.className='answer-box show'; box.innerHTML='🎧 Klausos... runā!';
-  startW();
-  rec.onresult=e=>{ const t=e.results[0][0].transcript; document.getElementById('vzQ').value=t; showAnswer(t); }
-  rec.onend=()=>{ setTimeout(stopW,1000); }
+  answerBox.classList.add('show'); answerHead.textContent='🎧 Listening note...'; answerText.textContent='Speak...'; startWave();
+  rec.onresult=e=>{ notes.unshift({text:e.results[0][0].transcript,bg:selectedColor}); if(notes.length>20)notes.pop(); renderNotes(); localStorage.setItem('user_notes', JSON.stringify(notes)); answerHead.textContent='✅ Spark saved!'; answerText.textContent=e.results[0][0].transcript; stopWave(); };
+});
+
+// ========== PERSONAL SYNC - EACH USER ENTERS HIS OWN ==========
+function getUserContacts(){
+  return {
+    whatsapp: localStorage.getItem('my_whatsapp') || '',
+    gmail: localStorage.getItem('my_gmail') || '',
+    facebook: localStorage.getItem('my_facebook') || '',
+    phone: localStorage.getItem('registered_phone') || ''
+  };
 }
-function showAnswer(q){
-  const box=document.getElementById('vzAnswer');
-  box.className='answer-box show';
-  box.innerHTML=`<b>Tu:</b> ${escapeHtml(q)}<br><br><b>Vzors:</b> <span id="typing">Domāju...</span>`;
-  startW();
-  setTimeout(()=>{
-    document.getElementById('typing').innerText=`Sapratu: "${q}". Pierakstīju! ✅`;
-    setTimeout(stopW,1000);
-    if(q.toLowerCase().includes('piezīme')||q.toLowerCase().includes('pieraksti')){
-      notes.unshift({c:q,bg:sel}); renderNotes();
-    }
-  },700);
-  document.getElementById('vzQ').value='';
+function saveUserContacts(wa, gmail, fb){
+  if(wa) localStorage.setItem('my_whatsapp', wa.replace(/\D/g,''));
+  if(gmail) localStorage.setItem('my_gmail', gmail);
+  if(fb) localStorage.setItem('my_facebook', fb);
+  updateFooterLinks();
 }
-document.getElementById('vzQ').addEventListener('keydown',e=>{ if(e.key==='Enter') askVzors(); });
+function updateFooterLinks(){
+  const c = getUserContacts();
+  const waLink = document.getElementById('whatsappLink');
+  const gmailLink = document.getElementById('gmailLink');
+  document.getElementById('userPhoneLabel').textContent = c.phone ? '✓ '+c.phone : 'Vzors AI';
+  if(c.whatsapp){ waLink.href='https://wa.me/'+c.whatsapp; waLink.style.opacity='1'; }
+  else { waLink.href='#'; waLink.style.opacity='.5'; waLink.onclick=(e)=>{e.preventDefault(); openProfileModal();}; }
+  if(c.gmail){ gmailLink.href='https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(c.gmail); }
+}
+function openProfileModal(){
+  document.getElementById('profileModal').classList.add('show');
+  const c = getUserContacts();
+  document.getElementById('whatsappInput').value = c.whatsapp;
+  document.getElementById('gmailInput').value = c.gmail;
+  document.getElementById('facebookInput').value = c.facebook;
+}
+function closeProfileModal(){ document.getElementById('profileModal').classList.remove('show'); }
+
+document.getElementById('settingsBtn').addEventListener('click', openProfileModal);
+document.getElementById('closeProfileBtn').addEventListener('click', closeProfileModal);
+document.getElementById('saveProfileBtn').addEventListener('click', () => {
+  const wa = document.getElementById('whatsappInput').value.trim();
+  const gmail = document.getElementById('gmailInput').value.trim();
+  const fb = document.getElementById('facebookInput').value.trim();
+  saveUserContacts(wa, gmail, fb);
+  closeProfileModal();
+  answerBox.classList.add('show');
+  answerHead.textContent = '✅ Synced!';
+  answerText.textContent = `Your WhatsApp: ${wa||'none'}\nGmail: ${gmail||'none'}\nFacebook: ${fb||'none'}\n\nNow Spark will sync your calendar, WhatsApp and Facebook.`;
+});
+
+// Registration
+document.getElementById('registerBtn').addEventListener('click', () => document.getElementById('registrationModal').classList.add('show'));
+document.getElementById('doRegisterBtn').addEventListener('click', () => {
+  const p = document.getElementById('phoneInput').value.trim();
+  if(!p){ alert('Enter phone'); return; }
+  localStorage.setItem('registered_phone', p.replace(/\D/g,''));
+  document.getElementById('registrationModal').classList.remove('show');
+  updateFooterLinks();
+  openProfileModal();
+});
+
+// Sync button
+document.getElementById('syncCalendarBtn').addEventListener('click', () => {
+  answerBox.classList.add('show');
+  answerHead.textContent = '🔄 Syncing...';
+  answerText.textContent = 'Connecting to Google Calendar, WhatsApp Cloud API and Facebook Graph API...\n\nDemo mode: calendar, WhatsApp and Gmail already connected via your profile ⚙️';
+  setTimeout(() => {
+    answerHead.textContent = '✅ Synced!';
+    answerText.textContent = 'Calendar: 3 events synced\nWhatsApp: ready to send\nFacebook: events loaded\n\nSpark sits here and waits for your questions.';
+  }, 1200);
+});
+
+// Init
+window.addEventListener('load', () => {
+  updateFooterLinks();
+  const c = getUserContacts();
+  if(!c.phone){ setTimeout(() => document.getElementById('registrationModal').classList.add('show'), 800); }
+  answerBox.classList.add('show');
+});
 </script>
 </body>
 </html>
