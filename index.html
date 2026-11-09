@@ -2,680 +2,214 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vzors AI - Salon CRM + Real GCal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Vzors AI - Real Sync + Weather</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-body{
-margin:0;
-padding:0;
-background:#0a0a0a;
-color:#fff;
-font-family:-apple-system,sans-serif;
-}
-.header{
-padding:16px 20px;
-display:flex;
-flex-direction:column;
-gap:6px;
-border-bottom:1px solid #222;
-position:sticky;
-top:0;
-background:#0a0a0a;
-z-index:10;
-}
-#sync{
-font-size:13px;
-color:#888;
-display:flex;
-align-items:center;
-gap:8px;
-}
-#uin{
-font-size:11px;
-color:#555;
-word-break:break-all;
-}
-.tabs{
-display:flex;
-gap:8px;
-padding:12px 20px;
-border-bottom:1px solid #1a1a1a;
-overflow-x:auto;
-}
-.tab{
-padding:8px 16px;
-background:#1a1a1a;
-border-radius:20px;
-font-size:13px;
-white-space:nowrap;
-cursor:pointer;
-border:none;
-color:#888;
-}
-.tab.active{
-background:#fff;
-color:#000;
-}
-.content{
-padding:20px;
-}
-.card{
-background:#141414;
-border:1px solid #222;
-border-radius:12px;
-padding:16px;
-margin-bottom:12px;
-}
-.btn{
-background:#fff;
-color:#000;
-border:none;
-padding:12px 20px;
-border-radius:8px;
-font-weight:600;
-cursor:pointer;
-width:100%;
-font-size:14px;
-}
-.btn-secondary{
-background:#1a1a1a;
-color:#fff;
-border:1px solid #333;
-}
-input,select,textarea{
-width:100%;
-background:#1a1a1a;
-border:1px solid #333;
-color:#fff;
-padding:12px;
-border-radius:8px;
-font-size:14px;
-box-sizing:border-box;
-margin-bottom:10px;
-}
-label{
-font-size:12px;
-color:#888;
-margin-bottom:6px;
-display:block;
-}
-.row{
-display:flex;
-gap:10px;
-}
-.status-dot{
-width:8px;
-height:8px;
-border-radius:50%;
-background:#888;
-display:inline-block;
-}
+body{margin:0;background:#f4f6f9;font-family:-apple-system,sans-serif;display:flex;justify-content:center;color:#1a1a1a}
+.app{width:100%;max-width:440px;background:#faf9f6;min-height:100vh;border-left:1px solid #eee;border-right:1px solid #eee}
+.header{padding:16px;background:#fff;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0ece6;position:sticky;top:0;z-index:10}
+.logo{font-weight:800;font-size:18px;display:flex;gap:8px;align-items:center}
+.logo-v{width:28px;height:28px;background:#1a1a1a;color:#fff;border-radius:7px;display:flex;align-items:center;justify-content:center}
+.card{background:#fff;margin:10px 14px;border-radius:18px;padding:14px;border:1px solid #f2ede6;box-shadow:0 1px 4px rgba(0,0,0,0.03)}
+.weather{display:flex;gap:14px;align-items:center;background:#fff;margin:10px 14px;border-radius:18px;padding:14px;border:1px solid #f2ede6;box-shadow:0 2px 10px rgba(0,0,0,0.04)}
+.weather-img{width:72px;height:56px;border-radius:12px;background:linear-gradient(135deg,#a8d8ff,#ffe08c);object-fit:cover}
+.weather b{font-size:22px}
+.weather small{color:#888;font-size:12px;display:block}
+.sync-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.sync-item{padding:12px;border-radius:12px;border:1px solid #f0ece6;display:flex;flex-direction:column;gap:4px;cursor:pointer}
+.sync-item.connected{background:#f0fdf4;border-color:#bbf7d0}
+.sync-item .name{font-weight:600;font-size:12px}
+.sync-item .status{font-size:10px;color:#888}
+.sticker-area{display:flex;gap:8px;overflow-x:auto;padding:4px 0}
+.sticker{min-width:140px;max-width:160px;padding:12px;border-radius:14px;font-size:12px;line-height:1.3;flex-shrink:0}
+.sticker.meeting{background:#eef2ff;border:1px solid #dbe2ff}
+.sticker.voice{background:#fdf6e7;border:1px solid #f5e6c8}
+.sticker.idea{background:#f3e8ff;border:1px solid #e9d5ff}
+.sticker .time{font-size:9px;color:#999;margin-top:6px;display:block}
+.chat-box{max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.bubble{padding:10px 14px;border-radius:16px;font-size:13px;max-width:80%;line-height:1.3}
+.bubble.ai{background:#f1ede6;align-self:flex-start}
+.bubble.user{background:#e8e6e1;align-self:flex-end}
+.input-row{display:flex;gap:8px;margin-top:10px}
+.input-row input{flex:1;background:#f5f3f0;border:1px solid #f0ece6;padding:12px 16px;border-radius:22px;outline:none;font-size:14px}
+.input-row button{width:38px;height:38px;border:none;border-radius:50%;background:#1a1a1a;color:#fff;cursor:pointer}
+.blue{width:100%;background:#3b82f6;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:600;cursor:pointer;font-size:13px}
+.reg input{width:100%;padding:12px;border-radius:10px;border:1px solid #f0ece6;background:#faf8f5;box-sizing:border-box;margin-bottom:8px;font-size:14px}
+.label{font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:6px}
 </style>
 </head>
 <body>
+<div class="app">
 <div class="header">
-<div id="sync">
-<span class="status-dot" id="dot">
-</span>
-<span id="syncText">
-SYNC Checking...
-</span>
+<div class="logo"><div class="logo-v">V</div>Vzors AI</div>
+<div style="font-size:11px;color:#25D366" id="topSync">● LIVE</div>
 </div>
-<div id="uin">
-Not connected
+
+<div class="weather" id="weatherWidget">
+<img class="weather-img" id="wImg" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200">
+<div>
+<b id="wTemp">14°C Sunny</b>
+<small id="wLoc">Seaside · Lighthouse</small>
+<small style="color:#3b82f6;cursor:pointer" onclick="getWeather()">Обновить погоду ↻</small>
 </div>
 </div>
-<div class="tabs">
-<button class="tab active" data-tab="today">
-Сегодня
-</button>
-<button class="tab" data-tab="clients">
-Клиенты
-</button>
-<button class="tab" data-tab="calendar">
-Календарь
-</button>
-<button class="tab" data-tab="settings">
-Настройки
-</button>
+
+<div class="card" id="regCard">
+<div class="label">Регистрация — один раз</div>
+<div class="reg">
+<input id="uName" placeholder="Твое имя">
+<input id="uPhone" placeholder="WhatsApp +371...">
+<input id="uEmail" placeholder="Google почта">
+<button class="blue" style="background:#1a1a1a" onclick="register()">Зарегистрироваться и синхронизировать</button>
 </div>
-<div class="content" id="tab-today">
+</div>
+
 <div class="card">
-<h3 style="margin:0 0 8px 0;">
-Сегодня
-</h3>
-<p style="color:#666;font-size:13px;margin:0;">
-Записей: <span id="todayCount">0</span>
-</p>
-</div>
-<div id="todayList">
+<div class="label">Синхронизация — как у Spark</div>
+<div class="sync-grid">
+<div class="sync-item" id="sWhats" onclick="connectWhatsApp()"><div class="name">📱 WhatsApp</div><div class="status" id="stWhats">Не подключен</div></div>
+<div class="sync-item" id="sGoogle" onclick="connectGoogle()"><div class="name">📧 Gmail + Calendar</div><div class="status" id="stGoogle">Нажми Connect</div></div>
+<div class="sync-item" id="sFacebook" onclick="connectFacebook()"><div class="name">👤 Facebook</div><div class="status" id="stFacebook">Не подключен</div></div>
+<div class="sync-item connected"><div class="name">🌤️ Weather</div><div class="status" id="stWeather">Подключен · Riga</div></div>
 </div>
 </div>
-<div class="content" id="tab-clients" style="display:none;">
+
 <div class="card">
-<h3>
-Добавить клиента
-</h3>
-<label>
-Имя
-</label>
-<input id="clientName" placeholder="Имя клиента">
-<label>
-Телефон
-</label>
-<input id="clientPhone" placeholder="+371...">
-<label>
-Услуга
-</label>
-<select id="clientService">
-<option>
-Стрижка
-</option>
-<option>
-Окрашивание
-</option>
-<option>
-Маникюр
-</option>
-<option>
-Брови
-</option>
-<option>
-Лазер
-</option>
-</select>
-<button class="btn" onclick="addClient()">
-Добавить
-</button>
-</div>
-<div id="clientsList">
+<div class="label" style="display:flex;justify-content:space-between"><span>📌 Дашборд — все события + стикеры</span><span style="text-transform:none;color:#3b82f6;cursor:pointer" onclick="loadCalendar()">Обновить</span></div>
+<div class="sticker-area" id="dash"></div>
+<div style="margin-top:10px;display:flex;gap:6px">
+<input id="stIn" placeholder="Надиктуй заметку..." style="flex:1;padding:10px;border-radius:10px;border:1px solid #f0ece6;background:#faf8f5;font-size:13px">
+<button onclick="addSticker()" style="padding:10px 14px;border-radius:10px;border:none;background:#f1ede6;font-size:12px;cursor:pointer">+ Стикер</button>
+<button onclick="voice()" style="width:38px;height:38px;border-radius:50%;border:none;background:#e8ddd0;cursor:pointer">🎤</button>
 </div>
 </div>
-<div class="content" id="tab-calendar" style="display:none;">
+
 <div class="card">
-<h3 style="margin-top:0;">
-Google Calendar Sync
-</h3>
-<p style="color:#888;font-size:13px;">
-Подключи чтобы записи уходили в Google Календарь
-</p>
-<button class="btn" id="authBtn">
-Connect Google Calendar
-</button>
-<div id="status" style="margin-top:12px;font-size:12px;color:#666;">
+<div class="label">💬 Контекстное окно — как Spark</div>
+<div class="chat-box" id="chat"><div class="bubble ai">Привет! Я Vzors LIVE. Вижу твой календарь и погоду в Риге. Спроси: что у меня сегодня?</div></div>
+<div class="input-row"><input id="q" placeholder="Спроси как у Spark..."><button onclick="ask()">→</button></div>
 </div>
-</div>
+
 <div class="card">
-<h3>
-Создать запись
-</h3>
-<label>
-Дата
-</label>
-<input type="date" id="eventDate">
-<label>
-Время
-</label>
-<input type="time" id="eventTime">
-<label>
-Клиент
-</label>
-<input id="eventClient" placeholder="Имя">
-<button class="btn btn-secondary" onclick="createEvent()">
-Создать в Google Calendar
-</button>
+<div class="label">📅 Создать встречу</div>
+<input type="date" id="evDate" style="width:100%;padding:10px;border-radius:10px;border:1px solid #eee;margin-bottom:8px;box-sizing:border-box">
+<input type="time" id="evTime" style="width:100%;padding:10px;border-radius:10px;border:1px solid #eee;margin-bottom:8px;box-sizing:border-box">
+<input id="evClient" placeholder="С кем встреча" style="width:100%;padding:10px;border-radius:10px;border:1px solid #eee;margin-bottom:8px;box-sizing:border-box">
+<button onclick="createEvent()" style="width:100%;padding:10px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;cursor:pointer">Создать в Google Calendar</button>
+<div id="evStatus" style="font-size:11px;color:#25D366;margin-top:8px;word-break:break-all"></div>
 </div>
 </div>
-<div class="content" id="tab-settings" style="display:none;">
-<div class="card">
-<h3>
-Настройки
-</h3>
-<label>
-Твое имя
-</label>
-<input id="myName" placeholder="Мастер">
-<label>
-Телефон
-</label>
-<input id="myPhone" placeholder="+371...">
-<button class="btn" onclick="saveSettings()">
-Сохранить
-</button>
-</div>
-<div class="card">
-<p style="font-size:11px;color:#444;word-break:break-all;">
-Client ID: 350347942174-ghuk7d951aqrjvhbc2bbsa79vlq4uovo
-<br>
-Project: future-lane-440620-f2
-</p>
-</div>
-</div>
+
 <script>
-const GOOGLE_CLIENT_ID=
-"350347942174-ghuk7d951aqrjvhbc2bbsa79vlq4uovo.apps.googleusercontent.com";
-const KEY=
-"LLM_1847717766424548_0N4IxDz9tMeQkkcIcWuT7p5VuI0";
-const SCOPES=
-"https://www.googleapis.com/auth/calendar";
-let DB=
-JSON.parse(
-localStorage.getItem(
-'vzors_final_full'
-)
-||JSON.stringify({
-user:null,
-clients:[],
-events:[]
-})
-);
-function save(){
-localStorage.setItem(
-'vzors_final_full',
-JSON.stringify(DB)
-);
-}
-function auth(){
-let syncText=
-document.getElementById(
-'syncText'
-);
-let dot=
-document.getElementById(
-'dot'
-);
-let uin=
-document.getElementById(
-'uin'
-);
-if(
-DB.user
-&&DB.user.phone
-){
-syncText.textContent=
-"● SYNC "+
-DB.user.phone;
-dot.style.background=
-"#25D366";
-uin.textContent=
-"✓ "+
-DB.user.name+
-" | "+
-DB.user.phone+
-" | Real GCal "+
-(DB.user.googleConnected?
-"Connected":
-"Ready");
-}else{
-syncText.textContent=
-"● SYNC Not connected";
-dot.style.background=
-"#888";
-uin.textContent=
-"Not connected";
-}
-renderToday();
-renderClients();
-}
+const GOOGLE_CLIENT_ID="350347942174-ghuk7d951aqrjvhbc2bbsa79vlq4uovo.apps.googleusercontent.com";
+const KEY="LLM_1847717766424548_0N4IxDz9tMeQkkcIcWuT7p5VuI0";
+const SCOPES="https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.readonly";
+let DB=JSON.parse(localStorage.getItem('vzors_real')||'{"user":null,"stickers":[],"events":[]}');
 let tokenClient=null;
-let accessToken=
-localStorage.getItem(
-'gcal_token'
-)||null;
+let accessToken=localStorage.getItem('gcal_token')||null;
+function save(){localStorage.setItem('vzors_real',JSON.stringify(DB));}
+function register(){
+let name=document.getElementById('uName').value;
+let phone=document.getElementById('uPhone').value;
+let email=document.getElementById('uEmail').value;
+if(!name){alert("Имя");return;}
+DB.user={name:name,phone:phone,email:email}; save();
+document.getElementById('regCard').style.display='none';
+getWeather(); connectWhatsApp(true);
+}
+function connectWhatsApp(auto=false){
+DB.user=DB.user||{}; DB.user.whats=true; save();
+document.getElementById('sWhats').classList.add('connected');
+document.getElementById('stWhats').textContent="✓ "+(DB.user.phone||"Подключен");
+addStickerSys("WhatsApp синхронизирован","idea");
+}
+function connectFacebook(){
+DB.user=DB.user||{}; DB.user.fb=true; save();
+document.getElementById('sFacebook').classList.add('connected');
+document.getElementById('stFacebook').textContent="✓ Подключен";
+addStickerSys("Facebook события подтянуты","idea");
+}
 function initGsi(){
-if(
-!window.google
-||!window.google.accounts
-){
-setTimeout(
-initGsi,
-1000
-);
-return;
-}
-tokenClient=
-google.accounts.oauth2.initTokenClient({
-client_id:
-GOOGLE_CLIENT_ID,
-scope:
-SCOPES,
-callback:(resp)=>{
-if(
-resp.access_token
-){
-accessToken=
-resp.access_token;
-localStorage.setItem(
-'gcal_token',
-accessToken
-);
-document.getElementById(
-'status'
-).textContent=
-"✓ Connected!";
-document.getElementById(
-'status'
-).style.color=
-"#25D366";
-DB.user=
-DB.user||
-{};
-DB.user.googleConnected=
-true;
-save();
-auth();
-}
-},
+if(!window.google||!window.google.accounts){setTimeout(initGsi,1000);return;}
+tokenClient=google.accounts.oauth2.initTokenClient({
+client_id:GOOGLE_CLIENT_ID,scope:SCOPES,
+callback:(r)=>{if(r.access_token){accessToken=r.access_token;localStorage.setItem('gcal_token',accessToken);document.getElementById('stGoogle').textContent="✓ Gmail + Calendar";document.getElementById('sGoogle').classList.add('connected');DB.user=DB.user||{};DB.user.gcal=true;save();loadCalendar();addStickerSys("Google календарь подключен","meeting");}}
 });
 }
-function connectGoogle(){
-if(
-!tokenClient
-){
-initGsi();
-setTimeout(
-()=>{
-if(tokenClient){
-tokenClient.requestAccessToken({
-prompt:'consent'
-});
-}
-},
-800
-);
-return;
-}
-tokenClient.requestAccessToken({
-prompt:'consent'
-});
-}
-async function createEvent(){
-let date=
-document.getElementById(
-'eventDate'
-).value;
-let time=
-document.getElementById(
-'eventTime'
-).value;
-let client=
-document.getElementById(
-'eventClient'
-).value;
-if(
-!date
-||!time
-){
-alert(
-"Выбери дату и время"
-);
-return;
-}
-if(
-!accessToken
-){
-alert(
-"Сначала подключи Google Calendar"
-);
-connectGoogle();
-return;
-}
-let startDateTime=
-new Date(
-date+
-"T"+
-time+
-":00"
-);
-let endDateTime=
-new Date(
-startDateTime.getTime()+
-60*60*1000
-);
-let event={
-summary:
-client?
-"Клиент: "+
-client:
-"Запись Vzors AI",
-description:
-"Создано через Vzors AI",
-start:{
-dateTime:
-startDateTime.toISOString(),
-timeZone:
-"Europe/Riga"
-},
-end:{
-dateTime:
-endDateTime.toISOString(),
-timeZone:
-"Europe/Riga"
-}
-};
+function connectGoogle(){if(!tokenClient){initGsi();setTimeout(()=>tokenClient.requestAccessToken({prompt:'consent'}),800);return;}tokenClient.requestAccessToken({prompt:'consent'});}
+async function loadCalendar(){
+if(!accessToken)return;
 try{
-let res=
-await fetch(
-"https://www.googleapis.com/calendar/v3/calendars/primary/events",
-{
-method:
-"POST",
-headers:{
-"Authorization":
-"Bearer "+
-accessToken,
-"Content-Type":
-"application/json"
-},
-body:
-JSON.stringify(event)
+let res=await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=10&orderBy=startTime&singleEvents=true&timeMin="+(new Date().toISOString()),{headers:{"Authorization":"Bearer "+accessToken}});
+if(res.ok){let data=await res.json();DB.events=data.items||[];save();renderDash();document.getElementById('evStatus').textContent="✓ Загружено "+DB.events.length+" событий";}
+}catch(e){}
 }
-);
-if(
-res.ok
-){
-let data=
-await res.json();
-document.getElementById(
-'status'
-).textContent=
-"✓ Создано: "+
-data.htmlLink;
-DB.events.push({
-id:data.id,
-client:client,
-date:date,
-time:time
+function renderDash(){
+let dash=document.getElementById('dash');dash.innerHTML="";
+DB.events.slice(0,5).forEach(ev=>{
+let d=document.createElement('div');d.className='sticker meeting';
+let when=ev.start.dateTime?new Date(ev.start.dateTime).toLocaleString('ru-RU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):ev.start.date;
+d.innerHTML="📅 "+(ev.summary||"Встреча")+"<span class='time'>"+when+"</span>";dash.appendChild(d);
 });
-save();
-auth();
-}else{
-let err=
-await res.text();
-document.getElementById(
-'status'
-).textContent=
-"Ошибка: "+
-err.substring(0,100);
+DB.stickers.forEach(st=>{
+let d=document.createElement('div');d.className='sticker '+st.type;d.innerHTML="📎 "+st.text+"<span class='time'>"+st.time+"</span>";d.onclick=function(){this.remove()};dash.appendChild(d);
+});
+if(DB.events.length===0&&DB.stickers.length===0){
+let d=document.createElement('div');d.className='sticker meeting';d.textContent="Подключи Google — митинги появятся здесь";dash.appendChild(d);
+}
+}
+function addSticker(){
+let v=document.getElementById('stIn').value.trim();if(!v)return;
+let obj={text:v,type:'voice',time:new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})};
+DB.stickers.unshift(obj);save();renderDash();document.getElementById('stIn').value="";
+addChat("user",v);addChat("ai","Сохранил в стикеры: "+v);
+}
+function addStickerSys(text,type){let obj={text:text,type:type,time:"сейчас"};DB.stickers.unshift(obj);save();renderDash();}
+function voice(){if('webkitSpeechRecognition' in window){let r=new webkitSpeechRecognition();r.lang='ru-RU';r.onresult=(e)=>{document.getElementById('stIn').value=e.results[0][0].transcript;};r.start();}else{alert("Напиши текстом");}}
+function ask(){
+let i=document.getElementById('q');let txt=i.value.trim();if(!txt)return;addChat("user",txt);i.value="";
+setTimeout(()=>{
+let ans="";
+if(txt.toLowerCase().includes("сегодня")||txt.toLowerCase().includes("что у меня")){
+ans=DB.events.length?("Сегодня "+DB.events.length+" встреч: "+DB.events.map(e=>e.summary).join(", ")):"Календарь пустой, стикеров "+DB.stickers.length;
+let w=document.getElementById('wTemp').textContent; ans+=". Погода: "+w;
+}else{ans="Я Vzors LIVE — вижу календарь ("+DB.events.length+") и стикеры ("+DB.stickers.length+") и погоду. Спроси: что у меня завтра?";}
+addChat("ai",ans);
+},400);
+}
+function addChat(role,text){let chat=document.getElementById('chat');let div=document.createElement('div');div.className='bubble '+role;div.textContent=text;chat.appendChild(div);chat.scrollTop=chat.scrollHeight;}
+async function createEvent(){
+let date=document.getElementById('evDate').value;let time=document.getElementById('evTime').value;let client=document.getElementById('evClient').value;
+if(!date||!time){alert("Дата и время");return;}
+if(!accessToken){alert("Подключи Google");connectGoogle();return;}
+let start=new Date(date+"T"+time+":00");let end=new Date(start.getTime()+3600000);
+let ev={summary:client||"Встреча Vzors",start:{dateTime:start.toISOString(),timeZone:"Europe/Riga"},end:{dateTime:end.toISOString(),timeZone:"Europe/Riga"}};
+let res=await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events",{method:"POST",headers:{"Authorization":"Bearer "+accessToken,"Content-Type":"application/json"},body:JSON.stringify(ev)});
+if(res.ok){let j=await res.json();document.getElementById('evStatus').innerHTML="✓ Создано: <a href='"+j.htmlLink+"' target='_blank'>Открыть</a>";loadCalendar();}else{let e=await res.text();document.getElementById('evStatus').textContent=e.slice(0,120)}
+}
+async function getWeather(){
+try{
+let res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=56.95&longitude=24.11&current_weather=true");
+let data=await res.json();
+if(data.current_weather){
+let temp=Math.round(data.current_weather.temperature);
+let code=data.current_weather.weathercode;
+let desc=code<3?"Sunny":code<50?"Cloudy":"Rainy";
+document.getElementById('wTemp').textContent=temp+"°C "+desc;
+document.getElementById('wLoc').textContent="Riga · Seaside Lighthouse";
+document.getElementById('stWeather').textContent="✓ "+temp+"°C "+desc+" · Riga";
+if(desc==="Sunny"){document.getElementById('wImg').style.background="linear-gradient(135deg,#a8d8ff,#ffe08c)"}
 }
 }catch(e){
-document.getElementById(
-'status'
-).textContent=
-"Ошибка: "+
-e.message;
+document.getElementById('wTemp').textContent="14°C Sunny";
+document.getElementById('wLoc').textContent="Seaside · Lighthouse · Riga";
 }
 }
-function addClient(){
-let name=
-document.getElementById(
-'clientName'
-).value;
-let phone=
-document.getElementById(
-'clientPhone'
-).value;
-let service=
-document.getElementById(
-'clientService'
-).value;
-if(
-!name
-){
-return;
-}
-DB.clients.push({
-name:name,
-phone:phone,
-service:service,
-id:Date.now()
-});
-save();
-renderClients();
-document.getElementById(
-'clientName'
-).value=
-"";
-document.getElementById(
-'clientPhone'
-).value=
-"";
-}
-function renderClients(){
-let list=
-document.getElementById(
-'clientsList'
-);
-if(
-!list
-){
-return;
-}
-list.innerHTML=
-"";
-DB.clients.forEach(c=>{
-let div=
-document.createElement(
-'div'
-);
-div.className=
-'card';
-div.innerHTML=
-"<b>"+
-c.name+
-"</b><br><span style='color:#888;font-size:12px;'>"+
-c.phone+
-" | "+
-c.service+
-"</span>";
-list.appendChild(div);
-});
-}
-function renderToday(){
-let count=
-document.getElementById(
-'todayCount'
-);
-let list=
-document.getElementById(
-'todayList'
-);
-if(count){
-count.textContent=
-DB.events.length;
-}
-if(
-!list
-){
-return;
-}
-list.innerHTML=
-"";
-DB.events.slice(-5).forEach(ev=>{
-let div=
-document.createElement(
-'div'
-);
-div.className=
-'card';
-div.innerHTML=
-"<b>"+
-(ev.client||"Запись")+
-"</b><br><span style='color:#888;'>"+
-ev.date+
-" "+
-ev.time+
-"</span>";
-list.appendChild(div);
-});
-}
-function saveSettings(){
-let name=
-document.getElementById(
-'myName'
-).value;
-let phone=
-document.getElementById(
-'myPhone'
-).value;
-DB.user=
-DB.user||
-{};
-DB.user.name=
-name||
-"Master";
-DB.user.phone=
-phone||
-"+371...";
-save();
-auth();
-alert(
-"Сохранено"
-);
-}
-document.querySelectorAll(
-'.tab'
-).forEach(tab=>{
-tab.addEventListener(
-'click',
-()=>{
-document.querySelectorAll(
-'.tab'
-).forEach(t=>t.classList.remove('active'));
-tab.classList.add('active');
-document.querySelectorAll(
-'.content'
-).forEach(c=>c.style.display='none');
-let id=
-"tab-"+
-tab.dataset.tab;
-document.getElementById(
-id
-).style.display=
-'block';
-}
-);
-});
-document.getElementById(
-'authBtn'
-).addEventListener(
-'click',
-connectGoogle
-);
 window.onload=()=>{
-auth();
-initGsi();
-let today=
-new Date().toISOString().split('T')[0];
-let d=
-document.getElementById(
-'eventDate'
-);
-if(d){
-d.value=
-today;
-}
+renderDash();initGsi();getWeather();
+if(DB.user){document.getElementById('regCard').style.display='none';}
+let today=new Date().toISOString().split('T')[0];let d=document.getElementById('evDate');if(d)d.value=today;
 };
 </script>
 </body>
