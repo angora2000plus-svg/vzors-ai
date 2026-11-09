@@ -1,58 +1,48 @@
 <!DOCTYPE html>
-<html lang="lv">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vzors AI Memory Manager</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<html lang="ru">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vzors AI</title>
 <style>
-:root{--bg:#f8f5ff;--card:#fff;--text:#1a1a2e;--accent:#7c5cff}
-body{background:var(--bg);color:var(--text);margin:0;font-family:Inter,system-ui}
-.app{max-width:420px;margin:0 auto;background:var(--card);min-height:100vh;padding-bottom:80px}
-#map{height:320px;border-radius:16px;margin:0 16px}
-.timeline{margin:12px 16px;background:#f8f5ff;border-radius:12px;padding:12px}
-.timeline-item{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid #eee}
-.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:420px;width:100%;background:#fff;display:flex;justify-content:space-around;padding:10px 0}
-.bottom button.active{color:#7c5cff}
+body{margin:0;background:#f3f6ff;font-family:Arial;display:flex;justify-content:center;min-height:100vh}
+.wrap{width:390px;background:white;min-height:100vh;padding:24px;box-shadow:0 0 40px rgba(0,0,0,.06)}
+h1{font-size:28px;margin:0} .pill{background:#eef2ff;padding:6px 12px;border-radius:20px;font-size:13px}
+.card{border:1px solid #eee;border-radius:16px;padding:16px;margin-top:16px}
+.btn{width:100%;background:#111;color:#fff;border:0;border-radius:12px;padding:14px;font-size:16px;cursor:pointer}
+input{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid #ddd;margin:8px 0}
+#reg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;padding:20px}
+#reg.open{display:flex} .box{background:white;border-radius:20px;padding:24px;width:100%;max-width:360px}
 </style>
 </head>
 <body>
-<div class="app">
-<div style="display:flex;justify-content:space-between;padding:16px 20px">
-<div>🌀 Vzors AI Memory Manager</div><div>LV EN</div></div>
+<div class="wrap">
+<h1>Vzors AI</h1>
+<div style="margin:8px 0"><span class="pill">14°C Рига</span> <span class="pill">LIVE Meta AI</span></div>
+<p style="color:gray;font-size:14px">Твой личный AI: календарь, WA, FB, Gmail. Заметки голосом и текстом.</p>
 
-<div style="margin:12px;background:#ede9ff;border-radius:16px;padding:14px;text-align:center">
-<h2>Laipni lūdzam! Reģistrēties / Pieteikties</h2>
-<button>Reģistrēties</button> <button>Pieteikties</button>
+<div class="card">
+<b>Попробуй чат</b>
+<div id="log" style="height:100px;overflow:auto;font-size:14px;margin:8px 0;background:#fafafa;padding:8px;border-radius:8px"></div>
+<input id="q" placeholder="Напиши..."><button class="btn" onclick="go()">Отправить в Llama</button>
 </div>
 
-<h3 style="padding:0 16px">Ģeolokācija</h3>
-<div id="map"></div>
-
-<div class="timeline">
-<div><b>Maršruta hronoloģija • Šodien, 12. okt</b></div>
-<div class="timeline-item"><span>09:12 • Cafe Kluss</span><span>32 min • ☕</span></div>
-<div class="timeline-item"><span>10:45 • Rīgas Doms</span><span>25 min • 📍</span></div>
-<div class="timeline-item"><span>11:30 • Brīvības iela</span><span>15 min • 🔔</span></div>
-<div>🔔 14:00 • Apmeklēt aptieku • 200 m • Atgādināt</div>
+<button class="btn" style="margin-top:20px;background:#6c5cff" onclick="document.getElementById('reg').classList.add('open')">Войти / Регистрация →</button>
+<p style="text-align:center;color:gray;font-size:12px;margin-top:20px">vzors-ai.vercel.app • СТРОГО вариант</p>
 </div>
 
-<div class="bottom"><button class="active">🏠 Sākums</button><button>💬 Čats</button><button>📝 Piezīmes</button><button>⚙️ Iestatījumi</button></div>
-</div>
+<div id="reg"><div class="box">
+<h3>Регистрация Vzors</h3>
+<p style="font-size:13px;color:gray">Телефон = синхронизация календаря, WA, FB, Gmail. Заметки голосом и текстом.</p>
+<input placeholder="+371 2X XXX XXX"><input placeholder="Имя"><input placeholder="Gmail">
+<button class="btn" onclick="document.getElementById('reg').classList.remove('open')">Продолжить</button>
+<button onclick="document.getElementById('reg').classList.remove('open')" style="width:100%;margin-top:8px;background:none;border:none;color:gray">← Назад на фронт</button>
+</div></div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const map=L.map('map').setView([56.9496,24.1052],15);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-const pts=[[56.951,24.097],[56.949,24.105],[56.9515,24.121]];
-L.polyline(pts,{color:'#7c5cff',weight:4}).addTo(map);
-L.marker(pts[0]).addTo(map).bindPopup("Cafe Kluss 09:12");
-L.marker(pts[1]).addTo(map).bindPopup("Rīgas Doms 10:45");
-L.marker(pts[2]).addTo(map).bindPopup("Brīvības iela 11:30");
-if(navigator.geolocation){
-  navigator.geolocation.getCurrentPosition(p=>{
-    L.marker([p.coords.latitude,p.coords.longitude]).addTo(map).bindPopup("Tu šeit - sinhronizēts").openPopup();
-  });
+async function go(){
+ let v=document.getElementById('q').value; let l=document.getElementById('log');
+ if(!v) return; l.innerHTML+='<div>Ты: '+v+'</div>'; document.getElementById('q').value='';
+ let r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:v})});
+ let d=await r.json(); l.innerHTML+='<div><b>Vzors:</b> '+(d.reply||'нет ключа')+'</div>'; l.scrollTop=9999;
 }
 </script>
 </body>
