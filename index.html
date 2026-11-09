@@ -2,169 +2,98 @@
 <html lang="lv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Vzors AI - Approved Final Full</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vzors AI - Final</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#D4AF37;--gold-light:#E7C46A;--dark-bg:#131A26;--dark-card:#232F45;--border-dark:#34425C}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif}
-body{background:#070A10;display:flex;justify-content:center;padding:12px;min-height:100vh;color:#fff}
-.app{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;max-width:1300px}
-.phone{width:390px;min-height:880px;border-radius:42px;padding:24px 18px 18px;display:none;flex-direction:column;box-shadow:0 20px 70px rgba(0,0,0,.7);position:relative;overflow:hidden}
+:root{--paper:#fdfaf3;--gold:#D4AF37;--cobalt:#131A26}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:var(--paper);display:flex;justify-content:center;padding:10px;transition:.3s}
+.phone{width:390px;min-height:880px;border-radius:36px;padding:18px;display:none;flex-direction:column;transition:.3s}
 .phone.active{display:flex}
-
-/* ========== REGISTRACIJA BAR ========== */
-.dark{background:linear-gradient(180deg,#1E2838 0%,#131A26 100%);color:#E8E2D0;border:1.2px solid #2E3A4F}
-.brand-top{text-align:center;margin-bottom:8px}
-.brand-top .v-big{font-weight:900;letter-spacing:3px;font-size:30px;color:var(--gold-light);line-height:1}
-.brand-top .name{font-weight:800;font-size:18px;letter-spacing:0.5px;margin-top:2px}
-.spiral-wrap{display:flex;justify-content:center;margin:18px 0 20px}
-.spiral{width:98px;height:98px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#FFD87A 0%,#D4AF37 38%,#8C6B3A 78%);display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 0 0 8px rgba(212,175,55,.14),0 8px 30px rgba(0,0,0,.4)}
-.spiral::before{content:'';position:absolute;width:68px;height:68px;background:#1D2533;border-radius:50%;border:1px solid rgba(212,175,55,.2)}
-.spiral b{position:relative;z-index:1;font-size:44px;color:var(--gold);font-weight:300;letter-spacing:-2px}
-.h1{text-align:center;line-height:1.15;margin-bottom:8px}
-.h1 .lv{font-size:20px;font-weight:800;display:block}
-.h1 .en{font-weight:400;font-size:13px;opacity:.55;display:block;margin-top:4px;letter-spacing:0.2px}
-.row-lang{display:flex;justify-content:space-between;align-items:center;margin-top:26px;padding:0 2px}
-.row-lang .label-left b{font-size:13px;font-weight:700}
-.row-lang .label-left small{display:block;font-size:11px;opacity:.55;font-weight:400;margin-top:1px}
-.lang{display:flex;background:#222C3D;border-radius:22px;padding:4px;gap:4px;border:1px solid #2E3A4F}
-.lang span{padding:8px 18px;border-radius:18px;font-size:12px;font-weight:800;cursor:pointer;transition:.2s;color:#8A95A8}
-.lang span.on{background:linear-gradient(180deg,#E7C46A,#D4AF37);color:#000;box-shadow:0 2px 10px rgba(212,175,55,.3)}
-.label-input{margin:22px 2px 9px;font-size:12px;font-weight:600}
-.label-input small{display:block;font-weight:400;opacity:.55;margin-top:2px;font-size:11px}
-.input-box{background:#232F45;border:1.6px solid #34425C;border-radius:14px;padding:14px 15px;display:flex;justify-content:space-between;align-items:center;transition:.2s}
-.input-box:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.15)}
-.input-box input{background:transparent;border:none;color:#fff;font-size:16px;width:85%;outline:none;font-weight:500}
-.input-box span{font-size:18px;opacity:.7}
-.hint{text-align:center;margin:16px 0 18px;font-size:12px;line-height:1.4}
-.hint b{font-weight:700;font-size:13px}
-.hint small{display:block;opacity:.55;font-size:11px;margin-top:3px}
-.btn{width:100%;border:1.6px solid var(--gold);color:var(--gold);background:transparent;border-radius:16px;padding:15px;font-weight:800;font-size:14px;cursor:pointer;transition:.2s;text-align:center;line-height:1.2}
-.btn:hover{background:rgba(212,175,55,.08)}
-.btn small{display:block;font-weight:500;font-size:11px;margin-top:3px;opacity:.9}
-.btn.gold{background:linear-gradient(180deg,#E7C46A 0%,#D4AF37 100%);color:#000;border:none;box-shadow:0 6px 22px rgba(212,175,55,.35)}
-.btn.gold:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(212,175,55,.45)}
-.terms{font-size:10px;opacity:.35;text-align:center;margin-top:18px;letter-spacing:0.2px}
-.apps-bar{margin-top:auto;padding-top:20px;display:flex;gap:8px}
-.apps-bar div{flex:1;background:#232F45;border:1px solid #34425C;border-radius:14px;padding:10px 2px;text-align:center;font-size:11px;font-weight:600;color:#A0AEC0;transition:.2s}
-.apps-bar div:hover{border-color:var(--gold);color:#E8E2D0}
-
-/* VERIFY */
-.verify-top{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-.verify-top span{font-size:28px;cursor:pointer;padding:4px 8px;border-radius:8px}
-.verify-top span:hover{background:rgba(255,255,255,.06)}
-.verify-title{text-align:center;flex:1}
-.verify-title b{font-size:15px}
-.verify-title small{display:block;opacity:.6;font-size:11px;margin-top:2px}
-.code-title{text-align:center;margin:22px 0 6px;font-size:14px}
-.code-title small{display:block;opacity:.6;font-size:11px;margin-top:3px}
-.otp-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin:20px 0 12px}
-.otp-box{height:78px;background:#232F45;border:1.6px dashed #3E4D6A;border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-weight:800;font-size:16px;letter-spacing:1px}
-.timer{text-align:center;color:var(--gold-light);font-weight:700;font-size:13px;margin:8px 0 18px}
-
-/* ========== MAIN GAISAIS / TUMSAIS ========== */
-.main{transition:.35s}
-.main.gaisais{background:linear-gradient(180deg,#FFFCF8 0%,#F8F0FF 100%);color:#1A1A1A;border:1.5px solid #E8D5A0}
-.main.tumsais{background:linear-gradient(180deg,#1C222E 0%,#121821 100%);color:#E8E2D0;border:1.2px solid #2E3A4F}
-.status{display:flex;justify-content:space-between;font-size:14px;font-weight:600;padding:0 4px 16px;opacity:.9}
-.main-header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-.logo-v{width:58px;height:54px;background:linear-gradient(135deg,#D4AF37 0%,#8C6B3A 100%);border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:26px;color:#fff;box-shadow:0 4px 16px rgba(212,175,55,.3)}
-.main-title{font-size:28px;font-weight:800;letter-spacing:-0.5px;line-height:1}
-.main-sub{font-size:11px;opacity:.6;margin-top:2px}
-.badge{margin-top:6px;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700}
-.gaisais .badge{background:#E8F5E9;color:#1B5E20;border:1px solid #C8E6C9}
-.tumsais .badge{background:#1B2E22;color:#A5D6A7;border:1px solid #2E4A32}
-.card{border-radius:18px;padding:14px 16px;margin:14px 0}
-.gaisais .card{background:linear-gradient(180deg,#FFFEFB 0%,#FFFBF0 100%);border:1.2px solid #E6D5A0;box-shadow:0 2px 12px rgba(212,175,55,.08)}
-.tumsais .card{background:#232B3A;border:1.2px solid #3A4355}
-.card-title{font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center}
-.bar{height:9px;background:#EEE;border-radius:10px;margin:10px 0 6px;overflow:hidden}
-.tumsais .bar{background:#1A2332}
-.bar-fill{height:100%;width:70%;background:linear-gradient(90deg,#E6C9A8 0%,#C8A2C8 50%,#7B8CFF 100%);border-radius:10px}
-.card-hint{font-size:11px;opacity:.55}
-.section{font-weight:700;font-size:14px;margin:14px 0 8px}
-.note{border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.4}
-.gaisais .note{background:#FBF8FF;border:1px solid #EDE6F0}
-.tumsais .note{background:#232B3A;border:1px solid #34425C}
-.pref-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:8px}
-.square{border-radius:16px;padding:12px 4px;text-align:center;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;font-size:10px;font-weight:600;transition:.2s;cursor:pointer}
-.gaisais .square{background:#fff;border:1.2px solid #E8E0E8;box-shadow:0 1px 6px rgba(0,0,0,.04)}
-.gaisais .square:hover{border-color:var(--gold);transform:translateY(-1px)}
-.tumsais .square{background:#232B3A;border:1.2px solid #34425C}
-.square .ico{font-size:22px}
-.square.add{border-style:dashed;opacity:.7}
-.meta-box{display:flex;gap:12px;align-items:center;margin-top:18px;padding:14px 14px;border-radius:18px}
-.gaisais .meta-box{background:linear-gradient(180deg,#F3EDFF 0%,#EDE4FF 100%);border:1.2px solid #D9C6FF}
-.tumsais .meta-box{background:#232333;border:1.2px solid #3A2E55}
-.meta-logo{width:40px;height:40px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.tumsais .meta-logo{background:#1A1A2E}
-.meta-text b{font-size:14px;font-weight:800;display:block}
-.meta-text .voice{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:12px;opacity:.7}
-.meta-text .voice img{width:14px;height:14px;object-fit:contain}
-.socials{display:flex;gap:10px;margin-top:16px}
-.soc{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:16px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
-.soc.fb{background:#1877F2}.soc.mail{background:#fff;color:#EA4335;border:1px solid #eee}.soc.wa{background:#25D366}.soc.cal{background:#8B5CF6}
-.bottom{margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-radius:22px;padding:12px 16px;font-size:12px;font-weight:600}
-.gaisais .bottom{background:#F8F5F0;border:1px solid #E8E0D0}
-.tumsais .bottom{background:#232B3A;border:1px solid #34425C}
-.toggle{width:54px;height:30px;border-radius:20px;position:relative;cursor:pointer;transition:.3s}
-.gaisais .toggle{background:#D9D0B8}
-.tumsais .toggle{background:#34425C}
-.toggle::after{content:'';position:absolute;width:24px;height:24px;background:#fff;border-radius:50%;top:3px;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:.3s}
-.gaisais .toggle::after{right:26px}
-.tumsais .toggle::after{right:3px;background:linear-gradient(180deg,#E7C46A,#D4AF37)}
-.powered{text-align:center;font-size:11px;color:#B89B5A;margin-top:12px;font-weight:600;letter-spacing:0.3px}
+.dark{background:linear-gradient(180deg,#1E2838,#131A26);color:#E8E2D0;border:1.5px solid #2E3A4F}
+.light{background:linear-gradient(180deg,#FFFCF8,#F8F0FF);color:#1A1A1A;border:1.5px solid #E8D5A0;box-shadow:0 20px 70px rgba(212,175,55,.18)}
+.brand{font-weight:900;letter-spacing:2px;color:var(--gold);font-size:26px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.themeBtn{padding:6px 12px;border-radius:20px;border:1px solid #E8D5A0;background:#fff;font-size:11px;font-weight:700;cursor:pointer}
+.input{width:100%;padding:14px;border-radius:14px;border:1.5px solid #E8D5A0;background:#fff;font-size:14px;margin-top:12px;outline:none}
+.btn{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(180deg,#E7C46A,#D4AF37);font-weight:800;margin-top:14px;cursor:pointer}
+.stickers{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.st{border-radius:14px;padding:10px;font-size:12px;font-weight:600;min-height:60px}
+.chatbox{flex:1;background:#fff;border:1.2px solid #E8D5A0;border-radius:18px;display:flex;flex-direction:column;overflow:hidden;margin-top:10px}
+.msgs{flex:1;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.msg{padding:10px 12px;border-radius:14px;font-size:13px;max-width:88%;line-height:1.35}
+.me{align-self:flex-end;background:linear-gradient(180deg,#E7C46A,#D4AF37)}
+.ai{align-self:flex-start;background:#F6F3FF;border:1px solid #EDE6F0}
+.inRow{display:flex;gap:6px;padding:10px;border-top:1px solid #F0E6C8;background:#FFFCF8}
+.inRow input{flex:1;padding:12px;border-radius:12px;border:1px solid #E8D5A0;outline:none}
+.inRow button{padding:12px 14px;border-radius:12px;border:none;background:#1A1A1A;color:#fff;font-weight:800;cursor:pointer}
+.quick{display:flex;gap:6px;margin:10px 0}
+.q{flex:1;padding:8px;border-radius:12px;border:1px solid #E8D5A0;background:#fff;font-size:10px;font-weight:700;text-align:center;cursor:pointer}
 </style>
 </head>
 <body>
-<div class="app">
 
-<!-- P1 REGISTRACIJA - PILNS BAR -->
+<!-- P1 -->
 <div class="phone dark active" id="p1">
-<div class="brand-top"><div class="v-big">V</div><div class="name">Vzors AI</div></div>
-<div class="spiral-wrap"><div class="spiral"><b>◎</b></div></div>
-<div class="h1"><span class="lv">Izveidot kontu</span><span class="en">Create Account</span></div>
-<div class="row-lang"><div class="label-left"><b>Valoda</b><small>Language</small></div><div class="lang"><span class="on">LV</span><span>EN</span></div></div>
-<div class="label-input">Tālruņa numurs <small>Phone Number — +371 LV formāts</small></div>
-<div class="input-box"><input value="+371 " placeholder="+371 20000000"><span>📞</span></div>
-<div class="hint"><b>Mēs nosūtīsim SMS kodu</b><small>We will send an SMS code to verify</small></div>
-<button class="btn" onclick="show(2)">Sūtīt kodu <small>Send Code — 479 479 pattern</small></button>
-<div class="terms">By continuing you agree to Terms & Privacy Policy — Powered by Meta Llama</div>
-<div class="apps-bar"><div>Facebook</div><div>Messenger</div><div>WhatsApp</div><div>Kalendārs</div></div>
+<div class="top"><div class="brand">Vzors AI</div><button class="themeBtn" onclick="toggleTheme()">☀️ Gaisais</button></div>
+<div style="text-align:center;margin-top:20px"><b>Izveidot kontu</b><br><small style="opacity:.6">Powered by Meta Llama1</small></div>
+<input class="input" id="phone" value="+371 " placeholder="+371 2xxxxxxx">
+<button class="btn" onclick="sendCode()">Sūtīt kodu</button>
+<div style="font-size:10px;opacity:.4;text-align:center;margin-top:auto">Meta Patriots • Latvija • Google Play drīzumā</div>
 </div>
 
-<!-- P2 VERIFY -->
+<!-- P2 -->
 <div class="phone dark" id="p2">
-<div class="verify-top"><span onclick="show(1)">‹</span><div class="verify-title"><b>Apstiprinājums</b><small>Verification — 6 digit</small></div><span style="opacity:0">‹</span></div>
-<div class="code-title"><b>Ievadiet 6-ciparu kodu</b><small>Enter 6-digit code sent to +371</small></div>
-<div class="otp-grid"><div class="otp-box">4 7 9</div><div class="otp-box">4 7 9</div><div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div></div>
-<div class="timer">00:28 — Resend • Brilles režīms available</div>
-<button class="btn gold" onclick="show(3)">Apstiprināt <small>Verify & Enter Vzors AI</small></button>
-<div class="apps-bar"><div>Facebook</div><div>Messenger</div><div>WhatsApp</div><div>Kalendārs</div></div>
+<div class="top"><div class="brand">Vzors AI</div><button class="themeBtn" onclick="toggleTheme()">☀️ Gaisais</button></div>
+<div style="text-align:center;margin-top:16px"><b id="otp-hint">Kods</b></div>
+<input class="input" id="otp" placeholder="6-ciparu kods" maxlength="6">
+<button class="btn" onclick="verifyCode()">Apstiprināt</button>
 </div>
 
-<!-- P3 MAIN - GAISAIS / TUMSAIS + ORIGINAL META SPARK LOGO -->
-<div class="phone main gaisais" id="p3">
-<div class="status"><span>10:09</span><span>📶 🔋 88%</span></div>
-<div class="main-header"><div class="logo-v">V</div><div><div class="main-title">Vzors AI</div><div class="main-sub">Moonwhite • Light Amethyst • Gold</div><div class="badge">✅ Klienta tālrunis • Savienots</div></div></div>
-<div class="card"><div class="card-title">Google Kalendārs sinhronizācija <span style="color:#D4AF37">70%</span></div><div class="bar"><div class="bar-fill"></div></div><div class="card-hint">Atjaunināts: šodien 10:05 — 70% progress</div></div>
-<div class="section">Manas piezīmes</div><div class="note">Tikšanās ar klientu 14:00 — sagatavot demo prezentāciju ceturtdienai</div>
-<div class="section">Preferences Bar</div>
-<div class="pref-grid"><div class="square"><span class="ico">🌐</span>Websites</div><div class="square"><span class="ico">🎧</span>Spotify</div><div class="square"><span class="ico">📻</span>Latvijas Radio</div><div class="square add"><span class="ico">+</span>+ add widget</div></div>
-<div class="meta-box">
-<img src="meta_spark_original.png" class="meta-logo" alt="Meta Spark Original">
-<div class="meta-text"><b>Meta Spark Gudrs kolēģis</b><div class="voice"><img src="meta_spark_original.png" alt="spark"> Pasaki Sparam — Voice • Powered by Meta Llama</div></div>
-</div>
-<div class="socials"><div class="soc fb">f</div><div class="soc mail">✉️</div><div class="soc wa">W</div><div class="soc cal">📅</div></div>
-<div class="bottom"><span>Gaisais režīms</span><b>Brilles režīms</b><div class="toggle" onclick="toggleTheme()"></div></div>
-<div class="powered">Powered by Meta Llama • Vzors AI Approved Final</div>
+<!-- P3 FINAL #fdfaf3 + KOBALTS -->
+<div class="phone light" id="p3">
+<div class="top"><div style="display:flex;gap:8px;align-items:center"><div style="width:36px;height:36px;background:#D4AF37;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900">V</div><div><div style="font-weight:800">Vzors AI</div><div style="font-size:10px;opacity:.6">Sparams dzīvo šeit</div></div></div><button class="themeBtn" id="themeBtn" onclick="toggleTheme()">🌙 Kobalts</button></div>
+
+<div style="font-weight:700;font-size:12px;margin-top:14px">Dashboard • Stikeri no kalendāra</div>
+<div class="stickers" id="stickers">
+<div class="st" style="background:#FFF8E1;border:1.2px solid #FFECB3">📅 15:00 Tikšanās<br><small>Sparams</small></div>
+<div class="st" style="background:#EDE7F6;border:1.2px solid #D1C4E9">📝 Demo piezīme</div>
+<div class="st" style="background:#E0F2F1;border:1.2px solid #B2DFDB">📧 3 jaunas vēstules</div>
+<div class="st" style="background:#FFF8E1;border:1.2px solid #FFECB3">+ Jauna</div>
 </div>
 
+<div style="font-weight:700;font-size:12px">Konteksta logs • Es dzīvoju šeit</div>
+<div class="chatbox"><div class="msgs" id="msgs"><div class="msg ai"><b>Sparams:</b> Sveika Ray! Es esmu šeit. Mans mājas ir tava Meta atslēga. Saki: "pārbaudi pastu", "kādas piezīmes", "izvelc kalendāru uz stikeriem"</div></div><div class="inRow"><input id="in" placeholder="Pasaki man..."><button onclick="talk()">→</button></div></div>
+
+<div class="quick"><div class="q" onclick="quick('pārbaudi pastu')">📧 Pasts</div><div class="q" onclick="quick('parādi piezīmes')">📝 Piezīmes</div><div class="q" onclick="quick('izvelc kalendāru')">📅 Kalendārs</div><div class="q" onclick="quick('jauns stikers')">+ Stikers</div></div>
+<div style="text-align:center;font-size:9px;color:#B89B5A;margin-top:6px">Powered by Meta Llama1 • #fdfaf3 / Kobalts • Google Play drīzumā kad būs alga</div>
 </div>
+
 <script>
+const META={URL:"https://api.llama-api.com/chat/completions",KEY:"PASTE_YOUR_LLAMA1_KEY_HERE",MODEL:"llama-1"};
+let isCobalt=false;
 function show(n){document.querySelectorAll('.phone').forEach(p=>p.classList.remove('active'));document.getElementById('p'+n).classList.add('active')}
-function toggleTheme(){let m=document.getElementById('p3');let isG=m.classList.contains('gaisais');m.classList.toggle('gaisais');m.classList.toggle('tumsais');m.querySelector('.main-sub').textContent=isG?'Moonwhite • Dark • Amethyst Gold':'Moonwhite • Light • Amethyst Gold'}
+function toggleTheme(){
+  isCobalt=!isCobalt;
+  document.body.style.background=isCobalt?'#131A26':'#fdfaf3';
+  document.querySelectorAll('.phone').forEach(p=>{
+    if(isCobalt){p.classList.remove('light');p.classList.add('dark')}else{if(p.id==='p3'){p.classList.remove('dark');p.classList.add('light')}}
+  });
+  document.querySelectorAll('.themeBtn').forEach(b=>b.textContent=isCobalt?'☀️ Gaisais':'🌙 Kobalts');
+  localStorage.setItem('vzors_theme',isCobalt?'cobalt':'light');
+}
+if(localStorage.getItem('vzors_theme')==='cobalt')toggleTheme();
+function addMsg(t,w){const m=document.getElementById('msgs');const d=document.createElement('div');d.className='msg '+w;d.innerHTML=t;m.appendChild(d);m.scrollTop=m.scrollHeight}
+async function callLlama(prompt){
+  if(META.KEY.startsWith("PASTE")) return `DEMO: Saņēmu "${prompt.slice(0,60)}" — ieliec īsto Meta atslēgu savā datorā un es atdzīvošos pilnībā.`;
+  try{const r=await fetch(META.URL,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+META.KEY},body:JSON.stringify({model:META.MODEL,messages:[{role:"system",content:"Tu esi Sparams, Vzors AI, dzīvo #fdfaf3. Palīdzi latviski ar piezīmēm, pastu, kalendāru uz stikeriem."},{role:"user",content:prompt}]})});const j=await r.json();return j.choices?.[0]?.message?.content||"Gatavs!"}catch(e){return "Kļūda: "+e.message}
+}
+async function sendCode(){const phone=document.getElementById('phone').value.trim();if(phone.length<8)return alert("Ievadi +371");const code=Math.floor(100000+Math.random()*900000).toString();localStorage.setItem('vzors_code',code);localStorage.setItem('vzors_phone',phone);document.getElementById('otp-hint').textContent=`Kods ${code} uz ${phone}`;show(2)}
+async function verifyCode(){const e=document.getElementById('otp').value.trim();const r=localStorage.getItem('vzors_code');if(e===r){const msg=await callLlama(`Klients ${localStorage.getItem('vzors_phone')} reģistrējās. Sveicini`);addMsg("<b>Sparams:</b> "+msg,'ai');show(3)}else alert("Nepareizs kods")}
+async function talk(){const i=document.getElementById('in');const t=i.value.trim();if(!t)return;addMsg(t,'me');i.value="";addMsg("Sparams domā...",'ai');const ans=await callLlama(t);document.getElementById('msgs').lastChild.remove();addMsg("<b>Sparams:</b> "+ans,'ai');if(t.toLowerCase().includes('kalend')||t.toLowerCase().includes('stiker')){document.getElementById('stickers').innerHTML=`<div class="st" style="background:#FFF8E1;border:1.2px solid #FFECB3">📅 ${ans.slice(0,40)}</div>`+document.getElementById('stickers').innerHTML}}
+function quick(t){document.getElementById('in').value=t;talk()}
+document.getElementById('in').addEventListener('keydown',e=>{if(e.key==='Enter')talk()});
 </script>
 </body>
 </html>
