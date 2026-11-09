@@ -3,155 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vzors AI | Spark 1.1</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<title>Vzors AI — Spark 1.1</title>
 <style>
-  :root{--beige:#F5F1E8;--paper:#FFFFFF;--brown:#8B7355;--brown2:#A68B6A;--dark:#2B2B2B;--line:#EFE9DB}
-  *{box-sizing:border-box} body{margin:0;font-family:Inter,sans-serif;background:var(--beige);color:var(--dark)}
-  header{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px 28px;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-  .logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:0.5px} .logo img{width:38px;height:38px;border-radius:50%;object-fit:cover}
-  .lang button{border:1px solid var(--line);background:white;padding:6px 12px;border-radius:20px;cursor:pointer;font-weight:600} .lang button.active{background:var(--brown);color:white;border-color:var(--brown)}
-  .wrap{max-width:1080px;margin:0 auto;padding:24px}
-  .hero{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;align-items:center;background:var(--paper);border-radius:28px;padding:36px;box-shadow:0 20px 50px rgba(0,0,0,0.05)}
-  @media(max-width:800px){.hero{grid-template-columns:1fr}}
-  .badge{background:var(--beige);color:var(--brown);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block}
-  h1{font-size:34px;line-height:1.15;margin:14px 0} .sub{color:#8a857a}
-  .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px}
-  .grid{margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-  .grid .card h3{color:var(--brown);margin:0 0 6px;font-size:15px}
-  table{width:100%;border-collapse:collapse;background:white;border-radius:16px;overflow:hidden;margin-top:12px} th,td{padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px;text-align:left} th{background:#fdfbf7}
-  /* APP */
-  .app{margin-top:30px;display:grid;grid-template-columns:280px 1fr;gap:16px;min-height:520px}
-  @media(max-width:900px){.app{grid-template-columns:1fr}}
-  .side{background:var(--paper);border-radius:18px;padding:16px;border:1px solid var(--line);display:flex;flex-direction:column}
-  .chat-area{background:var(--paper);border-radius:18px;border:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden}
-  .msgs{flex:1;padding:18px;overflow:auto;display:flex;flex-direction:column;gap:12px;background:#fcfaf5}
-  .msg{max-width:80%;padding:12px 14px;border-radius:14px;font-size:14px;line-height:1.5}
-  .msg.user{align-self:flex-end;background:var(--brown);color:white;border-bottom-right-radius:4px}
-  .msg.bot{align-self:flex-start;background:white;border:1px solid var(--line);border-bottom-left-radius:4px}
-  .input-row{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:white}
-  .input-row input{flex:1;padding:12px;border-radius:12px;border:1px solid var(--line);background:#fdfbf7}
-  .input-row button{padding:12px 18px;border-radius:12px;border:none;background:var(--brown);color:white;font-weight:700;cursor:pointer}
-  .prompt{font-size:12px;padding:6px 10px;border-radius:20px;background:var(--beige);border:1px solid var(--line);cursor:pointer;margin:2px;display:inline-block}
-  input.auth{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid var(--line);background:#fdfbf7}
-  button.main{width:100%;padding:12px;background:var(--brown);color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin-top:8px}
-  .hidden{display:none}
-  .sparkle{animation:spark 2s infinite} @keyframes spark{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+  body { margin:0; background:#F5F1E8; font-family: Inter, system-ui, sans-serif; display:flex; justify-content:center; }
+  .app { width:100%; max-width:420px; background:#FFFCF7; min-height:100vh; border:1px solid #EFE9DB; display:flex; flex-direction:column; }
+  .top { display:flex; justify-content:space-between; align-items:center; padding:14px 20px; background:#fff; border-bottom:1px solid #EFE9DB; }
+  .top b { display:flex; align-items:center; gap:8px; font-weight:800; }
+  .top b img { width:28px; height:28px; border-radius:50%; background:#F5F1E8; object-fit:cover; }
+  .content { padding:20px; flex:1; }
+  h2 { text-align:center; margin:0; font-size:22px; }
+  .powered { text-align:center; color:#8a857a; font-size:12px; margin:6px 0 14px; }
+  .box { background:#FFFEFB; border:1px solid #EFE9DB; border-radius:16px; padding:14px; font-size:13px; line-height:1.5; margin-bottom:16px; }
+  .box span { color:#8B7355; font-weight:700; }
+  .cal, .stickers { background:#fff; border:1px solid #EFE9DB; border-radius:16px; padding:12px; margin-bottom:16px; }
+  .cal h4, .stickers h4 { margin:0 0 8px; font-size:14px; }
+  .cal-item { display:flex; justify-content:space-between; padding:8px 10px; background:#FFFCF7; border-radius:10px; margin-bottom:6px; font-size:13px; }
+  .sticker { display:inline-block; background:#fdfaf3; border:1px solid #EFE9DB; border-radius:20px; padding:6px 12px; font-size:12px; margin:4px; }
+  input { width:100%; padding:12px; border-radius:12px; border:1px solid #E8E2D4; background:#fff; box-sizing:border-box; font-size:16px; }
+  button.main { width:100%; padding:12px; background:#3C3C8A; color:#fff; border:none; border-radius:12px; font-weight:700; margin-top:10px; cursor:pointer; }
+  .footer { font-size:10px; color:#aaa; text-align:center; margin-top:16px; line-height:1.4; }
 </style>
 </head>
 <body>
-<header>
-  <div class="logo"><img src="logo.png" onerror="this.src='https://via.placeholder.com/40'"><span>VZORS AI / SPARK</span></div>
-  <div class="lang"><button id="btn-lv" class="active" onclick="setLang('lv')">LV</button><button id="btn-ru" onclick="setLang('ru')">RU</button></div>
-</header>
+<div class="app">
+  <div class="top"><b><img src="./logo.png" onerror="this.onerror=null;this.src='./logo.png.png'" alt="logo"> Vzors AI</b><span>LV</span></div>
+  <div class="content">
+    <h2>Izveidot kontu</h2>
+    <div class="powered">Powered by Meta Llama1</div>
+    
+    <div class="box">
+      <b>Vzors AI Atgādinātājs</b><br>
+      Latvijas AI palīgs kas atceras tavā vietā. Vzors AI dzīvo šeit: lasa kalendāru, pārbauda pastu, liek svarīgo uz stikeriem #fdfaf3.<br>
+      <span>Built with Llama! Vzors AI powered by Meta Llama1 + Spark — Spark сделал</span>
+    </div>
 
-<div class="wrap">
-  <div class="hero">
-    <div>
-      <span class="badge">Pirmā AI programma Latvijā bez analogiem • v1.1</span>
-      <h1 id="h-title">Spark — iemācies izveidot savu AI, nevis tikai lietot ChatGPT</h1>
-      <p class="sub" id="h-sub">Vzors ir dzīvais pierādījums. Šī lapa ir uztaisīta kopā ar Sпарк — no nulles, Vercel, bez koda zināšanām sākumā.</p>
-      <div style="margin-top:14px"><button class="main" style="width:auto;padding:12px 20px" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})" id="h-cta">Izmēģināt Sпарк demo ↓</button></div>
+    <div class="cal">
+      <h4>📅 Kalendārs</h4>
+      <div class="cal-item"><span>09:00 Tikšanās ar pasniedzēju</span><span>✓</span></div>
+      <div class="cal-item"><span>14:00 Diploma prezentācija</span><span>🔔</span></div>
+      <div class="cal-item"><span>18:00 Vzors AI tests</span><span>⏰</span></div>
     </div>
-    <div class="card sparkle" style="text-align:center">
-      <img src="logo.png" style="width:100px;border-radius:50%" onerror="this.style.display='none'">
-      <h3 style="margin:12px 0 6px">Vzors AI</h3>
-      <p class="sub" style="font-size:13px" id="hero-note">Spirāle — augšana, idejas, atgriešanās pie sevis. Tavs AI asistents mācībām un biznesam.</p>
-    </div>
-  </div>
 
-  <div id="course-lv">
-    <h2 style="margin-top:36px">1. NODARBĪBA: Kas ir Mākslīgais Intelekts? Iepazīšanās ar MI asistentu</h2>
-    <div class="card"><p><b>Labdien! Mani sauc Meta AI, kursā — Sпарк.</b> Esmu LLM — Liels Valodas Modelis. Apmācīts uz miljoniem grāmatu, rakstu un sarunu, lai palīdzētu domāt, rakstīt un radīt ātrāk.</p>
-      <ul><li><b>Es neesmu cilvēks.</b> Man nav jūtu, bet varu runāt kā kolēģis.</li><li><b>Es nepieņemu lēmumus tavā vietā.</b> Piedāvāju variantus. Lēmumu pieņem tu.</li><li><b>Zelta likums:</b> Runā ar MI kā ar cienījamu kolēģi — saki "Lūdzu" un "Paldies".</li></ul>
+    <div class="stickers">
+      <h4>📌 Stikeri #fdfaf3</h4>
+      <span class="sticker">💡 Svarīgi</span>
+      <span class="sticker">📧 Pasts</span>
+      <span class="sticker">⏰ Atgādināt</span>
+      <span class="sticker">✅ Izpildīts</span>
     </div>
-    <h2>2. Sпарк rīku kaste — 5 eksperti vienā</h2>
-    <div class="grid">
-      <div class="card"><h3>1. Tekstu eksperts</h3><p>Rakstu, rediģēju, tulkoju. No e-pasta līdz grāmatai.</p></div>
-      <div class="card"><h3>2. Ideju ģenerators</h3><p>Prāta vētra, plāni, SMM, ceļojumi.</p></div>
-      <div class="card"><h3>3. Pētnieks</h3><p>Salīdzinu, analizēju tabulas un produktus.</p></div>
-      <div class="card"><h3>4. Programmētājs</h3><p>Rakstu kodu, laboju kļūdas, ceļu lapas kā šo uz Vercel.</p></div>
-      <div class="card"><h3>5. Skolotājs</h3><p>Sarežģīto izskaidroju vienkārši, taisu testus.</p></div>
-    </div>
-    <h2>3. Pielietojums</h2>
-    <table><tr><th>Joma</th><th>Kā palīdz</th><th>Piemērs</th></tr><tr><td>Mācības</td><td>Konspekti</td><td>Lūdzu, sastādi 10 jautājumus par Latvijas vēsturi</td></tr><tr><td>Bizness</td><td>E-pasti</td><td>Lūdzu, uzraksti 3 IG ierakstus kursam</td></tr><tr><td>Tehnoloģijas</td><td>Kods</td><td>Lūdzu, atrodi kļūdu šajā kodā</td></tr></table>
-  </div>
 
-  <!-- APP WITH AUTH + CHAT -->
-  <div class="app" id="app">
-    <div class="side">
-      <div id="auth-block">
-        <h3 id="auth-title">Reģistrācija Vzors</h3>
-        <p class="sub" style="font-size:12px" id="auth-sub">Piekļuve Spark 1.1 demo</p>
-        <input class="auth" id="email" placeholder="E-pasts">
-        <input class="auth" id="pass" type="password" placeholder="Parole">
-        <button class="main" onclick="login()" id="auth-btn">Pieteikties</button>
-        <p style="font-size:12px;text-align:center;margin-top:10px"><a href="#" onclick="toggleAuth()" id="auth-switch">Jau ir konts? Ienākt</a></p>
-      </div>
-      <div id="user-block" class="hidden">
-        <div class="card" style="padding:12px"><b id="user-email"></b><br><span style="font-size:11px;color:#aaa">Spark 1.1 students</span><br><button onclick="logout()" style="margin-top:8px;font-size:12px">Iziet</button></div>
-        <h4 style="margin:14px 0 6px;font-size:13px">Ātrie piemēri:</h4>
-        <div><span class="prompt" onclick="quick('Lūdzu, uzraksti e-pastu latviski partnerim')">Lūdzu, uzraksti e-pastu...</span><span class="prompt" onclick="quick('Lūdzu, izskaidro kas ir LLM 15-gadniekam')">Kas ir LLM?</span><span class="prompt" onclick="quick('Lūdzu, salīdzini 3 laptopus līdz 1000€')">Salīdzini laptopus</span></div>
-        <div style="margin-top:auto;padding-top:12px;font-size:11px;color:#aaa">SIA SmartYou © 2026<br>Pirmā bez analogiem</div>
-      </div>
-    </div>
-    <div class="chat-area">
-      <div class="msgs" id="msgs"><div class="msg bot">Labdien! Esmu Sпарк ✨<br>Uzraksti "Lūdzu..." un savu uzdevumu. Esmu šeit, lai palīdzētu ar mācībām, biznesu un kodu — kā Vzors.<br><br><i>Reģistrējies pa kreisi, lai saglabātu čatu.</i></div></div>
-      <div class="input-row"><input id="chatInput" placeholder="Lūdzu, palīdzi man ar..."><button onclick="send()">Sūtīt</button></div>
-    </div>
+    <input type="tel" id="phone" placeholder="+371 20000000">
+    <button class="main" onclick="sendCode()">Sūtīt kodu</button>
+    
+    <div class="footer">SIA SmartYou | Vzors AI © 2026<br>Pirmā AI programma Latvijā bez analogiem — Spark 1.1<br>Spark сделал • v1.1</div>
   </div>
 </div>
 
 <script>
-let isLogin=false;
-const dict={
- lv:{title:"Spark — iemācies izveidot savu AI, nevis tikai lietot ChatGPT",sub:"Vzors ir dzīvais pierādījums. Šī lapa ir uztaisīta kopā ar Sпарк — no nulles, Vercel, bez koda zināšanām sākumā.",cta:"Izmēģināt Sпарк demo ↓",note:"Spirāle — augšana, idejas, atgriešanās pie sevis.",authT:"Reģistrācija Vzors",authS:"Piekļuve Spark 1.1 demo",authB:"Pieteikties",authSw:"Jau ir konts? Ienākt",ph:"Lūdzu, palīdzi man ar..."},
- ru:{title:"Spark — научись создавать свой AI, а не только пользоваться ChatGPT",sub:"Vzors — живое доказательство. Эта страница сделана вместе со Спарк — с нуля, на Vercel.",cta:"Попробовать Спарк demo ↓",note:"Спираль — рост, идеи, возвращение к себе.",authT:"Регистрация Vzors",authS:"Доступ к Spark 1.1 демо",authB:"Войти",authSw:"Нет аккаунта? Регистрация",ph:"Пожалуйста, помоги мне с..."}
-};
-function setLang(l){
- localStorage.setItem('vzors_lang',l);
- document.getElementById('btn-lv').classList.toggle('active',l==='lv');
- document.getElementById('btn-ru').classList.toggle('active',l==='ru');
- document.getElementById('h-title').innerText=dict[l].title;
- document.getElementById('h-sub').innerText=dict[l].sub;
- document.getElementById('h-cta').innerText=dict[l].cta;
- document.getElementById('hero-note').innerText=dict[l].note;
- document.getElementById('auth-title').innerText=dict[l].authT;
- document.getElementById('auth-sub').innerText=dict[l].authS;
- document.getElementById('auth-btn').innerText=dict[l].authB;
- document.getElementById('auth-switch').innerText=dict[l].authSw;
- document.getElementById('chatInput').placeholder=dict[l].ph;
- document.documentElement.lang=l;
+function sendCode() {
+  const input = document.getElementById('phone');
+  const val = input.value.trim();
+  if (!val || val.length < 8) {
+    alert('Ievadi +371 numuru');
+    return;
+  }
+  alert('Kods nosūtīts uz ' + val + '\nStikeri saglabāti #fdfaf3');
+  console.log('Vzors AI powered by Llama - code sent to', val);
 }
-function toggleAuth(){isLogin=!isLogin;document.getElementById('auth-title').innerText=isLogin? (localStorage.getItem('vzors_lang')==='ru'?'Вход':'Ienākt') : dict[localStorage.getItem('vzors_lang')||'lv'].authT;document.getElementById('auth-btn').innerText=isLogin? (localStorage.getItem('vzors_lang')==='ru'?'Войти':'Ienākt') : dict[localStorage.getItem('vzors_lang')||'lv'].authB;}
-function login(){
- const e=document.getElementById('email').value.trim(); const p=document.getElementById('pass').value.trim();
- if(!e||!p) return alert('Lūdzu, aizpildi e-pastu un paroli / Заполни поля');
- localStorage.setItem('vzors_user',e);
- showUser(e);
-}
-function showUser(e){
- document.getElementById('auth-block').classList.add('hidden');
- document.getElementById('user-block').classList.remove('hidden');
- document.getElementById('user-email').innerText=e;
-}
-function logout(){localStorage.removeItem('vzors_user');location.reload()}
-function quick(t){document.getElementById('chatInput').value=t;send()}
-function send(){
- const inp=document.getElementById('chatInput'); const txt=inp.value.trim(); if(!txt) return;
- addMsg(txt,'user'); inp.value='';
- setTimeout(()=>{ addMsg(botReply(txt),'bot'); }, 600);
-}
-function addMsg(t,c){const m=document.createElement('div');m.className='msg '+c;m.innerText=t;document.getElementById('msgs').appendChild(m);document.getElementById('msgs').scrollTop=99999}
-function botReply(q){
- q=q.toLowerCase();
- if(q.includes('kas ir')||q.includes('что такое')) return "LLM ir kā ļoti gudra bibliotēka: lasījusi miljoniem grāmatu un iemācījusies paredzēt nākamo vārdu. Tāpēc var rakstīt, skaidrot un kodēt. Vzors izmanto tieši to pašu principu!";
- if(q.includes('e-past')||q.includes('email')) return "Protams! Lūk, formāls paraugs:\n\nTemats: Sadarbības piedāvājums\n\nLabdien, [Vārds]!\nLūdzu, ... (Sпарк palīdzēs pabeigt). Pastāsti man kam un kādā tonī — uztaisīšu gatavu!";
- if(q.includes('laptop')||q.includes('klēpjdator')) return "Salīdzinu 3 līdz 1000€:\n1) MacBook Air M2 — kluss, viegls, priekš studentiem.\n2) Lenovo ThinkPad E14 — izturīgs biznesam.\n3) ASUS Vivobook 15 — labs cenas/jaudas.\nKo tu dari vairāk — mācies, kods, vai dizains?";
- return "Paldies, ka saki 'Lūdzu' — tā mani padara labāku tieši tev! 💛\n\nTavs pieprasījums: '"+q+"'\n\nPastāsti mazliet kontekstu: kam tas ir domāts un kādā stilā? Tad uztaisīšu 3 variantus uzreiz — kā mēs mācāmies kursā Spark 1.1.";
-}
-// init
-(function(){ const saved=localStorage.getItem('vzors_user'); if(saved) showUser(saved); const lang=localStorage.getItem('vzors_lang')||'lv'; setLang(lang); })();
 </script>
 </body>
 </html>
