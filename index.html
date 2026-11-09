@@ -5,23 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vzors AI — Spark 1.1</title>
 <style>
-  body { margin:0; background:#F5F1E8; font-family: Inter, system-ui, sans-serif; display:flex; justify-content:center; }
-  .app { width:100%; max-width:420px; background:#FFFCF7; min-height:100vh; border:1px solid #EFE9DB; display:flex; flex-direction:column; }
-  .top { display:flex; justify-content:space-between; align-items:center; padding:14px 20px; background:#fff; border-bottom:1px solid #EFE9DB; }
-  .top b { display:flex; align-items:center; gap:8px; font-weight:800; }
-  .top b img { width:28px; height:28px; border-radius:50%; background:#F5F1E8; object-fit:cover; }
-  .content { padding:20px; flex:1; }
-  h2 { text-align:center; margin:0; font-size:22px; }
-  .powered { text-align:center; color:#8a857a; font-size:12px; margin:6px 0 14px; }
-  .box { background:#FFFEFB; border:1px solid #EFE9DB; border-radius:16px; padding:14px; font-size:13px; line-height:1.5; margin-bottom:16px; }
-  .box span { color:#8B7355; font-weight:700; }
-  .cal, .stickers { background:#fff; border:1px solid #EFE9DB; border-radius:16px; padding:12px; margin-bottom:16px; }
-  .cal h4, .stickers h4 { margin:0 0 8px; font-size:14px; }
-  .cal-item { display:flex; justify-content:space-between; padding:8px 10px; background:#FFFCF7; border-radius:10px; margin-bottom:6px; font-size:13px; }
-  .sticker { display:inline-block; background:#fdfaf3; border:1px solid #EFE9DB; border-radius:20px; padding:6px 12px; font-size:12px; margin:4px; }
-  input { width:100%; padding:12px; border-radius:12px; border:1px solid #E8E2D4; background:#fff; box-sizing:border-box; font-size:16px; }
-  button.main { width:100%; padding:12px; background:#3C3C8A; color:#fff; border:none; border-radius:12px; font-weight:700; margin-top:10px; cursor:pointer; }
-  .footer { font-size:10px; color:#aaa; text-align:center; margin-top:16px; line-height:1.4; }
+  body{margin:0;background:#F5F1E8;font-family:Inter,system-ui,sans-serif;display:flex;justify-content:center}
+  .app{width:100%;max-width:420px;background:#FFFCF7;min-height:100vh;border:1px solid #EFE9DB;display:flex;flex-direction:column}
+  .top{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:#fff;border-bottom:1px solid #EFE9DB}
+  .top b{display:flex;align-items:center;gap:8px;font-weight:800}
+  .top b img{width:28px;height:28px;border-radius:50%;background:#F5F1E8;object-fit:cover}
+  .content{padding:20px;flex:1}
+  h2{text-align:center;margin:0;font-size:22px}
+  .powered{text-align:center;color:#8a857a;font-size:12px;margin:6px 0 14px}
+  .box{background:#FFFEFB;border:1px solid #EFE9DB;border-radius:16px;padding:14px;font-size:13px;line-height:1.5;margin-bottom:16px}
+  .box span{color:#8B7355;font-weight:700}
+  .cal,.stickers{background:#fff;border:1px solid #EFE9DB;border-radius:16px;padding:12px;margin-bottom:16px}
+  .cal h4,.stickers h4{margin:0 0 8px;font-size:14px}
+  .cal-item{display:flex;justify-content:space-between;padding:8px 10px;background:#FFFCF7;border-radius:10px;margin-bottom:6px;font-size:13px}
+  .sticker{display:inline-block;background:#fdfaf3;border:1px solid #EFE9DB;border-radius:20px;padding:6px 12px;font-size:12px;margin:4px}
+  input.tel{width:100%;padding:12px;border-radius:12px;border:1px solid #E8E2D4;background:#fff;box-sizing:border-box;font-size:16px}
+  button.main{width:100%;padding:12px;background:#3C3C8A;color:#fff;border:none;border-radius:12px;font-weight:700;margin-top:10px;cursor:pointer}
+  .footer{font-size:10px;color:#aaa;text-align:center;margin-top:16px;line-height:1.4}
+  /* КОНТЕКСТНОЕ ОКНО */
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);z-index:100;justify-content:center;align-items:center;padding:20px}
+  .overlay.active{display:flex}
+  .modal{background:#FFFCF7;width:100%;max-width:360px;border-radius:20px;border:1px solid #EFE9DB;box-shadow:0 20px 40px rgba(0,0,0,0.15);overflow:hidden;animation:pop .25s ease}
+  @keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+  .modal-top{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#fff;border-bottom:1px solid #EFE9DB}
+  .modal-body{padding:18px}
+  .modal-body p{font-size:13px;line-height:1.4;margin:0 0 12px;color:#444}
+  .code-row{display:flex;gap:8px;justify-content:center;margin:16px 0}
+  .code-row input{width:48px;height:48px;text-align:center;font-size:20px;font-weight:700;border-radius:12px;border:1px solid #E8E2D4;background:#fff}
+  .code-row input:focus{border-color:#3C3C8A;outline:none}
+  .mini{font-size:11px;color:#888;text-align:center;margin-top:10px}
+  .close{cursor:pointer;background:#F5F1E8;border:none;width:28px;height:28px;border-radius:50%;font-weight:700}
 </style>
 </head>
 <body>
@@ -30,45 +43,45 @@
   <div class="content">
     <h2>Izveidot kontu</h2>
     <div class="powered">Powered by Meta Llama1</div>
-    
     <div class="box">
       <b>Vzors AI Atgādinātājs</b><br>
       Latvijas AI palīgs kas atceras tavā vietā. Vzors AI dzīvo šeit: lasa kalendāru, pārbauda pastu, liek svarīgo uz stikeriem #fdfaf3.<br>
       <span>Built with Llama! Vzors AI powered by Meta Llama1 + Spark — Spark сделал</span>
     </div>
-
-    <div class="cal">
-      <h4>📅 Kalendārs</h4>
-      <div class="cal-item"><span>09:00 Tikšanās ar pasniedzēju</span><span>✓</span></div>
-      <div class="cal-item"><span>14:00 Diploma prezentācija</span><span>🔔</span></div>
-      <div class="cal-item"><span>18:00 Vzors AI tests</span><span>⏰</span></div>
-    </div>
-
-    <div class="stickers">
-      <h4>📌 Stikeri #fdfaf3</h4>
-      <span class="sticker">💡 Svarīgi</span>
-      <span class="sticker">📧 Pasts</span>
-      <span class="sticker">⏰ Atgādināt</span>
-      <span class="sticker">✅ Izpildīts</span>
-    </div>
-
-    <input type="tel" id="phone" placeholder="+371 20000000">
-    <button class="main" onclick="sendCode()">Sūtīt kodu</button>
-    
+    <div class="cal"><h4>📅 Kalendārs</h4><div class="cal-item"><span>09:00 Tikšanās ar pasniedzēju</span><span>✓</span></div><div class="cal-item"><span>14:00 Diploma prezentācija</span><span>🔔</span></div></div>
+    <div class="stickers"><h4>📌 Stikeri #fdfaf3</h4><span class="sticker">💡 Svarīgi</span><span class="sticker">📧 Pasts</span><span class="sticker">⏰ Atgādināt</span><span class="sticker">✅ Izpildīts</span></div>
+    <input class="tel" type="tel" id="phone" placeholder="+371 20000000">
+    <button class="main" onclick="openModal()">Sūtīt kodu</button>
     <div class="footer">SIA SmartYou | Vzors AI © 2026<br>Pirmā AI programma Latvijā bez analogiem — Spark 1.1<br>Spark сделал • v1.1</div>
   </div>
 </div>
 
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-top"><b>Vzors AI • Kods</b><button class="close" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <p id="modalText">Ievadi kodu kas nosūtīts uz tavu numuru. Vzors AI dzīvo šeit un jau sagatavo kalendāru.</p>
+      <div class="code-row"><input maxlength="1" oninput="nextCode(this,0)"><input maxlength="1" oninput="nextCode(this,1)"><input maxlength="1" oninput="nextCode(this,2)"><input maxlength="1" oninput="nextCode(this,3)"></div>
+      <button class="main" onclick="confirmCode()">Apstiprināt</button>
+      <div class="mini">Vzors AI powered by Meta Llama1 • Stikeri #fdfaf3 saglabāti<br><span style="color:#3C3C8A;cursor:pointer" onclick="openModal()">Nosūtīt kodu atkārtoti</span></div>
+    </div>
+  </div>
+</div>
+
 <script>
-function sendCode() {
-  const input = document.getElementById('phone');
-  const val = input.value.trim();
-  if (!val || val.length < 8) {
-    alert('Ievadi +371 numuru');
-    return;
-  }
-  alert('Kods nosūtīts uz ' + val + '\nStikeri saglabāti #fdfaf3');
-  console.log('Vzors AI powered by Llama - code sent to', val);
+function openModal(){
+  const v=document.getElementById('phone').value.trim();
+  if(!v||v.length<8){alert('Ievadi +371 numuru');return;}
+  document.getElementById('modalText').innerText='Kods nosūtīts uz '+v+'. Ievadi to lai atvērtu Vzors AI.';
+  document.getElementById('overlay').classList.add('active');
+}
+function closeModal(e){ document.getElementById('overlay').classList.remove('active'); }
+function nextCode(el,i){ if(el.value && i<3) el.parentElement.children[i+1].focus(); }
+function confirmCode(){
+  const codes=[...document.querySelectorAll('.code-row input')].map(i=>i.value).join('');
+  if(codes.length<4){alert('Ievadi 4 ciparus');return;}
+  alert('Vzors AI aktivizēts! ✅\nKalendārs un stikeri #fdfaf3 gatavi.');
+  closeModal();
 }
 </script>
 </body>
