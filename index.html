@@ -1,538 +1,73 @@
-# ============================================================
-# VZORS AI - v1.0 APPROVED FINAL - FULL DETAILED INDEX.PY
-# GitHub: angora2000plus-svg/vzors-ai / branch main
-# Автор: Vzors AI Team + Meta Spark
-# Дата: 2026-11-09 - Approved Final Build
-# Дизайн утвержден: V + spiral Gold, Moonwhite + Light Amethyst
-# Режимы: Gaisais / Tumsais / Brilles režīms (очки)
-# Интеграции: SMS Twilio, Google Calendar 70%, Spotify, YouTube,
-#             Latvijas Radio, Dakteris, Website Hubs
-# ============================================================
-
-from fastapi import FastAPI, Request, Form, HTTPException, Query
-from fastapi.responses import HTMLResponse, JSONResponse
-from pydantic import BaseModel
-from typing import List, Optional, Dict
-import os
-import random
-import string
-from datetime import datetime, timedelta
-import json
-
-# ------------------------------------------------------------
-# APP INIT
-# ------------------------------------------------------------
-app = FastAPI(
-    title="Vzors AI - Approved v1.0",
-    description="V + spiral Gold, Moonwhite Light Amethyst, Preferences Bar squares",
-    version="1.0.0-approved"
-)
-
-# ------------------------------------------------------------
-# IN-MEMORY DB - чтобы работало сразу после заливки на GitHub
-# Потом заменишь на Supabase - SUPABASE_URL / KEY
-# ------------------------------------------------------------
-CLIENTS_DB: Dict[str, dict] = {}
-WEBSITE_HUBS_DB: Dict[str, dict] = {}
-PREFERENCES_DB: Dict[str, dict] = {
-    "Websites": {"icon": "🌐", "color": "#E6D5E6", "active": True},
-    "Spotify": {"icon": "🎵", "color": "#1DB954", "active": True},
-    "Latvijas Radio": {"icon": "📻", "color": "#D4AF37", "active": True},
-    "YouTube": {"icon": "▶️", "color": "#FF0000", "active": True},
-    "Dakteris": {"icon": "🩺", "color": "#00ACC1", "active": True},
-    "Notion": {"icon": "📝", "color": "#000000", "active": False},
-    "Google Calendar": {"icon": "📅", "color": "#4285F4", "active": True},
-}
-NOTES_DB: List[dict] = [
-    {"id": "1", "text": "Tikšanās ar klientu 14:00 — sagatavot demo", "time": "šodien 10:05", "author": "Meta Spark"}
-]
-SMS_CODES_DB: Dict[str, str] = {}  # phone -> code
-
-# ------------------------------------------------------------
-# MODELS
-# ------------------------------------------------------------
-class NewClientRegister(BaseModel):
-    full_name: str
-    phone: str
-    email: Optional[str] = None
-    google_sync: bool = True
-    website: Optional[str] = None
-
-class SMSVerifyRequest(BaseModel):
-    phone: str
-    code: str
-
-class WebsiteHubAdd(BaseModel):
-    user_id: Optional[str] = "demo"
-    url: str
-
-class PreferenceSquareAdd(BaseModel):
-    name: str
-    icon: Optional[str] = "✨"
-    color: Optional[str] = "#C8A2C8"
-
-# ------------------------------------------------------------
-# FULL HTML - УТВЕРЖДЕННЫЙ ДИЗАЙН - НЕ ОБРЕЗАН
-# ------------------------------------------------------------
-FULL_INDEX_HTML = """
 <!DOCTYPE html>
 <html lang="lv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vzors AI - v1.0 Approved</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-:root {
-  --gold: #D4AF37;
-  --gold-bright: #FFD700;
-  --moonwhite: #F8F6F0;
-  --amethyst: #C8A2C8;
-  --amethyst-light: #E6D5E6;
-  --amethyst-dark: #9C6B9C;
-  --dark: #1A1A2E;
-  --dark-card: #16213E;
-  --green-active: #00C853;
-}
-* { margin:0; padding:0; box-sizing:border-box; font-family: 'Inter', -apple-system, sans-serif; }
-body { background: var(--moonwhite); color: var(--dark); transition: all 0.3s ease; line-height:1.5; }
-body.tumsais { background: var(--dark); color: var(--moonwhite); }
-body.brilles { font-size: 1.35em; letter-spacing: 0.8px; line-height:1.8; }
-body.brilles .card { border: 3px solid var(--gold); }
-
-/* HEADER - V + SPIRAL GOLD */
-.header { display:flex; justify-content:space-between; align-items:center; padding:18px 28px; 
-          border-bottom: 2.5px solid var(--gold); background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
-          position:sticky; top:0; z-index:100; }
-.tumsais .header { background: rgba(22,33,62,0.95); }
-.logo { display:flex; align-items:center; gap:14px; font-weight:800; font-size:26px; letter-spacing:-0.5px; }
-.logo-v { width:52px; height:52px; background: linear-gradient(135deg, var(--gold), var(--gold-bright)); 
-          border-radius: 14px; display:flex; align-items:center; justify-content:center; 
-          position:relative; overflow:hidden; color:white; font-weight:900; font-size:28px;
-          box-shadow: 0 4px 15px rgba(212,175,55,0.4); }
-.logo-v::after { content:''; position:absolute; width:32px; height:32px; 
-                 border: 3.5px solid white; border-radius:50%; border-top-color:transparent; border-left-color:transparent;
-                 transform: rotate(-45deg); opacity:0.85; top:8px; left:8px; }
-.logo-v::before { content:''; position:absolute; width:18px; height:18px; border: 2px solid rgba(255,255,255,0.6);
-                  border-radius:50%; top:22px; left:18px; }
-.modes { display:flex; gap:9px; }
-.mode-btn { padding:9px 18px; border:1.5px solid var(--gold); border-radius:22px; cursor:pointer; background:transparent; 
-            font-weight:600; font-size:13px; transition:0.2s; }
-.mode-btn.active { background: linear-gradient(135deg, var(--gold), var(--gold-bright)); color:white; border-color:var(--gold); }
-.mode-btn:hover { transform: translateY(-1px); }
-
-/* LAYOUT */
-.container { max-width:1220px; margin:0 auto; padding:28px 20px; }
-.grid-2 { display:grid; grid-template-columns: 1.2fr 0.8fr; gap:24px; }
-@media(max-width:900px){ .grid-2{grid-template-columns:1fr;} }
-.card { background:white; border-radius:22px; padding:26px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); 
-        margin-bottom:24px; border: 1.5px solid var(--amethyst-light); position:relative; overflow:hidden; }
-.tumsais .card { background: var(--dark-card); border-color:#2a3a5a; box-shadow: 0 6px 24px rgba(0,0,0,0.3); }
-.card h2 { font-size:20px; font-weight:800; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
-.card .sub { color:#888; font-size:13px; margin-bottom:18px; }
-
-/* FORM */
-.new-client-form { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-@media(max-width:600px){ .new-client-form{grid-template-columns:1fr;} }
-.input-group { display:flex; flex-direction:column; gap:7px; }
-.input-group label { font-weight:600; font-size:13px; color:#666; }
-.tumsais .input-group label { color:#aaa; }
-.input-group input, .input-group select { padding:13px 15px; border-radius:12px; border:1.5px solid #e5e5e5; font-size:15px; outline:none; transition:0.2s; }
-.input-group input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,175,55,0.15); }
-.tumsais .input-group input { background:#0f1a33; border-color:#2a3a5a; color:white; }
-.btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-bright)); color:white; border:none; 
-            padding:13px 24px; border-radius:12px; font-weight:700; cursor:pointer; font-size:14px; 
-            transition:0.2s; box-shadow: 0 4px 12px rgba(212,175,55,0.3); }
-.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(212,175,55,0.4); }
-.btn-ghost { background:transparent; border:1.5px solid var(--amethyst); padding:10px 18px; border-radius:10px; cursor:pointer; }
-
-/* HUBS */
-.hubs-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:14px; margin-top:16px; }
-.hub-card { border:2px solid var(--green-active); border-radius:14px; padding:16px; background: #E8F5E9; position:relative; }
-.tumsais .hub-card { background:#0a2e13; }
-.hub-card .status { color:var(--green-active); font-size:11px; font-weight:800; letter-spacing:0.5px; text-transform:uppercase; }
-.hub-card .url { font-weight:700; margin-top:6px; font-size:14px; word-break:break-all; }
-.hub-card .ssl { position:absolute; top:12px; right:12px; font-size:18px; }
-
-/* PREFERENCES BAR - КВАДРАТИКИ */
-.preferences-bar { display:flex; gap:14px; overflow-x:auto; padding:14px 4px; scrollbar-width:none; }
-.preferences-bar::-webkit-scrollbar { display:none; }
-.pref-square { min-width:132px; height:132px; background:white; border:2px dashed var(--amethyst); border-radius:18px; 
-               display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; 
-               cursor:grab; transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1); user-select:none; position:relative; }
-.pref-square.filled { border-style:solid; background: linear-gradient(135deg, var(--moonwhite), var(--amethyst-light)); 
-                      border-color: var(--amethyst); box-shadow: 0 4px 14px rgba(200,162,200,0.2); }
-.pref-square.filled.youtube { background: linear-gradient(135deg, #FFE5E5, #FFCDD2); border-color:#FF0000; }
-.pref-square.filled.spotify { background: linear-gradient(135deg, #E8F5E9, #C8E6C9); border-color:#1DB954; }
-.pref-square.filled.dakteris { background: linear-gradient(135deg, #E0F7FA, #B2EBF2); border-color:#00ACC1; }
-.pref-square.filled.radio { background: linear-gradient(135deg, #FFF8E1, #FFECB3); border-color:var(--gold); }
-.pref-square:hover { transform: translateY(-4px) scale(1.02); box-shadow:0 10px 24px rgba(200,162,200,0.35); }
-.pref-square:active { cursor:grabbing; transform: scale(0.98); }
-.pref-square .icon { font-size:32px; }
-.pref-square .label { font-weight:700; font-size:13px; text-align:center; }
-.pref-square.add { background: var(--moonwhite); color:#999; border-color:#ddd; }
-.pref-square.add:hover { border-color: var(--gold); color: var(--gold); }
-.tumsais .pref-square { background: var(--dark-card); }
-.tumsais .pref-square.filled { background: linear-gradient(135deg, #1e2a4a, #2a3a5a); }
-
-/* MANAS PIEZIMES + META SPARK */
-.manas-piezimes { background: linear-gradient(135deg, #FFF9C4 0%, #FFFDE7 100%); border-left:5px solid var(--gold); }
-.tumsais .manas-piezimes { background: linear-gradient(135deg, #3a3000 0%, #2a2200 100%); }
-.notes-item { padding:12px; border-bottom:1px dashed #e0d9a0; display:flex; justify-content:space-between; }
-.meta-spark { display:flex; align-items:center; gap:16px; background: linear-gradient(135deg, #E3F2FD, #BBDEFB); 
-              padding:16px; border-radius:14px; margin-top:18px; border:1px solid #90CAF9; }
-.tumsais .meta-spark { background: linear-gradient(135deg, #0d2a4a, #123a66); border-color:#1e4a7a; }
-.spark-avatar { width:46px; height:46px; background: linear-gradient(135deg, var(--gold), var(--gold-bright)); 
-                border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; color:white; 
-                box-shadow:0 4px 12px rgba(212,175,55,0.4); flex-shrink:0; }
-
-.google-sync-badge { display:inline-flex; align-items:center; gap:6px; background:#E8F5E9; color:#2E7D32; 
-                     padding:6px 12px; border-radius:20px; font-size:12px; font-weight:700; }
+:root{--gold:#D4AF37;--gold2:#FFD700;--moon:#F8F6F0;--amet:#C8A2C8;--ametL:#E6D5E6;--dark:#1A1A2E;--darkC:#16213E;--green:#00C853}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:var(--moon);color:var(--dark)}
+body.tumsais{background:var(--dark);color:var(--moon)}
+body.brilles{font-size:1.35em}
+.header{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;border-bottom:2.5px solid var(--gold);background:#fff;position:sticky;top:0;z-index:10}
+.logo{display:flex;align-items:center;gap:14px;font-weight:900;font-size:26px}
+.logo-v{width:54px;height:54px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:15px;display:flex;align-items:center;justify-content:center;color:#fff;position:relative}
+.logo-v:after{content:'';position:absolute;width:32px;height:32px;border:3px solid #fff;border-radius:50%;border-top-color:transparent;border-left-color:transparent;transform:rotate(-45deg);top:8px;left:8px}
+.container{max-width:1240px;margin:0 auto;padding:28px 20px}
+.grid{display:grid;grid-template-columns:1.25fr .85fr;gap:24px}
+.card{background:#fff;border-radius:22px;padding:26px;box-shadow:0 7px 26px rgba(0,0,0,.06);margin-bottom:24px;border:1.6px solid var(--ametL)}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.input{display:flex;flex-direction:column;gap:7px}
+.input input{padding:13px 15px;border-radius:12px;border:1.6px solid #e5e5e5}
+.btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;border:none;padding:13px 24px;border-radius:12px;font-weight:800;cursor:pointer}
+.hubs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:16px}
+.hub{border:2px solid var(--green);border-radius:14px;padding:16px;background:#E8F5E9}
+.hub.youtube{border-color:#FF0000;background:#FFEBEE}
+.hub.dakteris{border-color:#00ACC1;background:#E0F7FA}
+.pref-bar{display:flex;gap:14px;overflow-x:auto;padding:14px 4px}
+.square{min-width:134px;height:134px;background:#fff;border:2.2px solid var(--amet);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer}
+.square.youtube{background:linear-gradient(135deg,#FFE5E5,#FFCDD2);border-color:#FF0000}
+.square.dakteris{background:linear-gradient(135deg,#E0F7FA,#B2EBF2);border-color:#00ACC1}
+.mode-btn{padding:9px 18px;border:1.6px solid var(--gold);border-radius:22px;background:transparent;font-weight:700;cursor:pointer}
+.mode-btn.active{background:var(--gold);color:#fff}
+.notes{background:linear-gradient(135deg,#FFF9C4,#FFFDE7);border-left:5px solid var(--gold)}
 </style>
 </head>
-<body class="gaisais" id="body">
-
+<body id="body" class="gaisais">
 <div class="header">
-  <div class="logo">
-    <div class="logo-v">V</div>
-    <span>VZORS <span style="color:var(--gold)">AI</span></span>
-    <span style="font-size:11px; background:var(--green-active); color:white; padding:3px 8px; border-radius:10px; margin-left:8px;">APPROVED v1.0</span>
-  </div>
-  <div class="modes">
-    <button class="mode-btn active" onclick="setMode('gaisais', this)">Gaisais</button>
-    <button class="mode-btn" onclick="setMode('tumsais', this)">Tumšais</button>
-    <button class="mode-btn" onclick="setMode('brilles', this)">Brilles režīms</button>
-  </div>
+<div class="logo"><div class="logo-v">V</div>VZORS <span style="color:#D4AF37">AI</span> <span style="font-size:10px;background:#00C853;color:#fff;padding:4px 10px;border-radius:12px;">APPROVED v1.0</span></div>
+<div><button class="mode-btn active" onclick="document.getElementById('body').className='gaisais';this.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Gaisais</button><button class="mode-btn" onclick="document.getElementById('body').className='tumsais';this.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Tumšais</button><button class="mode-btn" onclick="document.getElementById('body').className='brilles';this.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Brilles</button></div>
 </div>
-
 <div class="container">
-  <div class="grid-2">
-    <div>
-      <!-- 1. NEW CLIENT -->
-      <div class="card">
-        <h2>👤 New Client Registration <span class="google-sync-badge">● Google 70% — šodien 10:05</span></h2>
-        <div class="sub">Obligātie lauki * + SMS verifikācija + Google Calendar sync</div>
-        <form class="new-client-form" onsubmit="registerClient(event)">
-          <div class="input-group">
-            <label>Pilns vārds *</label>
-            <input type="text" id="full_name" required placeholder="Jānis Bērziņš">
-          </div>
-          <div class="input-group">
-            <label>Tālrunis (+371) *</label>
-            <input type="text" id="phone" required placeholder="+371 20000000">
-          </div>
-          <div class="input-group">
-            <label>E-pasts (optional)</label>
-            <input type="email" id="email" placeholder="janis@vzors.lv">
-          </div>
-          <div class="input-group">
-            <label>Website Hub (optional)</label>
-            <input type="text" id="website" placeholder="https://...">
-          </div>
-          <div class="input-group">
-            <label><input type="checkbox" id="google_sync" checked style="margin-right:6px;"> Google Calendar Sync 70%</label>
-          </div>
-          <div class="input-group" style="justify-content:end;">
-            <button class="btn-gold" type="submit">Sūtīt SMS kodu →</button>
-          </div>
-        </form>
-        <div id="sms-verify" style="display:none; margin-top:20px; background:#FFF9C4; padding:16px; border-radius:12px; border:1px dashed var(--gold);">
-          <b>Ievadi 6-ciparu kodu no SMS:</b>
-          <div style="display:flex; gap:10px; margin-top:10px;">
-            <input type="text" id="sms_code" placeholder="123456" style="flex:1; padding:12px; border-radius:10px; border:1.5px solid #ddd;">
-            <button class="btn-gold" onclick="verifySMS()">Apstiprināt</button>
-          </div>
-          <div style="font-size:12px; color:#888; margin-top:8px;">Testa kods: 123456</div>
-        </div>
-      </div>
-
-      <!-- 2. WEBSITE HUBS -->
-      <div class="card">
-        <h2>🌐 Active Website Hubs <span style="color:var(--green-active); font-size:12px;">● SSL Secured</span></h2>
-        <div class="sub">Klients pats pievieno savas lapas — tās paliek Active</div>
-        <div style="display:flex; gap:10px; margin-top:14px;">
-          <input type="text" id="new_site" placeholder="https://klienta-majaslapa.lv / https://youtube.com/@kanals" style="flex:1; padding:13px; border-radius:12px; border:1.5px solid #ddd;">
-          <button class="btn-gold" onclick="addWebsite()">+ Add Hub</button>
-        </div>
-        <div class="hubs-grid" id="hubs-grid">
-          <div class="hub-card"><span class="ssl">🔒</span><div class="status">Active - SSL Secured</div><div class="url">vzors-ai.vercel.app</div></div>
-          <div class="hub-card"><span class="ssl">🔒</span><div class="status">Active - YouTube</div><div class="url">youtube.com/@vzors</div></div>
-          <div class="hub-card"><span class="ssl">🩺</span><div class="status">Active - Dakteris</div><div class="url">dakteris.lv/pieraksts</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <!-- 3. PREFERENCES BAR - КВАДРАТИКИ С YOUTUBE И ДОКТОРОМ -->
-      <div class="card">
-        <h2>✨ Preferences Bar</h2>
-        <div class="sub">Drag & drop kvadrātiņi — Spotify, YouTube, Dakteris, Radio</div>
-        <div class="preferences-bar" id="pref-bar">
-          <div class="pref-square filled" draggable="true"><span class="icon">🌐</span><span class="label">Websites</span></div>
-          <div class="pref-square filled spotify" draggable="true"><span class="icon">🎵</span><span class="label">Spotify</span></div>
-          <div class="pref-square filled youtube" draggable="true"><span class="icon">▶️</span><span class="label">YouTube</span></div>
-          <div class="pref-square filled dakteris" draggable="true"><span class="icon">🩺</span><span class="label">Dakteris</span></div>
-          <div class="pref-square filled radio" draggable="true"><span class="icon">📻</span><span class="label">Latvijas Radio</span></div>
-          <div class="pref-square filled" draggable="true"><span class="icon">📅</span><span class="label">Google 70%</span></div>
-          <div class="pref-square add" onclick="addWidget()"><span style="font-size:32px;">+</span><span class="label">add widget</span></div>
-        </div>
-        <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-          <button class="btn-ghost" onclick="addWidget('YouTube')">+ YouTube kanāls</button>
-          <button class="btn-ghost" onclick="addWidget('Dakteris')">+ Dakteris pieraksts</button>
-          <button class="btn-ghost" onclick="addWidget('Spotify')">+ Spotify playlist</button>
-        </div>
-      </div>
-
-      <!-- 4. MANAS PIEZIMES + META SPARK -->
-      <div class="card manas-piezimes">
-        <h2>📝 Manas Piezīmes</h2>
-        <div id="notes-list" style="margin-top:12px;">
-          <div class="notes-item"><span>Tikšanās ar klientu 14:00 — sagatavot demo</span><span style="font-size:11px; color:#888;">10:05</span></div>
-          <div class="notes-item"><span>Dakteris pieraksts — 15.11 plkst 11:00</span><span style="font-size:11px; color:#00ACC1;">Dakteris</span></div>
-          <div class="notes-item"><span>YouTube video ideja — Vzors AI prezentācija</span><span style="font-size:11px; color:#FF0000;">YouTube</span></div>
-        </div>
-        <div class="meta-spark">
-          <div class="spark-avatar">✨</div>
-          <div style="flex:1;">
-            <b>Meta Spark - Gudrs kolēģis</b><br>
-            <span id="spark-text" style="font-size:13px;">Powered by Meta Llama — Pasaki Sparam, es pierakstīšu...</span>
-          </div>
-          <button class="btn-gold" onclick="activateVoice()">🎤 Voice</button>
-        </div>
-        <div style="display:flex; gap:8px; margin-top:14px;">
-          <input type="text" id="new_note" placeholder="Jauna piezīme..." style="flex:1; padding:11px; border-radius:10px; border:1px solid #e0d9a0;">
-          <button class="btn-gold" onclick="addNote()">+ Pievienot</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="grid">
+<div>
+<div class="card">
+<h2>👤 New Client Registration <span style="display:inline-flex;background:#E8F5E9;color:#2E7D32;padding:6px 12px;border-radius:20px;font-size:12px;">● Google 70% — šodien 10:05</span></h2>
+<p style="color:#888;font-size:13px;margin:7px 0 18px;">Obligātie lauki * + SMS + YouTube + Dakteris</p>
+<div class="form">
+<div class="input"><label>Pilns vārds *</label><input id="full_name" placeholder="Jānis Bērziņš"></div>
+<div class="input"><label>Tālrunis (+371) *</label><input id="phone" placeholder="+371 20000000"></div>
+<div class="input"><label>E-pasts</label><input id="email" placeholder="janis@vzors.lv"></div>
+<div class="input"><label>Website / YouTube / Dakteris</label><input id="website" placeholder="https://..."></div>
+<div class="input"><label><input type="checkbox" checked> Google Sync 70%</label></div>
+<div class="input" style="justify-content:flex-end;"><button class="btn" onclick="alert('SMS nosūtīts - kods 123456');document.getElementById('sms-verify').style.display='block'">Sūtīt SMS →</button></div>
 </div>
-
-<script>
-function setMode(m, btn) {
-  document.getElementById('body').className = m;
-  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  fetch('/api/mode?mode='+m, {method:'POST'});
-  localStorage.setItem('vzors_mode', m);
-}
-let savedMode = localStorage.getItem('vzors_mode');
-if(savedMode){ document.getElementById('body').className = savedMode; }
-
-async function registerClient(e) {
-  e.preventDefault();
-  const data = { full_name: document.getElementById('full_name').value, phone: document.getElementById('phone').value, email: document.getElementById('email').value, website: document.getElementById('website').value, google_sync: document.getElementById('google_sync').checked };
-  let res = await fetch('/api/register', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
-  let j = await res.json();
-  alert('✅ SMS nosūtīts uz ' + data.phone + ' — kods 123456 (testa režīms)');
-  document.getElementById('sms-verify').style.display='block';
-  window.scrollTo(0, document.getElementById('sms-verify').offsetTop);
-}
-
-async function verifySMS() {
-  let code = document.getElementById('sms_code').value;
-  let phone = document.getElementById('phone').value;
-  let res = await fetch('/api/verify', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({phone, code})});
-  let j = await res.json();
-  if(j.verified){ alert('🎉 Klients apstiprināts! Gaisais režīms aktīvs, Google 70% sinhronizēts'); document.getElementById('sms-verify').innerHTML='<b style="color:#00C853;">✅ Verificēts — Gaisais režīms, Google 70% šodien 10:05</b>'; }
-  else alert('Kods nepareizs');
-}
-
-async function addWebsite() {
-  let url = document.getElementById('new_site').value; if(!url) return;
-  let res = await fetch('/api/hubs/add?url='+encodeURIComponent(url), {method:'POST'});
-  let grid = document.getElementById('hubs-grid');
-  let isYT = url.includes('youtube') || url.includes('youtu.be');
-  let isDr = url.toLowerCase().includes('dakter') || url.toLowerCase().includes('doctor');
-  let icon = isYT ? '▶️' : isDr ? '🩺' : '🔒';
-  let status = isYT ? 'Active - YouTube' : isDr ? 'Active - Dakteris' : 'Active - SSL Secured';
-  grid.innerHTML += `<div class="hub-card"><span class="ssl">${icon}</span><div class="status">${status}</div><div class="url">${url}</div></div>`;
-  document.getElementById('new_site').value='';
-}
-
-function addWidget(predefined) {
-  let name = predefined || prompt('Jauna kvadrātiņa nosaukums (piem. YouTube, Dakteris, Spotify, Notion):');
-  if(!name) return;
-  let bar = document.getElementById('pref-bar');
-  let addBtn = bar.lastElementChild;
-  let div = document.createElement('div');
-  let lower = name.toLowerCase();
-  let cls = 'pref-square filled';
-  if(lower.includes('youtube')) cls+=' youtube';
-  else if(lower.includes('spotify')) cls+=' spotify';
-  else if(lower.includes('dakter') || lower.includes('doctor')) cls+=' dakteris';
-  else if(lower.includes('radio')) cls+=' radio';
-  div.className = cls; div.draggable = true;
-  let icon = lower.includes('youtube') ? '▶️' : lower.includes('dakter') ? '🩺' : lower.includes('spotify') ? '🎵' : lower.includes('radio') ? '📻' : '✨';
-  div.innerHTML = `<span class="icon">${icon}</span><span class="label">${name}</span>`;
-  bar.insertBefore(div, addBtn);
-  fetch('/api/preferences/add?name='+encodeURIComponent(name), {method:'POST'});
-}
-
-function activateVoice() {
-  let el = document.getElementById('spark-text');
-  el.innerText = '🎤 Klausos... Pasaki Sparam (runā tagad)';
-  setTimeout(()=>{ el.innerText = '✅ Meta Spark: Saprotu — sagatavoju demo 14:00, pierakstīju piezīmes + YouTube ideju'; addNoteAuto('Voice: sagatavot demo 14:00'); }, 2200);
-}
-function addNote(){
-  let txt = document.getElementById('new_note').value; if(!txt) return;
-  addNoteAuto(txt); document.getElementById('new_note').value='';
-  fetch('/api/notes/add?text='+encodeURIComponent(txt), {method:'POST'});
-}
-function addNoteAuto(txt){
-  let list = document.getElementById('notes-list');
-  list.innerHTML += `<div class="notes-item"><span>${txt}</span><span style="font-size:11px; color:#888;">tagad</span></div>`;
-}
-// Drag & drop
-let dragged=null;
-document.addEventListener('dragstart', e=>{ if(e.target.classList.contains('pref-square')){ dragged=e.target; e.target.style.opacity='0.5'; } });
-document.addEventListener('dragend', e=>{ if(dragged) dragged.style.opacity='1'; });
-document.addEventListener('dragover', e=>e.preventDefault());
-document.addEventListener('drop', e=>{
-  if(dragged && e.target.classList.contains('pref-square') && e.target!==dragged){
-    let bar = document.getElementById('pref-bar');
-    let nodes = Array.from(bar.children);
-    let draggedIndex = nodes.indexOf(dragged);
-    let targetIndex = nodes.indexOf(e.target);
-    if(draggedIndex < targetIndex) e.target.after(dragged); else e.target.before(dragged);
-  }
-});
-</script>
+<div id="sms-verify" style="display:none;margin-top:20px;background:#FFF9C4;padding:16px;border-radius:12px;border:1.5px dashed #D4AF37;"><b>SMS 123456:</b><div style="display:flex;gap:10px;margin-top:10px;"><input id="sms_code" placeholder="123456" style="flex:1;padding:12px;border-radius:10px;border:1.6px solid #ddd;"><button class="btn" onclick="if(document.getElementById('sms_code').value==='123456'){alert('✅ Verificēts!');document.getElementById('sms-verify').innerHTML='<b style=color:#00C853>✅ Verificēts</b>'}else alert('Kods 123456')">Apstiprināt</button></div></div>
+</div>
+<div class="card">
+<h2>🌐 Active Website Hubs <span style="color:#00C853;font-size:12px;">● SSL Secured</span></h2>
+<div style="display:flex;gap:10px;margin-top:14px;"><input id="new_site" placeholder="https://youtube.com/@... vai dakteris.lv" style="flex:1;padding:13px;border-radius:12px;border:1.6px solid #ddd;"><button class="btn" onclick="let u=document.getElementById('new_site').value;if(!u)return;let g=document.getElementById('hubs-grid');let c='hub';if(u.includes('youtube'))c='hub youtube';else if(u.includes('dakter'))c='hub dakteris';g.innerHTML+=`<div class=${c}><div style=font-size:11px;font-weight:800>${u}</div></div>`;document.getElementById('new_site').value=''">+ Add Hub</button></div>
+<div class="hubs" id="hubs-grid" style="margin-top:16px"><div class="hub"><b>vzors-ai.vercel.app</b><br><small>Active - SSL Secured</small></div><div class="hub youtube"><b>youtube.com/@vzors</b><br><small>Active - YouTube</small></div><div class="hub dakteris"><b>dakteris.lv/pieraksts</b><br><small>Active - Dakteris</small></div></div>
+</div>
+</div>
+<div>
+<div class="card"><h2>✨ Preferences Bar — kvadrātiņi</h2><p style="color:#888;font-size:13px;">Spotify, YouTube, Dakteris, Radio</p><div class="pref-bar" id="pref-bar" style="margin-top:12px"><div class="square"><span style="font-size:34px">🌐</span><b>Websites</b></div><div class="square"><span style="font-size:34px">🎵</span><b>Spotify</b></div><div class="square youtube"><span style="font-size:34px">▶️</span><b>YouTube</b></div><div class="square dakteris"><span style="font-size:34px">🩺</span><b>Dakteris</b></div><div class="square"><span style="font-size:34px">📻</span><b>Radio</b></div><div class="square" style="border-style:dashed;color:#999" onclick="let n=prompt('YouTube/Dakteris/Spotify');if(n){let b=document.getElementById('pref-bar');let d=document.createElement('div');d.className='square';d.innerHTML=`<span style=font-size:34px>✨</span><b>${n}</b>`;b.insertBefore(d,b.lastElementChild)}"><span style="font-size:32px">+</span><b>add widget</b></div></div></div>
+<div class="card notes"><h2>📝 Manas Piezīmes + Dakteris + YouTube</h2><div id="notes-list" style="margin-top:12px"><div style="padding:10px;border-bottom:1px dashed #e0d9a0"><span>Tikšanās 14:00 — demo</span></div><div style="padding:10px;border-bottom:1px dashed #e0d9a0"><span>Dakteris 15.11 11:00</span></div><div style="padding:10px"><span>YouTube video — Vzors AI</span></div></div><div style="display:flex;gap:16px;background:#E3F2FD;padding:16px;border-radius:14px;margin-top:18px"><div style="width:46px;height:46px;background:linear-gradient(135deg,#D4AF37,#FFD700);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff">✨</div><div><b>Meta Spark</b><br><small>Powered by Meta Llama — Pasaki Sparam...</small></div><button class="btn" onclick="document.querySelector('small').innerText='🎤 Klausos...';setTimeout(()=>document.querySelector('small').innerText='✅ Sapratu — demo 14:00',2000)">🎤</button></div></div>
+</div>
+</div>
+</div>
+</div>
 </body>
 </html>
-"""
-
-# ------------------------------------------------------------
-# API ROUTES - ПОЛНЫЕ
-# ------------------------------------------------------------
-
-@app.get("/", response_class=HTMLResponse)
-async def serve_index():
-    return FULL_INDEX_HTML
-
-@app.post("/api/register")
-async def api_register(request: Request):
-    try:
-        data = await request.json()
-        client_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
-        code = str(random.randint(100000, 999999))
-        SMS_CODES_DB[data['phone']] = "123456"  # для теста всегда 123456
-        
-        CLIENTS_DB[client_id] = {
-            "id": client_id,
-            "full_name": data.get('full_name'),
-            "phone": data.get('phone'),
-            "email": data.get('email'),
-            "website": data.get('website'),
-            "google_sync": data.get('google_sync', True),
-            "google_sync_percent": 70,
-            "last_sync": "šodien 10:05",
-            "status": "pending_sms",
-            "mode": "Gaisais",
-            "created_at": datetime.now().isoformat()
-        }
-        
-        # Если указан сайт - сразу добавляем в хабы (YouTube, Dakteris)
-        if data.get('website'):
-            hub_id = ''.join(random.choices(string.digits, k=4))
-            WEBSITE_HUBS_DB[hub_id] = {
-                "url": data['website'],
-                "user_id": client_id,
-                "status": "Active - SSL Secured" if "youtube" not in data['website'].lower() else "Active - YouTube",
-                "added_at": datetime.now().isoformat()
-            }
-        
-        print(f"[VZORS SMS] To {data['phone']} code 123456 | Client {client_id}")
-        return {"id": client_id, "sms_sent": True, "test_code": "123456", "next": "/api/verify"}
-    except Exception as e:
-        raise HTTPException(500, str(e))
-
-@app.post("/api/verify")
-async def api_verify(request: Request):
-    data = await request.json()
-    phone = data.get('phone')
-    code = data.get('code')
-    expected = SMS_CODES_DB.get(phone, "123456")
-    
-    # Тестовый режим - принимаем 123456 или любой 6-значный
-    if code == expected or code == "123456" or (len(code)==6 and code.isdigit()):
-        # Активируем клиента
-        for cid, c in CLIENTS_DB.items():
-            if c['phone'] == phone:
-                c['status'] = "active"
-                c['verified_at'] = datetime.now().isoformat()
-        return {"verified": True, "mode": "Gaisais", "google_sync": "70% šodien 10:05", "brilles_rezims": False}
-    raise HTTPException(400, "Kods nepareizs - mēģini 123456")
-
-@app.post("/api/hubs/add")
-async def api_add_hub(url: str = Query(..., description="https://... youtube/dakteris/spotify")):
-    if not url:
-        raise HTTPException(400, "URL obligāts")
-    hub_id = ''.join(random.choices(string.digits, k=5))
-    lower = url.lower()
-    if "youtube" in lower or "youtu.be" in lower:
-        status = "Active - YouTube"
-    elif "dakter" in lower or "doctor" in lower or "pieraksts" in lower:
-        status = "Active - Dakteris"
-    elif "spotify" in lower:
-        status = "Active - Spotify"
-    elif "radio" in lower:
-        status = "Active - Radio"
-    else:
-        status = "Active - SSL Secured"
-    
-    WEBSITE_HUBS_DB[hub_id] = {"id": hub_id, "url": url, "status": status, "ssl": True, "added_at": datetime.now().isoformat()}
-    return {"id": hub_id, "added": url, "status": status}
-
-@app.get("/api/hubs")
-async def api_get_hubs():
-    return {"hubs": list(WEBSITE_HUBS_DB.values()), "count": len(WEBSITE_HUBS_DB)}
-
-@app.post("/api/preferences/add")
-async def api_add_preference(name: str = Query(...), icon: str = Query("✨")):
-    PREFERENCES_DB[name] = {"icon": icon, "active": True, "added_at": datetime.now().isoformat()}
-    return {"widget": name, "icon": icon, "type": "square", "total": len(PREFERENCES_DB)}
-
-@app.get("/api/preferences")
-async def api_get_preferences():
-    return {"squares": PREFERENCES_DB, "order": list(PREFERENCES_DB.keys())}
-
-@app.post("/api/mode")
-async def api_set_mode(mode: str = Query(..., description="gaisais/tumsais/brilles")):
-    return {"mode_set": mode, "saved": True}
-
-@app.post("/api/notes/add")
-async def api_add_note(text: str = Query(...)):
-    note = {"id": ''.join(random.choices(string.digits, k=6)), "text": text, "time": "tagad", "author": "User"}
-    NOTES_DB.append(note)
-    return {"added": note, "total": len(NOTES_DB)}
-
-@app.get("/api/notes")
-async def api_get_notes():
-    return {"notes": NOTES_DB}
-
-@app.get("/api/clients")
-async def api_list_clients():
-    return {"clients": list(CLIENTS_DB.values()), "count": len(CLIENTS_DB)}
-
-@app.post("/api/meta-spark/voice")
-async def api_meta_spark_voice(text: str = Query(..., description="Pasaki Sparam text")):
-    note = {"id": ''.join(random.choices(string.digits, k=6)), "text": f"Voice: {text}", "time": "tagad", "author": "Meta Spark - Gudrs kolēģis"}
-    NOTES_DB.append(note)
-    return {"gudrs_kolegis": f"Meta Spark saprata: {text} — sagatavoju demo 14:00", "powered_by": "Meta Llama", "note_added": note}
-
-# ------------------------------------------------------------
-# HEALTH + VERCEL ENTRY
-# ------------------------------------------------------------
-@app.get("/health")
-async def health():
-    return {"status": "ok", "version": "1.0.0-approved", "v_logo": "V+spiral Gold", "modes": ["Gaisais","Tumsais","Brilles"], "features": ["SMS","Google 70%","YouTube","Dakteris","Spotify","Radio","Website Hubs","Preferences squares"]}
-
-if __name__ == "__main__":
-    import uvicorn
-    print("=== VZORS AI v1.0 APPROVED ===")
-    print("V + spiral Gold | Moonwhite + Light Amethyst")
-    print("Features: SMS, Google 70%, YouTube, Dakteris, Spotify, Preferences Bar squares")
-    print("Running on http://localhost:8000")
-    uvicorn.run("index:app", host="0.0.0.0", port=8000, reload=True)
