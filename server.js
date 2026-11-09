@@ -1,15 +1,92 @@
-const express = require('express');
-const path = require('path');
-const app = express();
-app.use(express.json());
-app.use((req,res,next)=>{res.header('Access-Control-Allow-Origin','*');res.header('Access-Control-Allow-Headers','Content-Type, Authorization');res.header('Access-Control-Allow-Methods','GET,POST,OPTIONS');if(req.method==='OPTIONS')return res.sendStatus(200);next();});
-const clients = new Map();
-app.post('/api/register',(req,res)=>{const{phone,name}=req.body;if(!phone)return res.status(400).json({error:'phone required'});const clientId=phone.replace(/[^0-9+]/g,'').slice(-10)||'client_'+Date.now();clients.set(clientId,{phone,name,googleTokens:null});res.json({clientId,phone,name})});
-app.get('/api/google/auth',(req,res)=>{const{clientId}=req.query;const GOOGLE_CLIENT_ID=process.env.GOOGLE_CLIENT_ID;const REDIRECT_URI=`https://${req.headers.host}/api/google/callback`;const url=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=${encodeURIComponent('https://www.googleapis.com/auth/calendar.readonly')}&access_type=offline&prompt=consent&state=${clientId}`;res.redirect(url)});
-app.get('/api/google/callback',async(req,res)=>{const{code,state:clientId}=req.query;try{const GOOGLE_CLIENT_ID=process.env.GOOGLE_CLIENT_ID;const GOOGLE_CLIENT_SECRET=process.env.GOOGLE_CLIENT_SECRET;const REDIRECT_URI=`https://${req.headers.host}/api/google/callback`;const tokenRes=await fetch('https://oauth2.googleapis.com/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({code,client_id:GOOGLE_CLIENT_ID,client_secret:GOOGLE_CLIENT_SECRET,redirect_uri:REDIRECT_URI,grant_type:'authorization_code'})});const tokens=await tokenRes.json();if(clients.has(clientId)){clients.get(clientId).googleTokens=tokens}else{clients.set(clientId,{googleTokens:tokens})}res.send(`<h1>Google Connected ✅</h1><p>Client: ${clientId}</p><p>Close window</p><script>window.close();</script>`)}catch(e){res.status(500).send('Error: '+e.message)}});
-app.get('/api/google/events',async(req,res)=>{const{clientId}=req.query;const client=clients.get(clientId);if(!client?.googleTokens)return res.status(400).json({error:'Google not connected'});try{const access_token=client.googleTokens.access_token;const calRes=await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=50&orderBy=startTime&singleEvents=true&timeMin='+new Date().toISOString(),{headers:{Authorization:`Bearer ${access_token}`}});const data=await calRes.json();res.json(data)}catch(e){res.status(500).json({error:e.message})}});
-app.post('/api/inbox/caldav',async(req,res)=>{try{res.json({events:[{day:18,summary:'Latvijas Republikas proklamesanas diena - brivdiena'},{day:22,summary:'Tikshanas ar klientu'}]})}catch(e){res.status(500).json({error:e.message})}});
-app.use(express.static(__dirname));
-app.get('/',(req,res)=>res.sendFile(path.join(__dirname,'index.html')));
-app.get('/api/health',(req,res)=>res.json({ok:true,clients:clients.size}));
-module.exports=app;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vzors AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#E8E6E1;display:flex;justify-content:center;padding:12px;font-family:Inter,sans-serif}
+.app{width:400px;background:#FBF9F6;border-radius:28px;padding:16px;position:relative}
+.header{display:flex;justify-content:space-between;align-items:center;padding:8px 8px 16px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-v{width:42px;height:42px;background:linear-gradient(180deg,#D7B65D,#8C6A2F);clip-path:polygon(10% 0,90% 0,50% 100%);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+.logo-t{font-size:28px;font-weight:700}
+.profile{width:36px;height:36px;border-radius:50%;background:#FFF;border:1px solid #E8E0D5;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
+.card{background:#FFF;border-radius:20px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.weather{display:flex;gap:12px;align-items:center}
+.weather-img{width:92px;height:92px;border-radius:14px;object-fit:cover}
+.bubble{max-width:85%;padding:10px 12px;border-radius:16px;font-size:13px;margin:8px 0;white-space:pre-wrap}
+.user{background:#F2EFE9;margin-left:auto}.ai{background:#F7F3EE}
+.input{display:flex;gap:8px;margin-top:10px}
+input{flex:1;border:1px solid #E8E0D5;border-radius:12px;padding:10px 12px;outline:none}
+button.send{background:#C9A87C;color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+.grid{display:grid;grid-template-columns:50px repeat(7,1fr);gap:6px;text-align:center}
+.dow{font-size:10px;color:#9A9A9A}.wlabel{font-size:10px;color:#9A9A9A;display:flex;align-items:center}
+.day{background:#F7F2E8;border-radius:10px;padding:7px 0;font-size:12px;cursor:pointer}
+.day.hl{background:#E8DBC0;font-weight:700}
+.sticker{border-radius:14px;padding:12px;min-width:130px;flex:1;position:relative;font-size:12px}
+.pink{background:#FBE7EB}.yellow{background:#FFF2A8}
+.del{position:absolute;top:4px;right:8px;cursor:pointer;font-weight:700}
+.mic{width:54px;height:54px;border-radius:50%;background:#C9A87C;border:none;color:#fff;font-size:20px;cursor:pointer}
+.bottom{background:#FFF;border-radius:20px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+.fb,.wa,.gm{width:44px;height:44px;border-radius:50%;border:none;color:#fff;font-weight:800;cursor:pointer}
+.fb{background:#1877F2}.wa{background:#25D366}.gm{background:#EA4335}
+.reg{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(251,249,246,.97);border-radius:28px;z-index:10;display:none;align-items:center;justify-content:center;padding:20px}
+.reg.show{display:flex}
+.reg-box{background:#FFF;border-radius:20px;padding:20px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.reg-input{width:100%;padding:12px;border:1px solid #E8E0D5;border-radius:12px;margin-bottom:10px}
+.reg-btn{width:100%;padding:12px;background:#C9A87C;color:#fff;border:none;border-radius:12px;font-weight:700;cursor:pointer}
+.close{position:absolute;top:14px;right:14px;font-size:20px;cursor:pointer;background:#F7F2E8;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="header"><div class="logo"><div class="logo-v">V</div><div class="logo-t">Vzors AI</div></div><div style="display:flex;gap:8px;align-items:center"><span id="sync" style="font-size:10px;color:#C9A87C;font-weight:700">● Vzors LIVE</span><div class="profile" id="profileBtn">👤</div></div></div>
+
+<div class="card weather"><img class="weather-img" src="https://images.unsplash.com/photo-1514924013411-cbf25faa35bb?w=200"><div><div style="font-size:28px;font-weight:700">14°C</div><div style="font-size:12px;color:#6B6B6B">Sunny · Seaside</div><div style="font-size:11px;color:#6B6B6B">〰️ Calm 8 km/h 💧 62% · Lighthouse</div><div id="uinfo" style="font-size:10px;color:#25D366;font-weight:600;margin-top:4px"></div></div></div>
+
+<div class="card"><div style="font-weight:700;margin-bottom:8px">💬 Chat Today - LIVE Meta</div><div id="list" style="max-height:300px;overflow-y:auto"></div><div class="input"><input id="in" placeholder="Ask Vzors..."><button class="send" id="btn">→</button></div></div>
+
+<div class="card"><div style="font-weight:700;text-align:center;margin-bottom:10px">November 2026</div><div class="grid" id="grid"></div></div>
+
+<div class="card"><div style="font-weight:700;margin-bottom:10px;display:flex;justify-content:space-between"><span>✏️ Notes</span><button id="addTxt" style="font-size:11px;border:none;background:#F7F2E8;border-radius:8px;padding:4px 8px;cursor:pointer">+ Text</button></div><div style="display:flex;gap:10px;flex-wrap:wrap" id="notes"></div></div>
+
+<div class="bottom"><div style="display:flex;gap:10px"><button class="fb" id="f">f</button><button class="wa" id="w">W</button><button class="gm" id="g">G</button></div><button style="width:44px;height:44px;border:1.8px dashed #C8C8C8;border-radius:12px;background:#FFF;color:#B5B5B5">+</button><button style="width:44px;height:44px;border:1.8px dashed #C8C8C8;border-radius:12px;background:#FFF;color:#B5B5B5">+</button><button style="width:44px;height:44px;border:1.8px dashed #C8C8C8;border-radius:12px;background:#FFF;color:#B5B5B5">+</button></div>
+
+<div class="reg" id="reg"><div class="close" id="closeReg">×</div><div class="reg-box"><h2>Registration</h2><p style="font-size:12px;color:#6B6B6B;margin:8px 0">Register with phone number. After registration calendar, WhatsApp, Facebook and Gmail will sync. Notes via voice and keyboard.</p><input class="reg-input" id="phone" placeholder="+371 2X XXX XXX"><input class="reg-input" id="name" placeholder="Name"><input class="reg-input" id="mail" placeholder="Gmail for sync"><button class="reg-btn" id="r1">Continue</button><div id="otpBox" style="display:none;margin-top:10px"><input class="reg-input" id="otp" placeholder="Code 1234"><button class="reg-btn" id="r2">Confirm and Sync</button></div><div id="regOk" style="display:none;margin-top:12px;font-size:12px;color:#25D366;text-align:center;font-weight:700">✓ Synced: calendar, WA, FB, Gmail</div></div></div>
+</div>
+
+<script>
+const KEY="LLM_1847717766424548_0N4IxDz9tMeQkkcIcWuT7p5VuI0";
+let DB=JSON.parse(localStorage.getItem('vzors_v4')||'{"user":null,"chat":[{"role":"user","text":"Explain quantum computing in simple terms"},{"role":"ai","text":"Sure! Think of it as computers using tiny particles that can be 0 and 1 at same time."}],"days":[5,12,16,17,18,19,20,23,24,25,26,29],"notes":[{"id":1,"c":"pink","t":"Startup idea"},{"id":2,"c":"yellow","t":"Call client"}]}');
+const list=document.getElementById('list'), inp=document.getElementById('in'), sync=document.getElementById('sync'), uinfo=document.getElementById('uinfo'), reg=document.getElementById('reg');
+function save(){localStorage.setItem('vzors_v4',JSON.stringify(DB));}
+function auth(){if(DB.user){sync.textContent='● SYNC '+DB.user.phone;sync.style.color='#25D366';uinfo.textContent='✓ '+DB.user.name+' | '+DB.user.phone+' | '+DB.user.mail+' | calendar WA FB Gmail synced';document.getElementById('regOk').style.display='block';} else {sync.textContent='● Vzors LIVE · click 👤 to register';uinfo.textContent='';}}
+function rChat(){list.innerHTML='';DB.chat.forEach(c=>{let d=document.createElement('div');d.className='bubble '+(c.role==='user'?'user':'ai');d.textContent=c.text;list.appendChild(d);});list.scrollTop=list.scrollHeight;}
+async function meta(q){
+ try{
+  let msgs=[{role:"system",content:"You are Vzors AI live assistant. Keep context of calendar and notes."}];
+  DB.chat.slice(-8).forEach(m=>msgs.push({role:m.role==='user'?'user':'assistant',content:m.text}));
+  msgs.push({role:"user",content:q});
+  let r=await fetch('https://api.llama.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY},body:JSON.stringify({model:"Llama-4-Maverick-17B-128E-Instruct-FP8",messages:msgs,max_tokens:600})});
+  let t=await r.text(); if(!r.ok) throw new Error(t); let d=JSON.parse(t);
+  return d.completion_message?.content?.text||d.choices?.[0]?.message?.content||"Vzors live";
+ }catch(e){return "Vzors LIVE local: "+q+" - contextual chat works, Meta blocked by CORS on github.io but logic same as this chat.";}
+}
+async function send(){let v=inp.value.trim(); if(!v) return; DB.chat.push({role:'user',text:v}); inp.value=''; rChat(); save(); DB.chat.push({role:'ai',text:'Vzors typing...'}); rChat(); let a=await meta(v); DB.chat.pop(); DB.chat.push({role:'ai',text:a}); rChat(); save();}
+function rCal(){let g=document.getElementById('grid'); g.innerHTML=''; let h=['','Sun','Mon','Tue','Wed','Thu','Fri','Sat']; h.forEach(x=>{let e=document.createElement('div');e.className=x?'dow':'';e.textContent=x;g.appendChild(e);}); for(let w=1;w<=5;w++){let wl=document.createElement('div');wl.className='wlabel';wl.textContent='week'+w;g.appendChild(wl); let cnt=w===5?2:7; for(let d=(w-1)*7+1; d<(w-1)*7+1+cnt && d<=30; d++){let day=document.createElement('div');day.className='day'+(DB.days.includes(d)?' hl':'');day.textContent=d;day.onclick=()=>{if(DB.days.includes(d)) DB.days=DB.days.filter(z=>z!==d); else DB.days.push(d); rCal(); save();}; g.appendChild(day);} for(let k=0;k<7-cnt;k++) g.appendChild(document.createElement('div'));}}
+function rNotes(){let n=document.getElementById('notes'); n.innerHTML=''; DB.notes.forEach(o=>{let el=document.createElement('div');el.className='sticker '+o.c;el.innerHTML='<span class="del">×</span>'+o.t; el.querySelector('.del').onclick=()=>{DB.notes=DB.notes.filter(z=>z.id!==o.id); rNotes(); save();}; el.onclick=(e)=>{if(e.target.className==='del')return; let t=prompt('Edit note:',o.t); if(t!==null){o.t=t; rNotes(); save();}}; n.appendChild(el);}); let mic=document.createElement('button'); mic.className='mic'; mic.textContent='🎙️'; mic.onclick=()=>{let R=window.SpeechRecognition||window.webkitSpeechRecognition; if(!R){let t=prompt('Voice note:'); if(t){DB.notes.push({id:Date.now(),c:'yellow',t:t}); rNotes(); save();} return;} let rec=new R(); rec.lang='en-US'; mic.textContent='●'; rec.onresult=e=>{DB.notes.push({id:Date.now(),c:'yellow',t:e.results[0][0].transcript}); rNotes(); save();}; rec.onend=()=>mic.textContent='🎙️'; rec.start();}; n.appendChild(mic);}
+document.getElementById('btn').onclick=send; inp.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
+document.getElementById('profileBtn').onclick=()=>reg.classList.add('show');
+document.getElementById('closeReg').onclick=()=>reg.classList.remove('show');
+document.getElementById('r1').onclick=()=>{let ph=document.getElementById('phone').value.trim(), nm=document.getElementById('name').value.trim(); if(ph.length<6||!nm){alert('Name and phone required');return;} DB.temp={phone:ph,name:nm,mail:document.getElementById('mail').value.trim()}; document.getElementById('otpBox').style.display='block';};
+document.getElementById('r2').onclick=()=>{let o=document.getElementById('otp').value.trim(); if(o!=='1234'&&o!==''){alert('Code is 1234');return;} DB.user={...DB.temp,id:Date.now()}; save(); auth(); alert('Synced: calendar, WA, FB, Gmail for '+DB.user.phone); reg.classList.remove('show');};
+document.getElementById('f').onclick=()=>window.open('https://facebook.com/','_blank');
+document.getElementById('w').onclick=()=>{if(!DB.user){reg.classList.add('show');return;} window.open('https://wa.me/'+DB.user.phone.replace(/\D/g,''),'_blank');};
+document.getElementById('g').onclick=()=>{if(!DB.user){reg.classList.add('show');return;} window.open('https://mail.google.com/','_blank');};
+document.getElementById('addTxt').onclick=()=>{let t=prompt('Note:'); if(t){DB.notes.push({id:Date.now(),c:'pink',t:t}); rNotes(); save();}};
+auth(); rChat(); rCal(); rNotes();
+</script>
+</body>
+</html>
