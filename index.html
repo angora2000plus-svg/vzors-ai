@@ -29,30 +29,21 @@ button.send{background:#C9A87C;color:#fff;border:none;border-radius:12px;padding
 <body>
 <div class="app">
 <div class="header"><div class="logo"><div class="logo-v">V</div><div class="logo-t">Vzors AI</div></div><div>🔔 👤</div></div>
-
 <div class="card weather">
 <img class="weather-img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200">
-<div><div class="temp">14°C</div><div class="sub">Sunny · Seaside</div><div class="sub">〰️ Calm winds 8 km/h 💧</div><div class="sub">Humidity 62% 💧</div><div id="sync" style="font-size:10px;color:#C9A87C;font-weight:700;margin-top:4px">● Vzors LIVE</div></div>
+<div><div class="temp">14°C</div><div class="sub">Sunny · Seaside</div><div class="sub">〰️ Calm winds 8 km/h 💧 Humidity 62%</div><div id="sync" style="font-size:10px;color:#C9A87C;font-weight:700;margin-top:4px">● Vzors LIVE</div></div>
 </div>
-
 <div class="card">
-<div style="font-weight:700;margin-bottom:8px">💬 Chat Today</div>
+<div style="font-weight:700;margin-bottom:8px">💬 Chat Today - LIVE</div>
 <div id="list"></div>
 <div class="input"><input id="in" placeholder="Ask Vzors..."><button class="send" id="btn">→</button></div>
 </div>
-
-<div class="card"><div style="font-weight:700;text-align:center">November 2026</div></div>
+<div class="card"><div style="font-weight:700;text-align:center">November 2026</div><div style="text-align:center;font-size:12px;color:#9A9A9A;margin-top:6px">f · W · +++ live</div></div>
 </div>
-
 <script>
 const META_KEY="LLM_1847717766424548_0N4IxDz9tMeQkkcIcWuT7p5VuI0";
-let chat=[
-{role:"user",text:"Explain quantum computing in simple terms"},
-{role:"ai",text:"Sure! Think of it as computers using tiny particles that can be 0 and 1 at the same time."}
-];
-const list=document.getElementById('list');
-const inp=document.getElementById('in');
-const sync=document.getElementById('sync');
+let chat=[{role:"user",text:"Explain quantum computing in simple terms"},{role:"ai",text:"Sure! Think of it as computers using tiny particles that can be 0 and 1 at the same time."}];
+const list=document.getElementById('list'), inp=document.getElementById('in'), sync=document.getElementById('sync');
 function render(){list.innerHTML='';chat.forEach(c=>{let d=document.createElement('div');d.className='bubble '+(c.role==='user'?'user':'ai');d.textContent=c.text;list.appendChild(d);});}
 async function callMeta(p){
  try{
@@ -61,7 +52,7 @@ async function callMeta(p){
   const t=await r.text(); const d=JSON.parse(t);
   sync.textContent='● Vzors LIVE + Meta';
   return d.completion_message?.content?.text||d.choices?.[0]?.message?.content||"Vzors live";
- }catch(e){sync.textContent='● Vzors LIVE (local)'; return "Vzors LIVE: "+p+" — живой чат работает!";}
+ }catch(e){sync.textContent='● Vzors LIVE (local)'; return "Vzors LIVE: "+p+" — живой чат работает! За Vzors!";}
 }
 async function send(){
  let v=inp.value.trim(); if(!v) return;
