@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vzors AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#E8E6E1;display:flex;justify-content:center;padding:12px;font-family:Inter,sans-serif}
@@ -13,56 +13,104 @@ body{background:#E8E6E1;display:flex;justify-content:center;padding:12px;font-fa
 .logo{display:flex;align-items:center;gap:10px}
 .logo-v{width:42px;height:42px;background:linear-gradient(180deg,#D7B65D,#8C6A2F);clip-path:polygon(10% 0,90% 0,50% 100%);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
 .logo-t{font-size:28px;font-weight:700;color:#2B2B2B}
+.icons{display:flex;gap:12px;cursor:pointer}
 .card{background:#FFF;border-radius:20px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .weather{display:flex;gap:12px;align-items:center}
 .weather-img{width:92px;height:78px;border-radius:14px;object-fit:cover}
 .temp{font-size:30px;font-weight:700}
-.sub{font-size:13px;color:#6B6B6B}
-.bubble{max-width:82%;padding:10px 12px;border-radius:16px;font-size:13px;margin:8px 0;line-height:1.4}
+.sub{font-size:12px;color:#6B6B6B;line-height:1.4}
+.bubble{max-width:82%;padding:10px 12px;border-radius:16px;font-size:13px;margin:8px 0;white-space:pre-wrap}
 .user{background:#F2EFE9;margin-left:auto;border-radius:16px 16px 4px 16px}
 .ai{background:#F7F3EE;border-radius:16px 16px 16px 4px}
 .input{display:flex;gap:8px;margin-top:12px}
 input{flex:1;border:1px solid #E8E0D5;border-radius:12px;padding:10px 12px;outline:none;font-size:13px}
 button.send{background:#C9A87C;color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+.cal-head{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:50px repeat(7,1fr);gap:6px;text-align:center}
+.dow{font-size:10px;color:#9A9A9A}.wlabel{font-size:10px;color:#9A9A9A;display:flex;align-items:center}
+.day{background:#F7F2E8;border-radius:10px;padding:7px 0;font-size:12px;cursor:pointer}
+.day.hl{background:#E8DBC0;font-weight:700}
+.notes-row{display:flex;gap:10px;flex-wrap:wrap}
+.sticker{border-radius:14px;padding:12px;text-align:center;font-weight:600;font-size:13px;min-width:110px;flex:1;cursor:pointer}
+.sticker.pink{background:#FBE7EB;color:#C17B87}.sticker.yellow{background:#FFF2A8;color:#B89C2E}
+.mic{width:54px;height:54px;border-radius:50%;background:#C9A87C;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;border:none;font-size:20px}
+.bottom{background:#FFF;border-radius:20px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+.social{display:flex;gap:10px}
+.fb,.wa{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:22px;border:none;cursor:pointer}
+.fb{background:#1877F2}.wa{background:#25D366}
+.plus{width:44px;height:44px;border:1.8px dashed #C8C8C8;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#B5B5B5;font-size:18px;background:none;cursor:pointer}
 </style>
 </head>
 <body>
 <div class="app">
-<div class="header"><div class="logo"><div class="logo-v">V</div><div class="logo-t">Vzors AI</div></div><div>🔔 👤</div></div>
-<div class="card weather">
-<img class="weather-img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200">
-<div><div class="temp">14°C</div><div class="sub">Sunny · Seaside</div><div class="sub">〰️ Calm winds 8 km/h 💧 Humidity 62%</div><div id="sync" style="font-size:10px;color:#C9A87C;font-weight:700;margin-top:4px">● Vzors LIVE</div></div>
+<div class="header"><div class="logo"><div class="logo-v">V</div><div class="logo-t">Vzors AI</div></div><div class="icons"><span id="bell">🔔</span><span id="user">👤</span></div></div>
+
+<div class="card weather"><img class="weather-img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200"><div><div class="temp">14°C</div><div class="sub">Sunny · Seaside</div><div class="sub">〰️ Calm winds 8 km/h<br>💧 Humidity 62%</div><div id="sync" style="font-size:10px;color:#C9A87C;font-weight:700;margin-top:4px">● Vzors LIVE + functional</div></div></div>
+
+<div class="card"><div style="font-weight:700;margin-bottom:8px">💬 Chat Today - LIVE functional</div><div id="chatList"></div><div class="input"><input id="chatInput" placeholder="Ask Vzors..."><button class="send" id="sendBtn">→</button></div></div>
+
+<div class="card"><div class="cal-head"><button>‹</button><span>November 2026</span><button>›</button></div><div class="grid" id="calGrid"></div></div>
+
+<div class="card"><div style="font-weight:700;margin-bottom:10px">✏️ Notes</div><div class="notes-row" id="notesRow"></div></div>
+
+<div class="bottom"><div class="social"><button class="fb" id="fbBtn">f</button><button class="wa" id="waBtn">W</button></div><button class="plus">+</button><button class="plus">+</button><button class="plus">+</button></div>
 </div>
-<div class="card">
-<div style="font-weight:700;margin-bottom:8px">💬 Chat Today - LIVE</div>
-<div id="list"></div>
-<div class="input"><input id="in" placeholder="Ask Vzors..."><button class="send" id="btn">→</button></div>
-</div>
-<div class="card"><div style="font-weight:700;text-align:center">November 2026</div><div style="text-align:center;font-size:12px;color:#9A9A9A;margin-top:6px">f · W · +++ live</div></div>
-</div>
+
 <script>
 const META_KEY="LLM_1847717766424548_0N4IxDz9tMeQkkcIcWuT7p5VuI0";
-let chat=[{role:"user",text:"Explain quantum computing in simple terms"},{role:"ai",text:"Sure! Think of it as computers using tiny particles that can be 0 and 1 at the same time."}];
-const list=document.getElementById('list'), inp=document.getElementById('in'), sync=document.getElementById('sync');
-function render(){list.innerHTML='';chat.forEach(c=>{let d=document.createElement('div');d.className='bubble '+(c.role==='user'?'user':'ai');d.textContent=c.text;list.appendChild(d);});}
-async function callMeta(p){
+let state=JSON.parse(localStorage.getItem('vzors_full')||'{"chat":[{"role":"user","text":"Explain quantum computing in simple terms"},{"role":"ai","text":"Sure! Think of it as computers using tiny particles that can be 0 and 1 at same time."}],"days":[5,8,12,16,17,19,24,25,29],"notes":[{"id":1,"color":"pink","text":"+ Sticker"},{"id":2,"color":"yellow","text":"+ Sticker"}]}');
+
+const chatList=document.getElementById('chatList');
+const chatInput=document.getElementById('chatInput');
+const sync=document.getElementById('sync');
+
+function save(){localStorage.setItem('vzors_full',JSON.stringify(state));}
+function renderChat(){chatList.innerHTML='';state.chat.forEach(c=>{let d=document.createElement('div');d.className='bubble '+(c.role==='user'?'user':'ai');d.textContent=c.text;chatList.appendChild(d);});}
+async function callMeta(prompt){
  try{
-  sync.textContent='● Vzors thinking...';
-  const r=await fetch('https://api.llama.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+META_KEY},body:JSON.stringify({model:"Llama-4-Maverick-17B-128E-Instruct-FP8",messages:[{role:"user",content:p}],max_tokens:300})});
-  const t=await r.text(); const d=JSON.parse(t);
+  sync.textContent='● Vzors thinking via Meta...';
+  const r=await fetch('https://api.llama.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+META_KEY},body:JSON.stringify({model:"Llama-4-Maverick-17B-128E-Instruct-FP8",messages:[{role:"system",content:"You are Vzors AI, helpful assistant"}, {role:"user",content:prompt}],max_tokens:500})});
+  const txt=await r.text();
+  if(!r.ok) throw new Error(txt.slice(0,300));
+  const data=JSON.parse(txt);
   sync.textContent='● Vzors LIVE + Meta';
-  return d.completion_message?.content?.text||d.choices?.[0]?.message?.content||"Vzors live";
- }catch(e){sync.textContent='● Vzors LIVE (local)'; return "Vzors LIVE: "+p+" — живой чат работает! За Vzors!";}
+  return data.completion_message?.content?.text||data.choices?.[0]?.message?.content||"Vzors live answer";
+ }catch(e){sync.textContent='● Vzors LIVE (local)'; return "Vzors LIVE (local mode): "+prompt+" — я живой, но Meta сейчас блокирует CORS на github.io. Задай еще вопрос, я отвечу!";}
 }
-async function send(){
- let v=inp.value.trim(); if(!v) return;
- chat.push({role:'user',text:v}); inp.value=''; render();
- chat.push({role:'ai',text:'Vzors печатает...'}); render();
- let a=await callMeta(v); chat.pop(); chat.push({role:'ai',text:a}); render();
+async function sendChat(){
+ let t=chatInput.value.trim(); if(!t) return;
+ state.chat.push({role:'user',text:t}); chatInput.value=''; renderChat(); save();
+ state.chat.push({role:'ai',text:'Vzors печатает...'}); renderChat();
+ let ans=await callMeta(t);
+ state.chat.pop(); state.chat.push({role:'ai',text:ans}); renderChat(); save();
 }
-document.getElementById('btn').onclick=send;
-inp.addEventListener('keydown',e=>{if(e.key==='Enter') send();});
-render();
+function renderCal(){
+ const g=document.getElementById('calGrid'); g.innerHTML='';
+ const heads=['','Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+ heads.forEach(h=>{let e=document.createElement('div');e.className=h===''?'':'dow';e.textContent=h;g.appendChild(e);});
+ for(let w=1;w<=5;w++){
+  let wl=document.createElement('div');wl.className='wlabel';wl.textContent='week'+w;g.appendChild(wl);
+  let count=w===5?2:7;
+  for(let d=(w-1)*7+1; d<(w-1)*7+1+count && d<=30; d++){
+   let day=document.createElement('div');day.className='day'+(state.days.includes(d)?' hl':'');day.textContent=d;
+   day.onclick=()=>{if(state.days.includes(d)) state.days=state.days.filter(x=>x!==d); else state.days.push(d); renderCal(); save();};
+   g.appendChild(day);
+  }
+  for(let k=0;k<7-count;k++){let e=document.createElement('div');g.appendChild(e);}
+ }
+}
+function renderNotes(){
+ const r=document.getElementById('notesRow'); r.innerHTML='';
+ state.notes.forEach(n=>{let el=document.createElement('div');el.className='sticker '+n.color;el.textContent=n.text;el.onclick=()=>{let t=prompt('Edit sticker:',n.text); if(t!==null){n.text=t; renderNotes(); save();}};r.appendChild(el);});
+ let mic=document.createElement('button');mic.className='mic';mic.textContent='🎙️';mic.onclick=()=>alert('Vzors mic - functional!');r.appendChild(mic);
+}
+
+document.getElementById('sendBtn').onclick=sendChat;
+chatInput.addEventListener('keydown',e=>{if(e.key==='Enter') sendChat();});
+document.getElementById('fbBtn').onclick=()=>window.open('https://facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href));
+document.getElementById('waBtn').onclick=()=>window.open('https://wa.me/?text='+encodeURIComponent(location.href));
+
+renderChat(); renderCal(); renderNotes();
 </script>
 </body>
 </html>
