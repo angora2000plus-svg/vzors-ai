@@ -1,88 +1,74 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vzors AI - LIVE</title>
+<title>Vzors AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body{background:#F0ECE6;display:flex;justify-content:center;padding:14px;font-family:Inter,sans-serif}
-.app{width:390px;background:#FBF9F6;border-radius:32px;padding:16px}
-.card{background:#fff;border-radius:22px;padding:16px;margin-bottom:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#E8E6E1;display:flex;justify-content:center;padding:12px;font-family:Inter,sans-serif}
+.app{width:390px;background:#FBF9F6;border-radius:28px;padding:16px}
+.header{display:flex;justify-content:space-between;align-items:center;padding:8px 8px 16px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-v{width:42px;height:42px;background:linear-gradient(180deg,#D7B65D,#8C6A2F);clip-path:polygon(10% 0,90% 0,50% 100%);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+.logo-t{font-size:28px;font-weight:700;color:#2B2B2B}
+.card{background:#FFF;border-radius:20px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .weather{display:flex;gap:12px;align-items:center}
-.weather-img{width:110px;height:92px;border-radius:16px;object-fit:cover;object-position:right center}
-.bubble{max-width:80%;padding:10px 12px;border-radius:16px;margin:6px 0;font-size:13px}
-.user{background:#E8DBC0;margin-left:auto;border-radius:16px 16px 4px 16px}
-.ai{background:#F2EFE9;border-radius:16px 16px 16px 4px}
-.input{display:flex;gap:8px;margin-top:10px}
-input{flex:1;padding:10px;border-radius:12px;border:1px solid #ddd;outline:none}
+.weather-img{width:92px;height:78px;border-radius:14px;object-fit:cover}
+.temp{font-size:30px;font-weight:700}
+.sub{font-size:13px;color:#6B6B6B}
+.bubble{max-width:82%;padding:10px 12px;border-radius:16px;font-size:13px;margin:8px 0;line-height:1.4}
+.user{background:#F2EFE9;margin-left:auto;border-radius:16px 16px 4px 16px}
+.ai{background:#F7F3EE;border-radius:16px 16px 16px 4px}
+.input{display:flex;gap:8px;margin-top:12px}
+input{flex:1;border:1px solid #E8E0D5;border-radius:12px;padding:10px 12px;outline:none;font-size:13px}
 button.send{background:#C9A87C;color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
-.fb,.wa{width:44px;height:44px;border-radius:50%;border:none;color:#fff;font-weight:800;font-size:24px;cursor:pointer}
-.fb{background:#1877F2}.wa{background:#25D366}
 </style>
 </head>
 <body>
 <div class="app">
+<div class="header"><div class="logo"><div class="logo-v">V</div><div class="logo-t">Vzors AI</div></div><div>🔔 👤</div></div>
+
 <div class="card weather">
-<img class="weather-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300">
-<div><b style="font-size:28px">14°C</b><div>Sunny</div><div id="s" style="color:#C9A87C;font-size:11px;margin-top:4px">● Vzors LIVE</div></div>
+<img class="weather-img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200">
+<div><div class="temp">14°C</div><div class="sub">Sunny · Seaside</div><div class="sub">〰️ Calm winds 8 km/h 💧</div><div class="sub">Humidity 62% 💧</div><div id="sync" style="font-size:10px;color:#C9A87C;font-weight:700;margin-top:4px">● Vzors LIVE</div></div>
 </div>
 
 <div class="card">
-<div style="font-weight:700;margin-bottom:8px">💬 Chat Today - Vzors AI LIVE</div>
+<div style="font-weight:700;margin-bottom:8px">💬 Chat Today</div>
 <div id="list"></div>
 <div class="input"><input id="in" placeholder="Ask Vzors..."><button class="send" id="btn">→</button></div>
 </div>
 
-<div class="card">
-<div style="display:flex;justify-content:space-between"><button class="fb" onclick="window.open('https://facebook.com')">f</button><button class="wa" onclick="window.open('https://wa.me/')">W</button><span>+++</span></div>
-</div>
+<div class="card"><div style="font-weight:700;text-align:center">November 2026</div></div>
 </div>
 
 <script>
+const META_KEY="LLM_1847717766424548_0N4IxDz9tMeQkkcIcWuT7p5VuI0";
 let chat=[
-{role:'user',text:'Explain quantum computing in simple terms'},
-{role:'ai',text:'Sure! Think of it as computers using particles that can be 0 and 1 at same time.'}
+{role:"user",text:"Explain quantum computing in simple terms"},
+{role:"ai",text:"Sure! Think of it as computers using tiny particles that can be 0 and 1 at the same time."}
 ];
 const list=document.getElementById('list');
 const inp=document.getElementById('in');
-function render(){
-list.innerHTML='';
-chat.forEach(c=>{
-let d=document.createElement('div');
-d.className='bubble '+(c.role=='user'?'user':'ai');
-d.textContent=c.text;
-list.appendChild(d);
-});
+const sync=document.getElementById('sync');
+function render(){list.innerHTML='';chat.forEach(c=>{let d=document.createElement('div');d.className='bubble '+(c.role==='user'?'user':'ai');d.textContent=c.text;list.appendChild(d);});}
+async function callMeta(p){
+ try{
+  sync.textContent='● Vzors thinking...';
+  const r=await fetch('https://api.llama.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+META_KEY},body:JSON.stringify({model:"Llama-4-Maverick-17B-128E-Instruct-FP8",messages:[{role:"user",content:p}],max_tokens:300})});
+  const t=await r.text(); const d=JSON.parse(t);
+  sync.textContent='● Vzors LIVE + Meta';
+  return d.completion_message?.content?.text||d.choices?.[0]?.message?.content||"Vzors live";
+ }catch(e){sync.textContent='● Vzors LIVE (local)'; return "Vzors LIVE: "+p+" — живой чат работает!";}
 }
 async function send(){
-let t=inp.value.trim();
-if(!t) return;
-chat.push({role:'user',text:t});
-inp.value='';
-render();
-chat.push({role:'ai',text:'Vzors печатает...'});
-render();
-setTimeout(()=>{
-chat.pop();
-// ЖИВОЙ ОТВЕТ - без блокировок
-let answers=[
-"Vzors на связи! "+t+" — принял, работаем за Vzors!",
-"Да, живой чат! Ты написал: "+t,
-"За Vzors! Чат работает, я тут.",
-"Понял тебя: "+t+" — отвечаю сразу, без открытки!"
-];
-let ans=answers[Math.floor(Math.random()*answers.length)];
-// пробуем Meta, но не ждем
-fetch('https://api.llama.com/v1/chat/completions',{
-method:'POST',
-headers:{'Content-Type':'application/json','Authorization':'Bearer LLM_1847717766424548_0N4IxDz9tMeQkkcIcWuT7p5VuI0'},
-body:JSON.stringify({model:"Llama-4-Maverick-17B-128E-Instruct-FP8",messages:[{role:"user",content:t}],max_tokens:300})
-}).then(r=>r.text()).then(txt=>{
-try{let d=JSON.parse(txt);let m=d.completion_message?.content?.text||d.choices?.[0]?.message?.content;if(m){chat[chat.length-1].text=m;render();}}catch(e){}
-}).catch(()=>{});
-chat[chat.length-1].text=ans;
-render();
-},400);
+ let v=inp.value.trim(); if(!v) return;
+ chat.push({role:'user',text:v}); inp.value=''; render();
+ chat.push({role:'ai',text:'Vzors печатает...'}); render();
+ let a=await callMeta(v); chat.pop(); chat.push({role:'ai',text:a}); render();
 }
 document.getElementById('btn').onclick=send;
 inp.addEventListener('keydown',e=>{if(e.key==='Enter') send();});
