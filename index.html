@@ -2,72 +2,91 @@
 <html lang="lv">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vzors AI - v1.0 Approved</title>
+<title>Vzors AI - Approved Final Combined with Original Meta Spark Logo</title>
 <style>
-:root{--gold:#D4AF37;--gold2:#FFD700;--moon:#F8F6F0;--amet:#C8A2C8;--ametL:#E6D5E6;--dark:#1A1A2E;--darkC:#16213E;--green:#00C853}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
-body{background:var(--moon);color:var(--dark)}
-body.tumsais{background:var(--dark);color:var(--moon)}
-body.brilles{font-size:1.35em}
-.header{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;border-bottom:2.5px solid var(--gold);background:#fff;position:sticky;top:0;z-index:10}
-.logo{display:flex;align-items:center;gap:14px;font-weight:900;font-size:26px}
-.logo-v{width:54px;height:54px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:15px;display:flex;align-items:center;justify-content:center;color:#fff;position:relative}
-.logo-v:after{content:'';position:absolute;width:32px;height:32px;border:3px solid #fff;border-radius:50%;border-top-color:transparent;border-left-color:transparent;transform:rotate(-45deg);top:8px;left:8px}
-.container{max-width:1240px;margin:0 auto;padding:28px 20px}
-.grid{display:grid;grid-template-columns:1.25fr .85fr;gap:24px}
-.card{background:#fff;border-radius:22px;padding:26px;box-shadow:0 7px 26px rgba(0,0,0,.06);margin-bottom:24px;border:1.6px solid var(--ametL)}
-.form{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.input{display:flex;flex-direction:column;gap:7px}
-.input input{padding:13px 15px;border-radius:12px;border:1.6px solid #e5e5e5}
-.btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;border:none;padding:13px 24px;border-radius:12px;font-weight:800;cursor:pointer}
-.hubs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:16px}
-.hub{border:2px solid var(--green);border-radius:14px;padding:16px;background:#E8F5E9}
-.hub.youtube{border-color:#FF0000;background:#FFEBEE}
-.hub.dakteris{border-color:#00ACC1;background:#E0F7FA}
-.pref-bar{display:flex;gap:14px;overflow-x:auto;padding:14px 4px}
-.square{min-width:134px;height:134px;background:#fff;border:2.2px solid var(--amet);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer}
-.square.youtube{background:linear-gradient(135deg,#FFE5E5,#FFCDD2);border-color:#FF0000}
-.square.dakteris{background:linear-gradient(135deg,#E0F7FA,#B2EBF2);border-color:#00ACC1}
-.mode-btn{padding:9px 18px;border:1.6px solid var(--gold);border-radius:22px;background:transparent;font-weight:700;cursor:pointer}
-.mode-btn.active{background:var(--gold);color:#fff}
-.notes{background:linear-gradient(135deg,#FFF9C4,#FFFDE7);border-left:5px solid var(--gold)}
+body{background:#070A10;display:flex;justify-content:center;padding:12px;min-height:100vh}
+.app{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.phone{width:390px;min-height:860px;border-radius:42px;padding:22px 18px 18px;display:none;flex-direction:column;box-shadow:0 20px 70px rgba(0,0,0,.6)}
+.phone.active{display:flex}
+.dark{background:linear-gradient(180deg,#1D2533,#131A26);color:#E8E2D0;border:1.2px solid #2E3A4F}
+.spiral{width:92px;height:92px;margin:16px auto;border-radius:50%;background:radial-gradient(circle at 30% 30%,#FFD87A,#D4AF37 40%,#8C6B3A);display:flex;align-items:center;justify-content:center;position:relative}
+.spiral::before{content:'';position:absolute;width:64px;height:64px;background:#1D2533;border-radius:50%}
+.spiral b{position:relative;z-index:1;font-size:42px;color:#D4AF37}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:20px}
+.lang{display:flex;background:#222C3D;border-radius:20px;padding:3px;gap:3px}
+.lang span{padding:7px 16px;border-radius:16px;font-size:12px;font-weight:800;cursor:pointer}
+.lang .on{background:#D4AF37;color:#000}
+.label{margin:18px 0 8px;font-size:12px;font-weight:600}.label small{opacity:.55;display:block;font-weight:400}
+.input{background:#232F45;border:1.6px solid #34425C;border-radius:12px;padding:13px 14px;display:flex;justify-content:space-between;align-items:center}
+.input input{background:transparent;border:none;color:#fff;font-size:15px;width:85%;outline:none}
+.btn{width:100%;border:1.6px solid #D4AF37;color:#D4AF37;background:transparent;border-radius:14px;padding:14px;font-weight:800;cursor:pointer}
+.btn.gold{background:linear-gradient(180deg,#E7C46A,#D4AF37);color:#000;border:none}
+.apps{margin-top:auto;padding-top:16px;display:flex;gap:7px}.apps div{flex:1;background:#232F45;border:1px solid #34425C;border-radius:12px;padding:8px 2px;text-align:center;font-size:11px;font-weight:600}
+/* MAIN */
+.main.gaisais{background:#FFFCF8;color:#1A1A1A;border:1.5px solid #E6D5A0}
+.main.tumsais{background:linear-gradient(180deg,#1C222E,#121821);color:#E8E2D0;border:1.2px solid #2E3A4F}
+.logo-v{width:56px;height:50px;background:linear-gradient(135deg,#D4AF37,#8C6B3A);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:24px;color:#fff}
+.badge{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-top:4px}
+.gaisais .badge{background:#E8F5E9;color:#1B5E20}.tumsais .badge{background:#1B2E22;color:#A5D6A7}
+.card{border-radius:16px;padding:12px 14px;margin:12px 0}.gaisais .card{background:linear-gradient(180deg,#FFFEFB,#FFFBF0);border:1.2px solid #E6D5A0}.tumsais .card{background:#232B3A;border:1.2px solid #3A4355}
+.bar{height:8px;background:#EEE;border-radius:10px;margin:8px 0;overflow:hidden}.bar-fill{height:100%;width:70%;background:linear-gradient(90deg,#E6C9A8,#C8A2C8,#7B8CFF)}
+.note{border-radius:12px;padding:10px 14px;font-size:13px;margin-top:6px}.gaisais .note{background:#FBF8FF;border:1px solid #EDE6F0}.tumsais .note{background:#232B3A;border:1px solid #34425C}
+.pref{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}.square{border-radius:14px;padding:10px 4px;text-align:center;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:10px;font-weight:600}.gaisais .square{background:#fff;border:1.2px solid #E8E0E8}.tumsais .square{background:#232B3A;border:1.2px solid #34425C}
+.bottom{margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-radius:20px;padding:10px 14px}.gaisais .bottom{background:#F8F5F0}.tumsais .bottom{background:#232B3A}
+.toggle{width:54px;height:30px;border-radius:20px;position:relative;cursor:pointer}.gaisais .toggle{background:#D9D0B8}.tumsais .toggle{background:#34425C}.toggle::after{content:'';position:absolute;width:24px;height:24px;background:#fff;border-radius:50%;top:3px}.gaisais .toggle::after{right:26px}.tumsais .toggle::after{right:3px;background:#E7C46A}
+.meta-box{display:flex;gap:10px;align-items:center;margin-top:14px;padding:12px;border-radius:14px}.gaisais .meta-box{background:#F3EDFF;border:1px solid #E6D9FF}.tumsais .meta-box{background:#232333;border:1px solid #3A2E55}
+.meta-logo{width:36px;height:36px;object-fit:contain}
 </style>
 </head>
-<body id="body" class="gaisais">
-<div class="header">
-<div class="logo"><div class="logo-v">V</div>VZORS <span style="color:#D4AF37">AI</span> <span style="font-size:10px;background:#00C853;color:#fff;padding:4px 10px;border-radius:12px;">APPROVED v1.0</span></div>
-<div><button class="mode-btn active" onclick="document.getElementById('body').className='gaisais';this.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Gaisais</button><button class="mode-btn" onclick="document.getElementById('body').className='tumsais';this.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Tumšais</button><button class="mode-btn" onclick="document.getElementById('body').className='brilles';this.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Brilles</button></div>
+<body>
+<div class="app">
+
+<!-- P1 REGISTRACIJA - BAR REĢISTRĀCIJAS IR -->
+<div class="phone dark active" id="p1">
+<div style="text-align:center"><div style="font-weight:900;letter-spacing:2px;font-size:26px">V</div><div style="font-weight:800">Vzors AI</div><div class="spiral"><b>◎</b></div><div style="font-size:19px;font-weight:800">Izveidot kontu<br><span style="font-weight:400;font-size:13px;opacity:.6">Create Account</span></div></div>
+<div class="row"><div><b style="font-size:13px">Valoda</b><br><small style="opacity:.6">Language</small></div><div class="lang"><span class="on">LV</span><span>EN</span></div></div>
+<div class="label">Tālruņa numurs <small>Phone Number +371</small></div>
+<div class="input"><input value="+371 "><span>📞</span></div>
+<div style="text-align:center;margin:14px 0;font-size:12px"><b>Mēs nosūtīsim SMS kodu</b><br><small style="opacity:.6">We will send an SMS code</small></div>
+<button class="btn" onclick="show(2)">Sūtīt kodu<br><small style="font-weight:400">Send Code</small></button>
+<div style="font-size:10px;opacity:.4;text-align:center;margin-top:14px">Terms & Privacy Policy</div>
+<div class="apps"><div>Facebook</div><div>M</div><div>WhatsApp</div><div>Kalendārs</div></div>
 </div>
-<div class="container">
-<div class="grid">
-<div>
-<div class="card">
-<h2>👤 New Client Registration <span style="display:inline-flex;background:#E8F5E9;color:#2E7D32;padding:6px 12px;border-radius:20px;font-size:12px;">● Google 70% — šodien 10:05</span></h2>
-<p style="color:#888;font-size:13px;margin:7px 0 18px;">Obligātie lauki * + SMS + YouTube + Dakteris</p>
-<div class="form">
-<div class="input"><label>Pilns vārds *</label><input id="full_name" placeholder="Jānis Bērziņš"></div>
-<div class="input"><label>Tālrunis (+371) *</label><input id="phone" placeholder="+371 20000000"></div>
-<div class="input"><label>E-pasts</label><input id="email" placeholder="janis@vzors.lv"></div>
-<div class="input"><label>Website / YouTube / Dakteris</label><input id="website" placeholder="https://..."></div>
-<div class="input"><label><input type="checkbox" checked> Google Sync 70%</label></div>
-<div class="input" style="justify-content:flex-end;"><button class="btn" onclick="alert('SMS nosūtīts - kods 123456');document.getElementById('sms-verify').style.display='block'">Sūtīt SMS →</button></div>
+
+<!-- P2 VERIFY -->
+<div class="phone dark" id="p2">
+<div style="display:flex;align-items:center;gap:10px"><span style="font-size:22px;cursor:pointer" onclick="show(1)">‹</span><div style="flex:1;text-align:center"><b>Apstiprinājums</b><br><small style="opacity:.6">Verification</small></div></div>
+<div style="text-align:center;margin-top:16px"><b>Ievadiet 6-ciparu kodu 479 479</b><br><small style="opacity:.6">Enter code</small></div>
+<div style="display:flex;gap:8px;margin:18px 0"><div style="flex:1;height:74px;background:#232F45;border:1.5px dashed #3E4D6A;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#E7C46A;font-weight:800">4 7 9</div><div style="flex:1;height:74px;background:#232F45;border:1.5px dashed #3E4D6A;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#E7C46A;font-weight:800">4 7 9</div><div style="flex:1;height:74px;background:#232F45;border:1.5px dashed #3E4D6A;border-radius:12px"></div><div style="flex:1;height:74px;background:#232F45;border:1.5px dashed #3E4D6A;border-radius:12px"></div><div style="flex:1;height:74px;background:#232F45;border:1.5px dashed #3E4D6A;border-radius:12px"></div><div style="flex:1;height:74px;background:#232F45;border:1.5px dashed #3E4D6A;border-radius:12px"></div></div>
+<div style="text-align:center;color:#E7C46A;font-weight:700">00:28 Resend</div>
+<button class="btn gold" style="margin-top:16px" onclick="show(3)">Apstiprināt<br><small>Verify</small></button>
+<div class="apps"><div>Facebook</div><div>M</div><div>WhatsApp</div><div>Kalendārs</div></div>
 </div>
-<div id="sms-verify" style="display:none;margin-top:20px;background:#FFF9C4;padding:16px;border-radius:12px;border:1.5px dashed #D4AF37;"><b>SMS 123456:</b><div style="display:flex;gap:10px;margin-top:10px;"><input id="sms_code" placeholder="123456" style="flex:1;padding:12px;border-radius:10px;border:1.6px solid #ddd;"><button class="btn" onclick="if(document.getElementById('sms_code').value==='123456'){alert('✅ Verificēts!');document.getElementById('sms-verify').innerHTML='<b style=color:#00C853>✅ Verificēts</b>'}else alert('Kods 123456')">Apstiprināt</button></div></div>
+
+<!-- P3 MAIN GAISAIS/TUMSAIS + ORIGINAL META SPARK LOGO -->
+<div class="phone main gaisais" id="p3">
+<div style="display:flex;justify-content:space-between;font-size:14px;font-weight:600;padding:0 4px 14px"><span>10:09</span><span>📶 🔋 88</span></div>
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px"><div class="logo-v">V</div><div><div style="font-size:28px;font-weight:800">Vzors AI</div><div class="badge">✅ Klienta tālrunis • Savienots</div></div></div>
+<div class="card"><div style="font-weight:700;font-size:14px">Google Kalendārs sinhronizācija 70%</div><div class="bar"><div class="bar-fill"></div></div><div style="font-size:11px;opacity:.6">Atjaunināts: šodien 10:05</div></div>
+<div style="font-weight:700">Manas piezīmes</div><div class="note">Tikšanās ar klientu 14:00 — sagatavot demo</div>
+<div style="font-weight:700;margin-top:12px">Preferences Bar</div>
+<div class="pref"><div class="square">🌐<br>Websites</div><div class="square">🎧<br>Spotify</div><div class="square">📻<br>Latvijas Radio</div><div class="square" style="border-style:dashed">+<br>+ add widget</div></div>
+
+<div class="meta-box">
+<img src="meta_spark_original.png" class="meta-logo" alt="Meta Spark Original Logo">
+<div><div style="font-weight:800;font-size:14px">Meta Spark Gudrs kolēģis</div><div style="display:flex;align-items:center;gap:6px;margin-top:2px"><img src="meta_spark_original.png" style="width:14px;height:14px"><span style="font-size:12px;opacity:.7">Pasaki Sparam Voice</span></div></div>
 </div>
-<div class="card">
-<h2>🌐 Active Website Hubs <span style="color:#00C853;font-size:12px;">● SSL Secured</span></h2>
-<div style="display:flex;gap:10px;margin-top:14px;"><input id="new_site" placeholder="https://youtube.com/@... vai dakteris.lv" style="flex:1;padding:13px;border-radius:12px;border:1.6px solid #ddd;"><button class="btn" onclick="let u=document.getElementById('new_site').value;if(!u)return;let g=document.getElementById('hubs-grid');let c='hub';if(u.includes('youtube'))c='hub youtube';else if(u.includes('dakter'))c='hub dakteris';g.innerHTML+=`<div class=${c}><div style=font-size:11px;font-weight:800>${u}</div></div>`;document.getElementById('new_site').value=''">+ Add Hub</button></div>
-<div class="hubs" id="hubs-grid" style="margin-top:16px"><div class="hub"><b>vzors-ai.vercel.app</b><br><small>Active - SSL Secured</small></div><div class="hub youtube"><b>youtube.com/@vzors</b><br><small>Active - YouTube</small></div><div class="hub dakteris"><b>dakteris.lv/pieraksts</b><br><small>Active - Dakteris</small></div></div>
+
+<div class="bottom" style="margin-top:16px"><span>Gaisais</span><b>Brilles režīms</b><div class="toggle" onclick="let m=document.getElementById('p3');m.classList.toggle('gaisais');m.classList.toggle('tumsais')"></div></div>
+<div style="text-align:center;font-size:11px;color:#B89B5A;margin-top:10px;font-weight:600">Powered by Meta Llama</div>
 </div>
+
 </div>
-<div>
-<div class="card"><h2>✨ Preferences Bar — kvadrātiņi</h2><p style="color:#888;font-size:13px;">Spotify, YouTube, Dakteris, Radio</p><div class="pref-bar" id="pref-bar" style="margin-top:12px"><div class="square"><span style="font-size:34px">🌐</span><b>Websites</b></div><div class="square"><span style="font-size:34px">🎵</span><b>Spotify</b></div><div class="square youtube"><span style="font-size:34px">▶️</span><b>YouTube</b></div><div class="square dakteris"><span style="font-size:34px">🩺</span><b>Dakteris</b></div><div class="square"><span style="font-size:34px">📻</span><b>Radio</b></div><div class="square" style="border-style:dashed;color:#999" onclick="let n=prompt('YouTube/Dakteris/Spotify');if(n){let b=document.getElementById('pref-bar');let d=document.createElement('div');d.className='square';d.innerHTML=`<span style=font-size:34px>✨</span><b>${n}</b>`;b.insertBefore(d,b.lastElementChild)}"><span style="font-size:32px">+</span><b>add widget</b></div></div></div>
-<div class="card notes"><h2>📝 Manas Piezīmes + Dakteris + YouTube</h2><div id="notes-list" style="margin-top:12px"><div style="padding:10px;border-bottom:1px dashed #e0d9a0"><span>Tikšanās 14:00 — demo</span></div><div style="padding:10px;border-bottom:1px dashed #e0d9a0"><span>Dakteris 15.11 11:00</span></div><div style="padding:10px"><span>YouTube video — Vzors AI</span></div></div><div style="display:flex;gap:16px;background:#E3F2FD;padding:16px;border-radius:14px;margin-top:18px"><div style="width:46px;height:46px;background:linear-gradient(135deg,#D4AF37,#FFD700);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff">✨</div><div><b>Meta Spark</b><br><small>Powered by Meta Llama — Pasaki Sparam...</small></div><button class="btn" onclick="document.querySelector('small').innerText='🎤 Klausos...';setTimeout(()=>document.querySelector('small').innerText='✅ Sapratu — demo 14:00',2000)">🎤</button></div></div>
-</div>
-</div>
-</div>
-</div>
+<script>
+function show(n){document.querySelectorAll('.phone').forEach(p=>p.classList.remove('active'));document.getElementById('p'+n).classList.add('active')}
+</script>
 </body>
 </html>
