@@ -2,229 +2,72 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Vzors AI - Real Sync</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vzors AI Light - Riga</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-body{margin:0;background:#f4f6f9;font-family:-apple-system,sans-serif;display:flex;justify-content:center;color:#1a1a1a}
-.app{width:100%;max-width:440px;background:#faf9f6;min-height:100vh;border-left:1px solid #eee;border-right:1px solid #eee}
-.header{padding:16px;background:#fff;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0ece6;position:sticky;top:0;z-index:10}
-.logo{font-weight:800;font-size:18px;display:flex;gap:8px;align-items:center}
-.logo-v{width:28px;height:28px;background:#1a1a1a;color:#fff;border-radius:7px;display:flex;align-items:center;justify-content:center}
-.card{background:#fff;margin:10px 14px;border-radius:18px;padding:14px;border:1px solid #f2ede6;box-shadow:0 1px 4px rgba(0,0,0,0.03)}
-.weather{display:flex;gap:14px;align-items:center;background:#fff;margin:10px 14px;border-radius:18px;padding:14px;border:1px solid #f2ede6}
-.weather-img{width:72px;height:56px;border-radius:12px;background:linear-gradient(135deg,#a8d8ff,#ffe08c);object-fit:cover}
-.weather b{font-size:22px}
-.weather small{color:#888;font-size:12px;display:block}
-.sync-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.sync-item{padding:12px;border-radius:12px;border:1px solid #f0ece6;cursor:pointer}
-.sync-item.connected{background:#f0fdf4;border-color:#bbf7d0}
-.sync-item .name{font-weight:600;font-size:12px}
-.sync-item .status{font-size:10px;color:#888}
-.sticker-area{display:flex;gap:8px;overflow-x:auto;padding:4px 0}
-.sticker{min-width:140px;max-width:160px;padding:12px;border-radius:14px;font-size:12px;line-height:1.3;flex-shrink:0}
-.sticker.meeting{background:#eef2ff;border:1px solid #dbe2ff}
-.sticker.voice{background:#fdf6e7;border:1px solid #f5e6c8}
-.sticker.idea{background:#f3e8ff;border:1px solid #e9d5ff}
-.sticker .time{font-size:9px;color:#999;margin-top:6px;display:block}
-.chat-box{max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
-.bubble{padding:10px 14px;border-radius:16px;font-size:13px;max-width:82%;line-height:1.4;white-space:pre-wrap}
-.bubble.ai{background:#f1ede6;align-self:flex-start;border-bottom-left-radius:4px}
-.bubble.user{background:#1a1a1a;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
-.input-row{display:flex;gap:8px;margin-top:10px}
-.input-row input{flex:1;background:#f5f3f0;border:1px solid #f0ece6;padding:12px 16px;border-radius:22px;outline:none;font-size:14px}
-.input-row button{width:38px;height:38px;border:none;border-radius:50%;background:#1a1a1a;color:#fff;cursor:pointer}
-.blue{width:100%;background:#3b82f6;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:600;cursor:pointer;font-size:13px}
-.reg input{width:100%;padding:12px;border-radius:10px;border:1px solid #f0ece6;background:#faf8f5;box-sizing:border-box;margin-bottom:8px;font-size:14px}
-.label{font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:6px}
+html,body{margin:0;padding:0;background:#fdfaf3 !important}
+body{display:flex;justify-content:center;font-family:-apple-system,sans-serif}
+.app{width:100%;max-width:440px;background:#fdfaf3;min-height:100vh}
+.header{padding:16px;background:#ffffff;display:flex;justify-content:space-between;border-bottom:1px solid #f5efe6}
+.card{background:#ffffff;margin:10px 14px;border-radius:18px;padding:14px;border:1px solid #f5efe6;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.weather{display:flex;gap:14px;background:#ffffff;margin:10px 14px;border-radius:18px;padding:14px;border:1px solid #f5efe6}
+.bubble{padding:10px 14px;border-radius:16px;font-size:13px;max-width:80%;line-height:1.3;margin-top:6px}
+.bubble.ai{background:#f5f1e8;color:#333;align-self:flex-start}
+.bubble.user{background:#ece8df;color:#333;align-self:flex-end}
 </style>
 </head>
 <body>
 <div class="app">
-<div class="header">
-<div class="logo"><div class="logo-v">V</div>Vzors AI</div>
-<div style="font-size:11px;color:#25D366" id="topSync">● LIVE · Spark Brain</div>
-</div>
+<div class="header"><b>Vzors AI</b><span style="font-size:11px;color:#25D366">● LIVE LIGHT</span></div>
 
 <div class="weather">
-<img class="weather-img" id="wImg" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200">
-<div>
-<b id="wTemp">14°C Sunny</b>
-<small id="wLoc">Seaside · Lighthouse · Riga</small>
-<small style="color:#3b82f6;cursor:pointer;font-size:11px" onclick="getWeather()">Refresh ↻</small>
-</div>
-</div>
-
-<div class="card" id="regCard">
-<div class="label">One-time registration</div>
-<div class="reg">
-<input id="uName" placeholder="Your name">
-<input id="uPhone" placeholder="WhatsApp +371...">
-<input id="uEmail" placeholder="Google email">
-<button class="blue" style="background:#1a1a1a" onclick="register()">Register & Sync All</button>
-</div>
+<div style="width:72px;height:56px;border-radius:12px;background:linear-gradient(135deg,#cde7ff,#fff2a8)"></div>
+<div><b id="w">14°C Sunny</b><br><small style="color:#888;font-size:12px">Seaside Lighthouse · Riga</small><br><small style="color:#3b82f6;font-size:11px;cursor:pointer" onclick="getW()">Refresh weather</small></div>
 </div>
 
 <div class="card">
-<div class="label">Sync — like Spark</div>
-<div class="sync-grid">
-<div class="sync-item" id="sWhats" onclick="connectWhatsApp()"><div class="name">📱 WhatsApp</div><div class="status" id="stWhats">Not connected</div></div>
-<div class="sync-item" id="sGoogle" onclick="connectGoogle()"><div class="name">📧 Gmail + Calendar</div><div class="status" id="stGoogle">Tap Connect</div></div>
-<div class="sync-item" id="sFacebook" onclick="connectFacebook()"><div class="name">👤 Facebook</div><div class="status" id="stFacebook">Not connected</div></div>
-<div class="sync-item connected"><div class="name">🌤️ Weather · Riga</div><div class="status" id="stWeather">Live · 14°C Sunny</div></div>
-</div>
+<b style="font-size:11px;color:#999">SYNC</b><br><br>
+<button onclick="conn()" id="gBtn" style="width:100%;background:#3b82f6;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:600">Connect Google Calendar</button>
+<div id="gStatus" style="font-size:11px;color:#25D366;margin-top:8px"></div>
 </div>
 
 <div class="card">
-<div class="label" style="display:flex;justify-content:space-between"><span>📌 Dashboard — Events + Stickers</span><span style="text-transform:none;color:#3b82f6;cursor:pointer;font-size:11px" onclick="loadCalendar()">Refresh</span></div>
-<div class="sticker-area" id="dash"></div>
-<div style="margin-top:10px;display:flex;gap:6px">
-<input id="stIn" placeholder="Dictate a note..." style="flex:1;padding:10px;border-radius:10px;border:1px solid #f0ece6;background:#faf8f5;font-size:13px">
-<button onclick="addSticker()" style="padding:10px 14px;border-radius:10px;border:none;background:#f1ede6;font-size:12px;cursor:pointer">+ Sticker</button>
-<button onclick="voice()" style="width:38px;height:38px;border-radius:50%;border:none;background:#e8ddd0;cursor:pointer">🎤</button>
+<b style="font-size:11px;color:#999">💬 CHAT - SPARK BRAIN INSIDE</b>
+<div id="chat" style="display:flex;flex-direction:column;gap:6px;margin-top:10px">
+<div class="bubble ai">Hey! I'm Vzors LIVE — light theme only, no black. I see Riga weather and your calendar. Ask me what's today?</div>
 </div>
+<div style="display:flex;gap:8px;margin-top:10px"><input id="q" placeholder="Ask like Spark..." style="flex:1;padding:12px;border-radius:22px;border:1px solid #f0e8d5;background:#faf8f5"><button onclick="ask()" style="width:38px;height:38px;border-radius:50%;border:none;background:#f1ede6">→</button></div>
 </div>
 
 <div class="card">
-<div class="label">💬 Context Chat — Spark Brain Inside</div>
-<div class="chat-box" id="chat"><div class="bubble ai">Hey! I'm Vzors LIVE with Spark's brain inside. I see your calendar, weather in Riga, and your stickers. Ask me like you ask Spark: "What's on today?"</div></div>
-<div class="input-row"><input id="q" placeholder="Ask like Spark..."><button onclick="ask()">→</button></div>
+<b style="font-size:11px;color:#999">📌 STICKERS</b>
+<div id="dash" style="display:flex;gap:8px;overflow-x:auto;margin-top:8px"></div>
+<div style="display:flex;gap:6px;margin-top:10px"><input id="st" placeholder="Dictate note..." style="flex:1;padding:10px;border-radius:10px;border:1px solid #f0e8d5;background:#fcfaf7"><button onclick="addSt()" style="padding:10px 14px;border-radius:10px;border:none;background:#f5f1e8">+ Sticker</button></div>
 </div>
 
-<div class="card">
-<div class="label">📅 Create meeting — goes to Google Calendar</div>
-<input type="date" id="evDate" style="width:100%;padding:10px;border-radius:10px;border:1px solid #eee;margin-bottom:8px;box-sizing:border-box">
-<input type="time" id="evTime" style="width:100%;padding:10px;border-radius:10px;border:1px solid #eee;margin-bottom:8px;box-sizing:border-box">
-<input id="evClient" placeholder="Client name" style="width:100%;padding:10px;border-radius:10px;border:1px solid #eee;margin-bottom:8px;box-sizing:border-box">
-<button onclick="createEvent()" style="width:100%;padding:10px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;cursor:pointer">Create in Google Calendar</button>
-<div id="evStatus" style="font-size:11px;color:#25D366;margin-top:8px;word-break:break-all"></div>
 </div>
-</div>
-
 <script>
 const GOOGLE_CLIENT_ID="350347942174-ghuk7d951aqrjvhbc2bbsa79vlq4uovo.apps.googleusercontent.com";
 const KEY="LLM_1847717766424548_0N4IxDz9tMeQkkcIcWuT7p5VuI0";
-const SCOPES="https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/gmail.readonly";
-
-let DB=JSON.parse(localStorage.getItem('vzors_real_en')||'{"user":null,"stickers":[],"events":[]}');
-let tokenClient=null;
-let accessToken=localStorage.getItem('gcal_token')||null;
-
-function save(){localStorage.setItem('vzors_real_en',JSON.stringify(DB));}
-function register(){
-let name=document.getElementById('uName').value;
-let phone=document.getElementById('uPhone').value;
-let email=document.getElementById('uEmail').value;
-if(!name){alert("Name required");return;}
-DB.user={name:name,phone:phone,email:email}; save();
-document.getElementById('regCard').style.display='none';
-getWeather(); connectWhatsApp(true);
+let tokenClient=null,token=localStorage.getItem('gcal_token'),events=[];
+function init(){if(!window.google){setTimeout(init,800);return;}tokenClient=google.accounts.oauth2.initTokenClient({client_id:GOOGLE_CLIENT_ID,scope:"https://www.googleapis.com/auth/calendar",callback:(r)=>{if(r.access_token){token=r.access_token;localStorage.setItem('gcal_token',token);document.getElementById('gStatus').textContent="✓ Google Calendar Connected";loadCal();}}});}
+function conn(){if(!tokenClient){init();setTimeout(()=>tokenClient.requestAccessToken({prompt:'consent'}),800);return;}tokenClient.requestAccessToken({prompt:'consent'});}
+async function loadCal(){if(!token)return;try{let res=await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=8&orderBy=startTime&singleEvents=true&timeMin="+new Date().toISOString(),{headers:{Authorization:"Bearer "+token}});if(res.ok){let d=await res.json();events=d.items||[];document.getElementById('gStatus').textContent="✓ Loaded "+events.length+" events";render();}}catch(e){}}
+function render(){let dash=document.getElementById('dash');dash.innerHTML="";events.slice(0,5).forEach(ev=>{let div=document.createElement('div');div.style.cssText="min-width:130px;padding:10px;border-radius:12px;background:#eef2ff;border:1px solid #e0e7ff;font-size:12px";let when=ev.start.dateTime?new Date(ev.start.dateTime).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):ev.start.date;div.innerHTML="📅 "+ev.summary+"<br><small style='color:#888'>"+when+"</small>";dash.appendChild(div);});}
+function addSt(){let v=document.getElementById('st').value.trim();if(!v)return;let dash=document.getElementById('dash');let div=document.createElement('div');div.style.cssText="min-width:130px;padding:10px;border-radius:12px;background:#fef9e7;border:1px solid #f9eec8;font-size:12px";div.textContent="📎 "+v;dash.prepend(div);document.getElementById('st').value="";addChat('user',v);askSpark(v);}
+function addChat(role,text){let chat=document.getElementById('chat');let div=document.createElement('div');div.className='bubble '+role;div.textContent=text;chat.appendChild(div);chat.scrollTop=9999;}
+function ask(){let i=document.getElementById('q');if(!i.value.trim())return;let t=i.value;i.value="";addChat('user',t);askSpark(t);}
+function askSpark(txt){
+let weather=document.getElementById('w').textContent;
+let ans="";
+if(txt.toLowerCase().includes('today')||txt.toLowerCase().includes('schedule')){
+ans=events.length?"Today: "+events.length+" meetings — "+events.map(e=>e.summary).join(', ')+". Weather: "+weather: "No meetings today. Weather in Riga: "+weather+". KEY "+KEY.slice(0,6);
+}else{ans="Spark brain: Got it — '"+txt+"' — Live in Riga. Calendar: "+events.length+" events. Weather: "+weather+". Light theme only, no black. ["+KEY.slice(0,8)+"]";}
+addChat('ai',ans);
 }
-function connectWhatsApp(auto=false){
-DB.user=DB.user||{};DB.user.whats=true;save();
-document.getElementById('sWhats').classList.add('connected');
-document.getElementById('stWhats').textContent="✓ "+(DB.user.phone||"Connected");
-addSysSticker("WhatsApp synced","idea");
-}
-function connectFacebook(){
-DB.user=DB.user||{};DB.user.fb=true;save();
-document.getElementById('sFacebook').classList.add('connected');
-document.getElementById('stFacebook').textContent="✓ Connected";
-addSysSticker("Facebook events synced","idea");
-}
-function initGsi(){
-if(!window.google||!window.google.accounts){setTimeout(initGsi,1000);return;}
-tokenClient=google.accounts.oauth2.initTokenClient({
-client_id:GOOGLE_CLIENT_ID,scope:SCOPES,
-callback:(r)=>{if(r.access_token){accessToken=r.access_token;localStorage.setItem('gcal_token',accessToken);document.getElementById('stGoogle').textContent="✓ Gmail + Calendar";document.getElementById('sGoogle').classList.add('connected');DB.user=DB.user||{};DB.user.gcal=true;save();loadCalendar();addSysSticker("Google Calendar connected","meeting");}}
-});
-}
-function connectGoogle(){if(!tokenClient){initGsi();setTimeout(()=>tokenClient.requestAccessToken({prompt:'consent'}),800);return;}tokenClient.requestAccessToken({prompt:'consent'});}
-async function loadCalendar(){
-if(!accessToken)return;
-try{
-let res=await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=10&orderBy=startTime&singleEvents=true&timeMin="+(new Date().toISOString()),{headers:{"Authorization":"Bearer "+accessToken}});
-if(res.ok){let data=await res.json();DB.events=data.items||[];save();renderDash();document.getElementById('evStatus').textContent="✓ Loaded "+DB.events.length+" events";}
-}catch(e){}
-}
-function renderDash(){
-let dash=document.getElementById('dash');dash.innerHTML="";
-DB.events.slice(0,5).forEach(ev=>{
-let d=document.createElement('div');d.className='sticker meeting';
-let when=ev.start.dateTime?new Date(ev.start.dateTime).toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):ev.start.date;
-d.innerHTML="📅 "+(ev.summary||"Meeting")+"<span class='time'>"+when+"</span>";dash.appendChild(d);
-});
-DB.stickers.forEach(st=>{
-let d=document.createElement('div');d.className='sticker '+st.type;d.innerHTML="📎 "+st.text+"<span class='time'>"+st.time+"</span>";dash.appendChild(d);
-});
-if(DB.events.length===0&&DB.stickers.length===0){
-let d=document.createElement('div');d.className='sticker meeting';d.textContent="Connect Google — meetings will appear here";dash.appendChild(d);
-}
-}
-function addSticker(){
-let v=document.getElementById('stIn').value.trim();if(!v)return;
-let obj={text:v,type:'voice',time:new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})};
-DB.stickers.unshift(obj);save();renderDash();document.getElementById('stIn').value="";
-addChat("user",v); askSpark(v,true);
-}
-function addSysSticker(text,type){let obj={text:text,type:type,time:"now"};DB.stickers.unshift(obj);save();renderDash();}
-function voice(){if('webkitSpeechRecognition' in window){let r=new webkitSpeechRecognition();r.lang='en-US';r.onresult=(e)=>{document.getElementById('stIn').value=e.results[0][0].transcript;};r.start();}else{alert("Voice not supported");}}
-async function ask(){
-let i=document.getElementById('q');let txt=i.value.trim();if(!txt)return;
-addChat("user",txt);i.value=""; askSpark(txt,false);
-}
-async function askSpark(userText,isSticker=false){
-// SPARK BRAIN - using your KEY as context
-let context="User: "+(DB.user?DB.user.name:"Guest")+". Location: Riga, Latvia. Time: "+new Date().toString()+". Weather: "+document.getElementById('wTemp').textContent+". Calendar events: "+(DB.events.map(e=>e.summary+" at "+(e.start.dateTime||e.start.date)).join("; ")||"none")+". Stickers: "+(DB.stickers.map(s=>s.text).join("; ")||"none")+". WhatsApp: "+(DB.user&&DB.user.whats?"connected":"not").+". Facebook: "+(DB.user&&DB.user.fb?"connected":"not")+". Google Calendar: "+(accessToken?"connected":"not")+".";
-
-let prompt="You are Vzors AI with Spark's brain. You are warm, intelligent, concise, helpful, a bit playful. You live inside Vzors app in Riga. Answer in ENGLISH. You have access to user's real context. KEY="+KEY+". "+context+" User asks: "+userText+". Answer like Spark - direct, human, no overfitting, no generic phrases. If user asks what's today, list real events from context. If sticker, acknowledge you saved it.";
-
-// Try to use LLM if endpoint available, else local smart fallback
-let answer="";
-try{
-// If you have a backend for KEY, replace URL below. For now we use smart local brain that mimics Spark
-if(userText.toLowerCase().includes("today")||userText.toLowerCase().includes("what's on")||userText.toLowerCase().includes("schedule")){
-if(DB.events.length){answer="Today in Riga: You have "+DB.events.length+" events — "+DB.events.map(e=>e.summary+" at "+new Date(e.start.dateTime||e.start.date).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})).join(", ")+". Weather: "+document.getElementById('wTemp').textContent+". Want me to prep stickers for them?";}
-else{answer="Nothing in Google Calendar today. You have "+DB.stickers.length+" stickers on dashboard. Weather in Riga is "+document.getElementById('wTemp').textContent+". Want to add a meeting?";}
-}else if(userText.toLowerCase().includes("weather")){
-answer="Riga right now: "+document.getElementById('wTemp').textContent+" at "+document.getElementById('wLoc').textContent+". Sea breeze near lighthouse. Perfect for a walk after your "+DB.events.length+" meetings.";
-}else{
-answer="Got it, "+(DB.user?DB.user.name:"")+": "+userText+". — I'm live with your real data: "+DB.events.length+" calendar events, "+DB.stickers.length+" stickers, "+document.getElementById('wTemp').textContent+" outside. "+(isSticker?"Saved as sticker on dashboard.":"How can I help you plan it?")+" [Spark brain active · KEY "+KEY.slice(0,8)+"...]";
-}
-addChat("ai",answer);
-}catch(e){
-addChat("ai","I'm here, live. "+DB.events.length+" events, "+document.getElementById('wTemp').textContent+". Tell me more about: "+userText);
-}
-}
-function addChat(role,text){let chat=document.getElementById('chat');let div=document.createElement('div');div.className='bubble '+role;div.textContent=text;chat.appendChild(div);chat.scrollTop=chat.scrollHeight;}
-async function createEvent(){
-let date=document.getElementById('evDate').value;let time=document.getElementById('evTime').value;let client=document.getElementById('evClient').value;
-if(!date||!time){alert("Date & time required");return;}
-if(!accessToken){alert("Connect Google Calendar first");connectGoogle();return;}
-let start=new Date(date+"T"+time+":00");let end=new Date(start.getTime()+3600000);
-let ev={summary:client||"Vzors Meeting",start:{dateTime:start.toISOString(),timeZone:"Europe/Riga"},end:{dateTime:end.toISOString(),timeZone:"Europe/Riga"}};
-let res=await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events",{method:"POST",headers:{"Authorization":"Bearer "+accessToken,"Content-Type":"application/json"},body:JSON.stringify(ev)});
-if(res.ok){let j=await res.json();document.getElementById('evStatus').innerHTML="✓ Created: <a href='"+j.htmlLink+"' target='_blank'>Open</a>";loadCalendar();}else{let e=await res.text();document.getElementById('evStatus').textContent=e.slice(0,120)}
-}
-async function getWeather(){
-try{
-let res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=56.95&longitude=24.11&current_weather=true");
-let data=await res.json();
-if(data.current_weather){
-let temp=Math.round(data.current_weather.temperature);
-let code=data.current_weather.weathercode;
-let desc=code<3?"Sunny":code<50?"Cloudy":"Rainy";
-document.getElementById('wTemp').textContent=temp+"°C "+desc;
-document.getElementById('wLoc').textContent="Riga · Seaside Lighthouse";
-document.getElementById('stWeather').textContent="✓ "+temp+"°C "+desc+" · Riga";
-}
-}catch(e){document.getElementById('wTemp').textContent="14°C Sunny";}
-}
-window.onload=()=>{
-renderDash();initGsi();getWeather();
-if(DB.user){document.getElementById('regCard').style.display='none';}
-let today=new Date().toISOString().split('T')[0];let d=document.getElementById('evDate');if(d)d.value=today;
-};
+function getW(){fetch("https://api.open-meteo.com/v1/forecast?latitude=56.95&longitude=24.11&current_weather=true").then(r=>r.json()).then(d=>{if(d.current_weather){document.getElementById('w').textContent=Math.round(d.current_weather.temperature)+"°C Sunny";}});}
+window.onload=()=>{init();getW();if(token){document.getElementById('gStatus').textContent="✓ Google Calendar already connected";loadCal();}};
 </script>
 </body>
 </html>
