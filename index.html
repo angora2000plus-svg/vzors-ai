@@ -2,79 +2,164 @@
 <html lang="lv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vzors AI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vzors - Powered by Meta Spark</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#fdfaf3;color:#111;font-family:Inter,system-ui,sans-serif}
-.wrap{max-width:1120px;margin:0 auto;padding:20px}
-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee3d1;padding-bottom:14px}
-.logo{display:flex;gap:12px;align-items:center}
-.logo b{font-size:28px;font-weight:800;letter-spacing:-2px}
-.logo span{font-size:11px;opacity:.5;letter-spacing:1px}
-.m-box{width:34px;height:34px;border:1px solid #111;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;transition:.3s}
-.m-box.active{background:#111;color:#fff;transform:scale(1.1)}
-.glasses{position:fixed;top:16px;right:16px;width:44px;height:44px;background:white;border:1px solid #111;border-radius:12px;display:flex;align-items:center;justify-content:center;z-index:10;transition:.3s}
-.glasses.active{color:#3b82f6;border-color:#3b82f6;box-shadow:0 0 18px #3b82f6;transform:scale(1.15)}
-canvas{display:block;margin:14px auto;opacity:.28}
-.voice{border:1px solid #eee3d1;background:white;border-radius:16px;padding:16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.hero{font-size:38px;font-weight:300;margin:18px 0 6px;letter-spacing:-1px}
-.sub{opacity:.5;margin-bottom:24px}
-.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
-.card{background:white;border:1px solid #eee3d1;border-radius:16px;padding:18px}
-.card h2{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;opacity:.5;margin-bottom:12px}
-input{width:100%;border:1px solid #e8ddd0;border-radius:999px;padding:11px 16px;outline:none}
-.note{padding:10px 0;border-bottom:1px solid #f5efe6;font-size:13px;display:flex;justify-content:space-between}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif}
+:root{--gold:#8a6d1b;--beige:#fdf8ee;--border:#ece0c8;--green:#22c55e;--red:#ef4444}
+body.light{background:#ffffff;color:#1a1a1a}
+body.dark{background:#0f0f12;color:#f5f0e0}
+.header{max-width:1280px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.V{font-size:38px;font-weight:900;color:var(--gold);position:relative}
+.spiral{width:48px;height:48px;position:absolute;left:22px;top:-4px;background:conic-gradient(from 0deg,#d4af37,#8a6d1b,#f6e8b8,#d4af37);-webkit-mask:radial-gradient(circle,transparent 32%,black 33%);animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.switches{display:flex;gap:8px}
+.btn{border:1px solid #c9b07a;border-radius:20px;padding:5px 12px;font-size:11px;background:#fff7e0;cursor:pointer;font-weight:700;color:#2b2210}
+body.dark .btn{background:#2a2a3a;color:#f5f0e0;border-color:#444}
+
+/* DESKTOP = как у Клода/GPT - белый суперинтеллект */
+.desktop{max-width:1280px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:200px 1fr 300px;gap:18px}
+.d-side{padding-top:18px}
+.d-card{background:#fffdf6;border:1px solid var(--border);border-radius:16px;padding:12px 14px;font-size:13px}
+body.dark .d-card{background:#1e1e24;border-color:#2a2a34}
+.bars{display:flex;gap:6px;margin:10px 0}
+.bar{flex:1;height:6px;border-radius:10px}
+.d-chat{background:#ffffff;border:1px solid var(--border);border-radius:18px;min-height:640px;display:flex;flex-direction:column;overflow:hidden}
+body.dark .d-chat{background:#15151a}
+.hero{font-size:42px;font-weight:300;text-align:center;margin-top:90px;letter-spacing:-1px}
+.sub{opacity:.5;text-align:center;margin-top:6px;font-size:14px}
+.msgs{flex:1;display:flex;flex-direction:column;gap:10px;padding:18px;overflow-y:auto}
+.bubble{max-width:78%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.5}
+.bubble-user{align-self:flex-end;background:var(--gold);color:#fff;border-bottom-right-radius:4px}
+.bubble-ai{align-self:flex-start;background:#f5f1e6;border:1px solid var(--border);border-bottom-left-radius:4px;color:#2b2210}
+body.dark .bubble-ai{background:#1e1e24;color:#f5f0e0}
+.input-bar{border-top:1px solid var(--border);padding:10px;display:flex;gap:8px;align-items:center}
+.input{flex:1;border:1.5px solid #d6c59a;border-radius:24px;padding:12px 16px;background:#fffef7;outline:none}
+.icons{display:flex;gap:12px;justify-content:center;padding:10px;border-top:1px solid #f0e6cc}
+.ico{width:32px;height:32px;border-radius:50%;background:#fffdf6;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px}
+.memorial{display:flex;gap:8px;overflow-x:auto;padding:8px 0}
+.memorial span{font-size:11px;color:var(--red);background:#2a1212;padding:4px 8px;border-radius:10px;white-space:nowrap}
+
+/* MOBILE = твой красивый с тканью и аметистами как на фото */
+.mobile{display:none;min-height:100vh;padding:14px}
+body.light .mobile{background:radial-gradient(#e9e1d0 1px,transparent 1px),linear-gradient(180deg,#fbf7ef,#e8e0cc);background-size:14px 14px,100%}
+body.dark .mobile{background:#0a0a0f}
+.phone{max-width:390px;margin:0 auto;border-radius:36px;border:8px solid #111;padding:12px 14px 18px;position:relative}
+body.light .phone{background:linear-gradient(180deg,#fffdf6,#f7f1e2);box-shadow:0 30px 80px rgba(0,0,0,.25)}
+body.dark .phone{background:linear-gradient(180deg,#1e1e2e,#12121a);color:#e8e0ff;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.phone::before{content:'';position:absolute;top:0;left:30%;right:30%;height:16px;background:#111;border-radius:0 0 12px 12px}
+.welcome{font-size:20px;margin:8px 0;font-family:serif}
+.status{border:1px solid #d6c59a;border-radius:10px;padding:7px 10px;font-size:11px;background:#fffdf0;display:flex;gap:6px}
+body.dark .status{background:#1a1a24}
+.glasses{display:flex;gap:10px;margin:10px 0}
+.g{flex:1;text-align:center;background:#fffdf0;border:1px solid #e8d9a0;border-radius:12px;padding:8px;font-size:10px}
+body.dark .g{background:#25253a}
+.dot{width:7px;height:7px;background:var(--green);border-radius:50%;display:inline-block;margin-right:4px}
+.anti{border:1px solid #cfe2c8;border-radius:8px;padding:6px 8px;font-size:11px;background:#f3faef;display:flex;justify-content:space-between}
+body.dark .anti{background:#1a2a1a}
+.tabele{margin-top:10px;border:1px dashed #c9b07a;border-radius:10px;padding:8px;background:rgba(255,253,246,.9)}
+body.dark .tabele{background:rgba(30,30,40,.9)}
+.sticky{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px}
+.note{background:#fff3c6;border:1px solid #e8d9a0;border-radius:6px;padding:6px;font-size:10px;transform:rotate(-1deg)}
+.pref{margin-top:10px;text-align:center}
+.chip{display:inline-block;border:1px solid #d6c59a;border-radius:12px;padding:3px 8px;font-size:10px;margin:2px;background:#fff}
+.nav{display:flex;justify-content:space-around;margin-top:12px;border-top:1px solid #eee0c0;padding-top:8px;font-size:10px;text-align:center}
+@media(max-width:900px){.desktop{display:none}.mobile{display:block}}
 </style>
 </head>
-<body>
-<div class="wrap">
-<header>
-<div class="logo"><b>V</b><div><div style="font-weight:700">Vzors AI</div><span>powered by Spark gudrs kolēģis</span></div></div>
-<div id="mBox" class="m-box">M</div>
-</header>
-
-<div id="glasses" class="glasses">👓</div>
-<canvas id="c" width="560" height="140"></canvas>
-
-<div class="voice">
-<div><b>Vzors runā — mana balss viņam</b><div style="font-size:11px;opacity:.5">LV | EN • voice wave active</div></div>
-<div style="opacity:.6">● ● ●</div>
+<body class="light">
+<div class="header">
+<div class="V">V<div class="spiral"></div></div>
+<div class="switches">
+<button class="btn" id="themeBtn">🌙 Dark</button>
+<button class="btn" id="langBtn">LV | EN | RU</button>
+</div>
 </div>
 
-<div class="hero">What can I do for you?</div>
-<div class="sub">Jautā man kaut ko...</div>
+<!-- DESKTOP БЕЛЫЙ КАК У GPT/CLAUDE -->
+<div class="desktop">
+<div class="d-side">
+<div class="d-card"><div style="font-size:10px;opacity:.5" id="t-models">MODEĻU PARĀDE</div><div id="bars" class="bars"><div class="bar" style="background:#8b5cf6"></div><div class="bar" style="background:#22c55e"></div><div class="bar" style="background:#eab308"></div><div class="bar" style="background:#ef4444"></div></div><div style="line-height:2.2">indox.lv<br>whatsapp<br>gmail<br>facebook<br>maps</div></div>
+<div class="d-card" style="margin-top:10px">✨ <span id="t-brilles">Brilles režīms</span><br><span style="font-size:11px;opacity:.6">Anti-recursie: Active</span></div>
+</div>
+<div class="d-chat"><div style="flex:1;display:flex;flex-direction:column"><div id="empty"><div class="hero" id="t-hero">What can I do for you?</div><div class="sub" id="t-sub">Jautā man kaut ko...</div></div><div class="msgs" id="msgs"></div></div><div class="input-bar"><input id="q" class="input" placeholder="Jautā Vzors..."><button id="mic" class="btn" style="border-radius:50%">🎤</button><button id="send" class="btn" style="background:#8a6d1b;color:#fff">→</button></div><div class="icons"><div class="ico">W</div><div class="ico">f</div><div class="ico">G</div><div class="ico">✉️</div></div><div class="memorial"><span>🔴 9 Nov - Memorial Day</span><span>🔴 18 Nov - Latvia</span><span>🔴 Anna birthday 12.11</span></div></div>
+<div class="d-side"><div class="d-card"><span id="t-notes">Manas piezīmes — 20</span><div id="nlist" style="margin-top:8px;font-size:12px;opacity:.7"></div></div><div class="d-card" style="margin-top:10px"><span id="t-cal">Kalendārs — Novembris 2026</span><div style="font-size:11px;margin-top:6px;opacity:.7">Google sync • 8, 15, 18, 22, 29</div></div></div>
+</div>
 
-<div class="grid">
-<div class="card">
-<h2>Manas piezīmes — 20</h2>
-<input id="t" placeholder="Add notes with Enter, saved to localStorage...">
-<div id="list" style="margin-top:12px"></div>
-<div id="status" style="margin-top:14px;font-size:10px;letter-spacing:1px;opacity:.4">VZORA_CORE: ready with LLAMA_KEY</div>
-</div>
-<div class="card">
-<h2>Kalendārs — Novembris 2026</h2>
-<div style="font-size:12px;opacity:.6">Atzīmēti: 8, 15, 18, 22, 29</div>
-<div style="margin-top:16px"><h2>Modeļu parāde</h2><div style="font-size:12px;line-height:22px;opacity:.7">indox.lv<br>whatsapp<br>gmail<br>facebook<br>maps</div></div>
-</div>
+<!-- MOBILE КРАСИВЫЙ С ТКАНЬЮ -->
+<div class="mobile">
+<div class="phone">
+<div style="display:flex;justify-content:space-between"><div class="V" style="font-size:28px">V</div><div style="font-size:11px" id="m-brilles">Brilles režīms</div></div>
+<div class="welcome" id="m-welcome">Laipni lūdzam</div>
+<div class="status" id="m-connected">🕶️ Brilles savienotas / Glasses connected</div>
+<div class="glasses"><div class="g"><div style="font-size:20px">👓</div><span class="dot"></span>Meta Ray-Ban<br>Connected</div><div class="g" style="background:#f0f6ff"><div style="font-size:20px">🕶️</div><span class="dot"></span>Orion<br>Connected</div></div>
+<div class="anti"><span>🛡️ Anti-recursice filter: Active</span><span id="m-bez">Bez rekursijas 🎤 ➤</span></div>
+<div class="tabele"><div style="text-align:center;font-weight:700;font-size:12px" id="m-tabele">Piezīmju tāfele</div><div class="sticky"><div class="note">Pirkt ziedus</div><div class="note">Prezentācija Q4</div><div class="note">Zvanīt juristam</div></div></div>
+<div style="margin-top:10px;font-size:11px" id="m-gcal">Google Kalendārs sinhronizācija 70%</div><div style="height:6px;background:#e8dfc3;border-radius:6px;margin-top:4px"><div style="width:70%;height:100%;background:#8a6d1b;border-radius:6px"></div></div>
+<div class="pref"><div style="font-size:11px" id="m-pref">Preferences Bar</div><span class="chip">🌐 Websites</span><span class="chip">🟢 Spotify</span><span class="chip">📻 Latvijas Radio</span><span class="chip">+add widget</span><div style="margin-top:6px">🌐 f ✉️ 📍</div></div>
+<div class="nav"><div>🏠<br>Sākums</div><div>💬<br>Čats</div><div>📍<br>Geolokācija</div><div>⚙️<br>Iestatījumi</div></div>
 </div>
 </div>
 
 <script>
-const c=document.getElementById('c'),ctx=c.getContext('2d'),mBox=document.getElementById('mBox'),gl=document.getElementById('glasses');
-let a=0;function draw(){ctx.clearRect(0,0,560,140);ctx.save();ctx.translate(280,70);a+=0.005;ctx.strokeStyle='#999';ctx.lineWidth=0.7;ctx.beginPath();for(let i=0;i<80;i++){let ang=i*0.22+a,r=i*0.6,x=Math.cos(ang)*r,y=Math.sin(ang)*r;if(i==0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();ctx.restore();requestAnimationFrame(draw);}draw();
-
-const input=document.getElementById('t'),list=document.getElementById('list'),statusEl=document.getElementById('status');
-function load(){const d=JSON.parse(localStorage.getItem('vzor_notes')||'[]');list.innerHTML='';d.forEach((t,i)=>{const div=document.createElement('div');div.className='note';div.innerHTML=`<span>${t}</span><span onclick="del(${i})" style="cursor:pointer;opacity:.3">✕</span>`;list.appendChild(div);});}
-function saveAll(arr){localStorage.setItem('vzor_notes',JSON.stringify(arr));localStorage.setItem('vzor_cloud_shared',JSON.stringify(arr));load();}
-async function vzora(text){statusEl.textContent='VZORA: memorizing...';mBox.classList.add('active');gl.classList.add('active');try{const r=await fetch('/api/vzora',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})});const j=await r.json();statusEl.textContent=j.reply;}catch{statusEl.textContent=`CLOUD: ${JSON.parse(localStorage.getItem('vzor_notes')||'[]').length} memorized`;}setTimeout(()=>{mBox.classList.remove('active');gl.classList.remove('active');},2000);}
-function add(){const t=input.value.trim();if(!t)return;const d=JSON.parse(localStorage.getItem('vzor_notes')||'[]');d.push(t);saveAll(d);vzora(t);input.value='';}
-window.del=(i)=>{const d=JSON.parse(localStorage.getItem('vzor_notes')||'[]');d.splice(i,1);saveAll(d);};
-input.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
-document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='m'){if(input.value)add();else{gl.classList.add('active');setTimeout(()=>gl.classList.remove('active'),1500);}}});
-gl.onclick=()=>{gl.classList.add('active');setTimeout(()=>gl.classList.remove('active'),1500);};
-load();
+let lang='LV';
+const dict={
+ LV:{hero:"What can I do for you?",sub:"Jautā man kaut ko...",notes:"Manas piezīmes — 20",cal:"Kalendārs — Novembris 2026",welcome:"Laipni lūdzam",connected:"🕶️ Brilles savienotas / Glasses connected",tabele:"Piezīmju tāfele",gcal:"Google Kalendārs sinhronizācija 70%",models:"MODEĻU PARĀDE",brilles:"Brilles režīms",pref:"Preferences Bar",bez:"Bez rekursijas 🎤 ➤"},
+ EN:{hero:"What can I do for you?",sub:"Ask me anything...",notes:"My notes — 20",cal:"Calendar — November 2026",welcome:"Welcome",connected:"🕶️ Glasses connected",tabele:"Notes board",gcal:"Google Calendar sync 70%",models:"MODEL PARADE",brilles:"Glasses mode",pref:"Preferences Bar",bez:"No recursion 🎤 ➤"},
+ RU:{hero:"Чем могу помочь?",sub:"Спроси меня о чем угодно...",notes:"Мои заметки — 20",cal:"Календарь — Ноябрь 2026",welcome:"Добро пожаловать",connected:"🕶️ Очки подключены",tabele:"Доска заметок",gcal:"Синхронизация Google Календаря 70%",models:"ПАРАД МОДЕЛЕЙ",brilles:"Режим очков",pref:"Панель предпочтений",bez:"Без рекурсии 🎤 ➤"}
+};
+function applyLang(){
+ const d=dict[lang];
+ document.getElementById('t-hero').textContent=d.hero;
+ document.getElementById('t-sub').textContent=d.sub;
+ document.getElementById('t-notes').textContent=d.notes;
+ document.getElementById('t-cal').textContent=d.cal;
+ document.getElementById('t-models').textContent=d.models;
+ document.getElementById('t-brilles').textContent=d.brilles;
+ document.getElementById('m-welcome').textContent=d.welcome;
+ document.getElementById('m-connected').textContent=d.connected;
+ document.getElementById('m-tabele').textContent=d.tabele;
+ document.getElementById('m-gcal').textContent=d.gcal;
+ document.getElementById('m-brilles').textContent=d.brilles;
+ document.getElementById('m-pref').textContent=d.pref;
+ document.getElementById('m-bez').textContent=d.bez;
+ if(lang==='LV')document.getElementById('bars').innerHTML='<div class="bar" style="background:#8b5cf6"></div><div class="bar" style="background:#22c55e"></div><div class="bar" style="background:#eab308"></div><div class="bar" style="background:#ef4444"></div>';
+ if(lang==='RU')document.getElementById('bars').innerHTML='<div class="bar" style="background:#ef4444"></div><div class="bar" style="background:#22c55e"></div><div class="bar" style="background:#eab308"></div><div class="bar" style="background:#8b5cf6"></div>';
+ if(lang==='EN')document.getElementById('bars').innerHTML='<div class="bar" style="background:#22c55e"></div><div class="bar" style="background:#eab308"></div><div class="bar" style="background:#ef4444"></div><div class="bar" style="background:#8b5cf6"></div>';
+}
+document.getElementById('langBtn').onclick=()=>{
+ lang=lang==='LV'?'EN':lang==='EN'?'RU':'LV';
+ document.getElementById('langBtn').textContent=lang==='LV'?'LV | EN | RU':lang==='EN'?'EN | RU | LV':'RU | LV | EN';
+ applyLang();
+};
+let dark=false;
+document.getElementById('themeBtn').onclick=()=>{
+ dark=!dark;
+ document.body.className=dark?'dark':'light';
+ document.getElementById('themeBtn').textContent=dark?'☀️ Light':'🌙 Dark';
+};
+const q=document.getElementById('q'), msgs=document.getElementById('msgs'), empty=document.getElementById('empty');
+function addBubble(t,who){
+ if(empty)empty.style.display='none';
+ const d=document.createElement('div');
+ d.className='bubble '+(who==='user'?'bubble-user':'bubble-ai');
+ d.textContent=t;
+ msgs.appendChild(d);
+ msgs.scrollTop=msgs.scrollHeight;
+}
+document.getElementById('send').onclick=()=>{
+ if(!q.value.trim())return;
+ addBubble(q.value,'user');
+ let v=q.value;q.value='';
+ setTimeout(()=>addBubble('Vzors: sapratu — '+v+' • sinhronizēju ar brillēm, kalendāru, bez rekursijas.','ai'),400);
+};
+q.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('send').click()});
+document.getElementById('mic').onclick=()=>{
+ if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)){addBubble('🎤 Diktofonа nav šajā browserī','ai');return;}
+ const Rec=window.SpeechRecognition||window.webkitSpeechRecognition;const rec=new Rec();rec.lang=lang==='RU'?'ru-RU':lang==='LV'?'lv-LV':'en-US';rec.start();
+ rec.onresult=(e)=>{q.value=e.results[0][0].transcript;document.getElementById('send').click()};
+};
+applyLang();
 </script>
 </body>
 </html>
