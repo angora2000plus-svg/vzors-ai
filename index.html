@@ -2,143 +2,198 @@
 <html lang="lv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vzors AI Memory Manager</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0e1230">
+<meta name="description" content="Vzors AI Memory Manager - Privāts un drošs AI atmiņas menedžeris ar Llama. Beacon > Steady, Riga.">
+<title>Vzors AI Memory Manager — AI Memory Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 <style>
-body{font-family:Inter,sans-serif;background:radial-gradient(ellipse at 50% 0%,#24144f,#07071b 80%);min-height:100vh;display:flex;justify-content:center;padding:20px}
-.phone{width:395px;border-radius:28px;overflow:hidden;transition:all .35s ease;box-shadow:0 25px 80px rgba(0,0,0,.6)}
-.phone.light{background:#FFFFFF;color:#111827}
-.phone.cobalt{background:#0E1230;color:#FFFFFF;border:1px solid rgba(255,255,255,.12)}
+/* ========== RESET & BASE ========== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(1200px 600px at 50% -10%,#24144f 0%,#12102f 40%,#070a1e 100%);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:20px 12px 40px;color:#111}
+button{font-family:inherit;user-select:none;-webkit-user-select:none}
+button:active{transform:scale(.98)}
 
-/* LOGO APPROVED: amethyst spin clockwise + golden V + white zors */
-.logo-wrap{display:flex;align-items:center;gap:6px}
-.ametyst-spin{width:28px;height:28px;position:relative;flex-shrink:0;animation:spinCW 3s linear infinite}
-@keyframes spinCW{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.ametyst-core{position:absolute;inset:3px;background:radial-gradient(circle at 35% 30%,#E9D5FF 0%,#A78BFA 25%,#7C3AED 55%,#4C1D95 100%);border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;box-shadow:0 0 10px #A78BFA, inset -3px -3px 6px rgba(0,0,0,.4)}
-.ametyst-ring{position:absolute;inset:-2px;border:2px solid transparent;border-top-color:#D4AF37;border-right-color:#FFD700;border-bottom-color:rgba(212,175,55,.3);border-radius:50%}
-.ametyst-arrow{position:absolute;top:-4px;right:-2px;font-size:12px;color:#D4AF37;text-shadow:0 0 6px gold;font-weight:900}
-.gold-v{font-family:'Playfair Display',serif;font-style:italic;font-size:30px;line-height:1;background:linear-gradient(180deg,#FFE8A0,#D4AF37 50%,#B8860B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;filter:drop-shadow(0 0 4px rgba(212,175,55,.6))}
-.white-zors{font-size:18px;font-weight:600;letter-spacing:-.02em}
-.cobalt .white-zors{color:#FFFFFF}
-.light .white-zors{color:#111827}
+/* ========== APP CONTAINER - ONE SCREEN ========== */
+.phone{width:100%;max-width:410px;border-radius:32px;overflow:hidden;display:flex;flex-direction:column;min-height:880px;position:relative;transition:background .35s ease,color .35s ease,border-color .35s ease,box-shadow .35s ease}
+.phone.light{background:#ffffff;color:#101828;box-shadow:0 24px 80px rgba(0,0,0,.22),0 0 0 1px #e5e7eb,0 1px 0 rgba(255,255,255,.8) inset}
+.phone.cobalt{background:linear-gradient(180deg,#151a42 0%,#0e1230 100%);color:#f1f5f9;box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.1),0 1px 0 rgba(255,255,255,.08) inset}
 
-/* bubbles */
-.bubble-user{background:#E8E4FF}
-.cobalt .bubble-user{background:rgba(255,255,255,.12)}
-.bubble-vzor{background:#FFFFFF;border:1px solid #E5E7EB}
-.cobalt .bubble-vzor{background:#1E233F;border-color:rgba(255,255,255,.1)}
+/* ========== HEADER ========== */
+.header{padding:18px 18px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:2}
+.brand{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+
+/* ===== APPROVED LOGO: AMETHYST SPIN CLOCKWISE + GOLDEN V + WHITE ZORS ===== */
+.ametyst-spin{width:30px;height:30px;position:relative;flex-shrink:0;animation:spinClockwise 3.5s linear infinite;will-change:transform}
+@keyframes spinClockwise{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.ametyst-spin .orbit{position:absolute;inset:-3px;border-radius:50%;border:2px solid transparent;border-top-color:#D4AF37;border-right-color:#FFD700;border-bottom-color:rgba(212,175,55,.25);box-shadow:0 0 8px rgba(255,215,0,.25)}
+.ametyst-spin .core{position:absolute;inset:5px;border-radius:50% 45% 50% 45% / 55% 50% 45% 50%;background:radial-gradient(100% 100% at 30% 25%,#F5E9FF 0%,#D8B4FE 12%,#A78BFA 28%,#7C3AED 58%,#4C1D95 92%);box-shadow:0 0 12px rgba(167,139,250,.9),inset -3px -3px 8px rgba(0,0,0,.35),inset 2px 2px 6px rgba(255,255,255,.6)}
+.ametyst-spin .glint{position:absolute;top:3px;left:6px;width:6px;height:6px;background:radial-gradient(circle,#fff 0%,rgba(255,255,255,0) 70%);border-radius:50%;opacity:.9}
+.gold-v{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:32px;line-height:.9;letter-spacing:-.02em;background:linear-gradient(180deg,#FFF7CC 0%,#FFE8A0 15%,#D4AF37 48%,#B8860B 85%,#8C6510 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 1px rgba(0,0,0,.15)) drop-shadow(0 0 8px rgba(212,175,55,.35));transform:translateY(-1px)}
+.zors-wrap{display:flex;flex-direction:column;line-height:1}
+.zors{font-weight:800;font-size:15px;letter-spacing:-.03em;white-space:nowrap}
+.zors-sub{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin-top:1px}
+.light .zors{color:#0f172a}.cobalt .zors{color:#ffffff}
+.light .zors-sub{color:#475569}.cobalt .zors-sub{color:#cbd5e1}
+
+/* THEME SWITCHER - LIGHT / COBALT ON ONE SCREEN */
+.theme-switch{display:flex;align-items:center;background:rgba(0,0,0,.06);border-radius:999px;padding:4px;gap:4px;flex-shrink:0;border:1px solid rgba(0,0,0,.06)}
+.cobalt .theme-switch{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.1)}
+.theme-switch button{border:0;cursor:pointer;padding:7px 14px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.01em;transition:all .22s ease;display:flex;align-items:center;gap:4px}
+.theme-switch button.active{background:#7C3AED;color:#fff;box-shadow:0 3px 12px rgba(124,58,237,.4),0 1px 2px rgba(0,0,0,.1)}
+.theme-switch button:not(.active){background:transparent;color:inherit;opacity:.65}
+.theme-switch button:not(.active):hover{opacity:1;background:rgba(0,0,0,.05)}
+.cobalt .theme-switch button:not(.active):hover{background:rgba(255,255,255,.08)}
+
+/* LANG + ADMIN */
+.topbar{padding:0 18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.langs{display:flex;gap:6px}
+.langs button{border:0;border-radius:10px;padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;transition:.2s}
+.langs .active{background:#7C5CFF;color:#fff;box-shadow:0 2px 8px rgba(124,92,255,.3)}
+.langs .inactive{background:rgba(0,0,0,.06);color:#334155}
+.cobalt .langs .inactive{background:rgba(255,255,255,.09);color:#cbd5e1}
+.admin{display:flex;align-items:center;gap:8px;margin-left:auto}
+.badge{font-size:10px;padding:5px 9px;border-radius:999px;background:#0f172a;color:#fff;display:flex;align-items:center;gap:4px;font-weight:600}
+.cobalt .badge{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1)}
+.meta-small{font-size:10px;opacity:.45;white-space:nowrap}
+
+/* WELCOME CARD */
+.welcome{margin:14px 14px 0;border-radius:18px;padding:16px 14px;text-align:center;position:relative;overflow:hidden}
+.light .welcome{background:linear-gradient(180deg,#f9f7ff 0%,#f3f0ff 100%);border:1.8px dashed #d7d0ea}
+.cobalt .welcome{background:linear-gradient(180deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.03) 100%);border:1.8px dashed rgba(255,255,255,.18)}
+.welcome h3{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+.welcome p{font-size:12px;margin-top:3px;opacity:.7}
+.w-actions{margin-top:14px;display:flex;justify-content:center;gap:10px}
+.w-actions button{border:0;border-radius:999px;padding:8px 20px;font-size:12.5px;font-weight:700;cursor:pointer;transition:.2s;min-width:110px}
+.btn-primary{background:linear-gradient(180deg,#8B5CF6 0%,#7C3AED 100%);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,.35)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(124,58,237,.45)}
+.btn-secondary{background:#fff;border:1px solid #e2e8f0!important;color:#0f172a}
+.cobalt .btn-secondary{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18)!important;color:#f1f5f9}
+
+/* CONTENT AREA */
+.main{padding:16px 16px 0;flex:1;display:flex;flex-direction:column;gap:14px}
+.section-head{display:flex;justify-content:space-between;align-items:baseline}
+.section-head h2{font-size:17px;font-weight:800;letter-spacing:-.02em}
+.section-head .link{font-size:11px;color:#7C5CFF;font-weight:600;cursor:pointer}
+.chat-card{background:#f5f3ff;border-radius:20px;padding:14px;display:flex;gap:12px;position:relative}
+.cobalt .chat-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06)}
+.chat-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#a8d8ff,#7C5CFF);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.bubbles{flex:1;display:flex;flex-direction:column;gap:10px;min-width:0}
+.msg{max-width:86%;padding:12px 14px;border-radius:18px;font-size:13px;line-height:1.45;position:relative;word-break:break-word}
+.msg-user{align-self:flex-end;background:#e9e4ff;color:#1e1b4b;border-bottom-right-radius:6px}
+.cobalt .msg-user{background:rgba(139,92,246,.22);color:#ede9fe}
+.msg-vzor{align-self:flex-start;background:#ffffff;color:#0f172a;border:1px solid #e2e8f0;border-bottom-left-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.cobalt .msg-vzor{background:#1e234a;color:#f1f5f9;border-color:rgba(255,255,255,.1);box-shadow:none}
+.msg-time{font-size:10px;opacity:.55;text-align:right;margin-top:6px;display:flex;justify-content:flex-end;gap:6px;align-items:center}
+
+/* BEACON + WEATHER */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{border-radius:18px;padding:14px;min-height:108px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.card-beacon{background:linear-gradient(135deg,#c6e6ff 0%,#a3d1ff 50%,#8ec2ff 100%);color:#0f172a}
+.card-weather{background:linear-gradient(135deg,#fff4c5 0%,#ffe9a0 60%,#ffd87a 100%);color:#0f172a}
+.cobalt .card-beacon{background:linear-gradient(135deg,rgba(168,216,255,.18) 0%,rgba(124,92,255,.18) 100%);color:#fff;border:1px solid rgba(168,216,255,.22)}
+.cobalt .card-weather{background:linear-gradient(135deg,rgba(255,244,197,.14) 0%,rgba(255,216,122,.12) 100%);color:#fff;border:1px solid rgba(255,244,197,.18)}
+.card .label{font-size:11px;font-weight:700;opacity:.75;display:flex;align-items:center;gap:4px}
+.card .title{font-size:14px;font-weight:800;margin-top:auto;line-height:1.2}
+.card .desc{font-size:11px;opacity:.75;margin-top:5px;line-height:1.35}
+.status-dot{position:absolute;top:12px;right:12px;width:8px;height:8px;background:#22c55e;border-radius:50%;box-shadow:0 0 0 3px rgba(34,197,94,.25);animation:pulseDot 2s infinite}
+@keyframes pulseDot{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
+/* GLASSES */
+.glasses{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,.04);font-size:12px}
+.cobalt .glasses{background:rgba(255,255,255,.06)}
+.glasses .icon{font-size:18px}
+.glasses .field{flex:1;background:#fff;border-radius:10px;padding:8px 12px;font-size:11.5px;color:#334155;display:flex;justify-content:space-between;align-items:center;border:1px solid #e2e8f0}
+.cobalt .glasses .field{background:rgba(0,0,0,.3);border-color:rgba(255,255,255,.1);color:#94a3b8}
+.glasses .mic{width:32px;height:32px;border-radius:50%;background:#7C5CFF;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s}
+.glasses .send{width:28px;height:28px;border-radius:50%;background:#0f172a;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cobalt .glasses .send{background:#fff;color:#0f172a}
+
+/* NOTES */
+.notes-head{font-size:13px;font-weight:700;margin-top:2px;display:flex;align-items:center;gap:6px}
+.notes{background:#d6b48f;padding:10px;border-radius:16px;display:flex;gap:10px;margin-top:8px}
+.note{flex:1;border-radius:12px;padding:11px 9px;font-size:11px;line-height:1.35;min-height:68px;box-shadow:0 2px 6px rgba(0,0,0,.12);position:relative;transition:transform .15s}
+.note:hover{transform:rotate(0deg) translateY(-2px) scale(1.02)}
+.note::before{content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.8}
+.n1{background:#fef08a;color:#713f12;transform:rotate(-1.2deg)}.n2{background:#fbcfe8;color:#831843;transform:rotate(.9deg)}.n3{background:#bfdbfe;color:#1e3a8a;transform:rotate(-.6deg)}
+
+/* NAV + FOOTER */
+.nav{display:flex;justify-content:space-around;padding:14px 8px 12px;border-top:1px solid rgba(0,0,0,.06);margin-top:16px}
+.cobalt .nav{border-color:rgba(255,255,255,.08)}
+.nav button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;opacity:.55;cursor:pointer;color:inherit;min-width:56px}
+.nav button.active{opacity:1;color:#7C5CFF;font-weight:700}
+.nav button .ico{font-size:18px;line-height:1}
+.footer{padding:0 0 16px;text-align:center;font-size:10px;opacity:.38;line-height:1.4;letter-spacing:.01em}
 </style>
 </head>
 <body>
 
-<div id="phone" class="phone light">
-<!-- HEADER -->
-<div class="px-4 pt-4 pb-2 flex items-center justify-between">
-<div class="logo-wrap">
-<div class="ametyst-spin"><div class="ametyst-ring"></div><div class="ametyst-core"></div><div class="ametyst-arrow">↻</div></div>
-<div class="flex items-baseline gap-0"><span class="gold-v">V</span><span class="white-zors">zors AI Memory Manager</span></div>
-</div>
+<div id="app" class="phone light" role="main" aria-label="Vzors AI Memory Manager">
+
+  <header class="header">
+    <div class="brand" aria-label="Logo Vzors">
+      <div class="ametyst-spin" aria-hidden="true"><div class="orbit"></div><div class="core"></div><div class="glint"></div></div>
+      <div class="zors-wrap"><div style="display:flex;align-items:baseline;gap:1px"><span class="gold-v">V</span><span class="zors">zors</span></div><span class="zors-sub">AI Memory Manager</span></div>
+    </div>
+    <div class="theme-switch" role="tablist" aria-label="Theme">
+      <button id="btnLight" class="active" role="tab" aria-selected="true" onclick="setTheme('light')">☀️ Light</button>
+      <button id="btnCobalt" role="tab" aria-selected="false" onclick="setTheme('cobalt')">🌙 Cobalt</button>
+    </div>
+  </header>
+
+  <div class="topbar">
+    <div class="langs" role="group" aria-label="Language"><button class="active">LV</button><button class="inactive">EN</button><button class="inactive">RU</button></div>
+    <div class="admin"><span class="badge">🌙 Admin</span><span class="meta-small">Built with Llama • Privāts & Drošs • Online</span></div>
+  </div>
+
+  <section class="welcome" aria-label="Auth">
+    <h3>Laipni lūdzam! Reģistrēties / Pieteikties</h3>
+    <p>Vienota atmiņa brillēm, čatam un piezīmēm</p>
+    <div class="w-actions"><button class="btn-primary">Reģistrēties</button><button class="btn-secondary">Pieteikties</button></div>
+  </section>
+
+  <div class="main">
+    <div class="section-head"><h2>Dashboard • Čata konteksts</h2><span class="link">Skatīt visu</span></div>
+
+    <div class="chat-card">
+      <div class="chat-avatar">⛅</div>
+      <div class="bubbles">
+        <div class="msg msg-user">Vzors, pieraksti tikšanos pirmdien 15:00<div class="msg-time"><span>14:32</span><span>•</span><span>Tu</span><span>✓✓</span></div></div>
+        <div class="msg msg-vzor">Pierakstīju! 📅 <b>Pirmdiena 15:00</b> — tikšanās pievienota tavam kontekstam. Atgādināšu 30 min iepriekš. ✨<div class="msg-time"><span>14:32</span><span>•</span><span>Vzor</span><span>✓ Read</span></div></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card card-beacon"><div class="status-dot"></div><div class="label">✨ Beacon • Active</div><div class="title">Beacon > Steady</div><div class="desc">Beacons Riga • 4°C • Cloudy • Steady<br>Riga 4C • Model: Vzors-Vision v1.2 • Battery 92%</div></div>
+      <div class="card card-weather"><div class="label">☁️ Laikapstākļi • Riga</div><div style="display:flex;justify-content:space-between;margin-top:auto;text-align:center;width:100%"><div><div style="font-size:10px;opacity:.7">Šodien</div><div style="font-size:20px">⛅</div><div style="font-weight:800">5°C</div></div><div><div style="font-size:10px;opacity:.7">Rīt</div><div style="font-size:20px">🌤️</div><div style="font-weight:800">6°C</div></div><div><div style="font-size:10px;opacity:.7">Trešd.</div><div style="font-size:20px">☁️</div><div style="font-weight:800">3°C</div></div></div><div class="desc">Vējš 5m/s • Steady • 09:32 • Live</div></div>
+    </div>
+
+    <div class="glasses"><span class="icon">👓</span><div class="field"><span>Brilles savienotas • Connected</span><span style="color:#22c55e;font-weight:700;font-size:10px">● Online</span></div><div class="mic" title="Voice">🎙️</div><div class="send" title="Send">▶</div></div>
+
+    <div><div class="notes-head">📌 Piezīmju tāfele • 3 piezīmes</div><div class="notes"><div class="note n1">• Iepirkties:<br>piens, maize<br>• Pirkt dāvanu<br>🎁</div><div class="note n2">• Sagatavot prezentāciju<br>• Atgādināt klientam<br>• Zvans</div><div class="note n3">• Zvanīt klientam 10:00<br>• Ideja: reels<br>• Tikšanās<br>📅 Pirmd. 15:00</div></div></div>
+  </div>
+
+  <nav class="nav" aria-label="Navigation"><button class="active"><span class="ico">🏠</span><span>Sākums</span></button><button><span class="ico">💬</span><span>Čats</span></button><button><span class="ico">📍</span><span>Geolokācija</span></button><button><span class="ico">🐾</span><span>Čats</span></button><button><span class="ico">⚙️</span><span>Iestatījumi</span></button></nav>
+  <div class="footer">Built with Llama v1.4.0 • Privāts & Drošs • Riga, Latvia • 2026<br>Logo: Amethyst Spin Clockwise + Golden V + White zors • Beacon > Steady • Light / Cobalt on same screen</div>
+
 </div>
 
-<!-- THEME TOGGLE - ONE SCREEN CHANGES COLOR -->
-<div class="px-4 flex items-center justify-between mt-1">
-<div class="flex gap-1.5 bg-black/5 dark:bg-white/10 p-1 rounded-full">
-<button onclick="document.getElementById('phone').className='phone light'" class="px-3 py-1 rounded-full text-[11px] bg-[#7C8CFF] text-white font-semibold">☀️ Light</button>
-<button onclick="document.getElementById('phone').className='phone cobalt'" class="px-3 py-1 rounded-full text-[11px] bg-[#1A1E3A] text-white font-semibold">🌙 Cobalt</button>
-</div>
-<span class="text-[10px] px-2 py-1 rounded-full bg-black text-white">🌙 Admin</span>
-</div>
-
-<!-- LANG -->
-<div class="px-4 mt-3 flex gap-1.5">
-<button class="bg-[#7C8CFF] text-white text-[11px] px-3 py-1 rounded-full font-medium">LV</button>
-<button class="bg-black/10 text-[11px] px-3 py-1 rounded-full">EN</button>
-<button class="bg-black/10 text-[11px] px-3 py-1 rounded-full">RU</button>
-<span class="ml-auto text-[10px] opacity-40">Built with Llama • Privāts & Drošs</span>
-</div>
-
-<!-- WELCOME -->
-<div class="mx-3 mt-3 rounded-[14px] border border-dashed border-[#D6D0E5] bg-[#F7F5FF] p-3 text-center">
-<p class="text-[14px] font-semibold">Laipni lūdzam!</p>
-<p class="text-[12px] opacity-70">Reģistrēties / Pieteikties</p>
-<div class="flex justify-center gap-2 mt-2.5">
-<button class="bg-[#7C5CFF] text-white text-[12px] px-5 py-1.5 rounded-full font-medium">Reģistrēties</button>
-<button class="bg-white border border-[#E5E7EB] text-[12px] px-5 py-1.5 rounded-full">Pieteikties</button>
-</div>
-</div>
-
-<!-- DASHBOARD + CHAT - ВХОДИТ ВНУТРЬ -->
-<div class="px-4 mt-4">
-<h2 class="font-bold text-[16px]">Dashboard</h2>
-<p class="text-[12px] text-[#8B5CF6] font-medium">Čata konteksts • Online • Connected</p>
-
-<div class="mt-3 bg-[#F3F1FF]/80 rounded-[16px] p-2.5 flex gap-2.5">
-<div class="text-[22px] leading-none">⛅</div>
-<div class="flex-1 flex flex-col gap-2">
-<!-- Bubble 1 - USER -->
-<div class="bubble-user rounded-[14px] rounded-br-[4px] px-3.5 py-2.5 self-end max-w-[88%]">
-<p class="text-[13px] leading-[1.35]">Vzors, pieraksti tikšanos pirmdien 15:00</p>
-<p class="text-[10px] text-right opacity-60 mt-1">14:32 • Tu • 09:32</p>
-</div>
-<!-- Bubble 2 - VZOR -->
-<div class="bubble-vzor rounded-[14px] rounded-bl-[4px] px-3.5 py-2.5 self-start max-w-[88%] shadow-sm">
-<p class="text-[13px] leading-[1.35]">Pierakstīju! 📅 Pirmdiena 15:00 — tikšanās pievienota tavam kontekstam. ✨</p>
-<p class="text-[10px] text-right opacity-60 mt-1">14:32 • Vzor • ✓</p>
-</div>
-</div>
-</div>
-
-<!-- BEACON > STEADY + FORECAST -->
-<div class="mt-3 grid grid-cols-2 gap-2.5">
-<div class="bg-[#A8D8FF] rounded-[14px] p-3 relative overflow-hidden">
-<div class="absolute top-2 right-2 w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-<p class="text-[11px] font-bold opacity-80">✨ Beacon</p>
-<p class="text-[13px] font-bold mt-6 leading-tight">Beacon > Steady</p>
-<p class="text-[11px] mt-1 opacity-80">Beacons Riga • 4°C • Cloudy • Steady • Riga 4C</p>
-<p class="text-[10px] mt-2 opacity-60">Model: Vzors-Vision v1.2</p>
-</div>
-<div class="bg-[#FFF3D0] rounded-[14px] p-3">
-<p class="text-[11px] font-bold opacity-80">☁️ Laikapstākļi</p>
-<div class="mt-5 flex justify-between text-center">
-<div><p class="text-[10px]">Šodien</p><p class="text-[16px]">⛅</p><p class="text-[11px] font-bold">5°C</p></div>
-<div><p class="text-[10px]">Rīt</p><p class="text-[16px]">🌤️</p><p class="text-[11px] font-bold">6°C</p></div>
-<div><p class="text-[10px]">Trešd.</p><p class="text-[16px]">☁️</p><p class="text-[11px] font-bold">3°C</p></div>
-</div>
-<p class="text-[10px] mt-2 opacity-70">Riga • Vējš 5m/s • Steady</p>
-</div>
-</div>
-
-<!-- BRILLES CONNECTED -->
-<div class="mt-3 bg-black/5 rounded-[12px] p-2 flex items-center gap-2.5">
-<span class="text-[18px]">👓</span>
-<div class="flex-1 bg-white rounded-[10px] px-3 py-1.5 text-[12px] flex justify-between items-center">
-<span>Brilles savienotas • Connected • Battery 92%</span><span class="text-green-600 text-[10px]">● Online</span>
-</div>
-<span class="text-[#7C5CFF] text-[16px]">🎙️</span>
-<span class="bg-[#7C5CFF] text-white text-[11px] w-6 h-6 rounded-full flex items-center justify-center">▶</span>
-</div>
-
-<!-- PIEZĪMJU TĀFELE -->
-<p class="font-bold mt-4 text-[14px]">📌 Piezīmju tāfele</p>
-<div class="mt-2 bg-[#C8A88A]/90 p-2 flex gap-2 rounded-[14px]">
-<div class="bg-[#FFF6A0] p-2.5 rounded-[8px] text-[11px] w-1/3 shadow-sm rotate-[-1deg]">• Iepirkties: piens, maize • Pirkt dāvanu</div>
-<div class="bg-[#FFB3D1] p-2.5 rounded-[8px] text-[11px] w-1/3 shadow-sm rotate-[1deg]">• Sagatavot prezentāciju • Atgādināt klientam</div>
-<div class="bg-[#A8D8FF] p-2.5 rounded-[8px] text-[11px] w-1/3 shadow-sm">• Zvanīt klientam 10:00 • Ideja: reels • Tikšanās</div>
-</div>
-</div>
-
-<!-- BOTTOM NAV -->
-<div class="flex justify-around border-t border-black/5 mt-4 py-2.5 text-[11px]">
-<span class="text-[#7C5CFF] font-semibold flex flex-col items-center"><span>🏠</span>Sākums</span>
-<span class="opacity-60 flex flex-col items-center"><span>💬</span>Čats</span>
-<span class="opacity-60 flex flex-col items-center"><span>📍</span>Geolokācija</span>
-<span class="opacity-60 flex flex-col items-center"><span>🐾</span>Čats</span>
-<span class="opacity-60 flex flex-col items-center"><span>⚙️</span>Iestatījumi</span>
-</div>
-<div class="text-center text-[10px] opacity-30 pb-3">Built with Llama v1.4.0 • Privāts & Drošs • Riga</div>
-</div>
-
+<script>
+// ONE SCREEN TOGGLES COLOR - NO SHIFT
+function setTheme(theme){
+  const app=document.getElementById('app');
+  const bL=document.getElementById('btnLight');
+  const bC=document.getElementById('btnCobalt');
+  if(theme==='light'){app.classList.remove('cobalt');app.classList.add('light');bL.classList.add('active');bC.classList.remove('active');bL.setAttribute('aria-selected','true');bC.setAttribute('aria-selected','false');document.querySelector('meta[name="theme-color"]').content='#ffffff';}
+  else{app.classList.remove('light');app.classList.add('cobalt');bC.classList.add('active');bL.classList.remove('active');bC.setAttribute('aria-selected','true');bL.setAttribute('aria-selected','false');document.querySelector('meta[name="theme-color"]').content='#0e1230';}
+  try{localStorage.setItem('vzors-theme',theme);}catch(e){}
+}
+(function(){try{const saved=localStorage.getItem('vzors-theme');if(saved==='cobalt'||saved==='light')setTheme(saved);}catch(e){}})();
+// Prevent zoom on double tap iOS
+document.addEventListener('touchstart',function(){}, {passive:true});
+</script>
 </body>
 </html>
