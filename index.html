@@ -2,166 +2,64 @@
 <html lang="lv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>VZORS AI - Powered by Meta AI - Built with Llama</title>
-<meta name="description" content="VZORS - Built with Llama, Powered by Meta AI, Llama 4 Maverick, Muse Spark 1.1, System LM, Chef Llama">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vzors AI Memory Manager</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif}
-:root{--gold:#8a6d1b;--beige:#fdf8ee;--border:#ece0c8;--green:#22c55e}
-body.light{background:#fff;color:#1a1a1a}
-body.dark{background:#0f0f12;color:#f5f0e0}
-.header{max-width:1280px;margin:0 auto;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);gap:12px}
-.meta-tag{font-size:8px;opacity:.6;line-height:1.35;letter-spacing:0.5px;text-transform:uppercase}
-.V{font-size:36px;font-weight:900;color:var(--gold)}
-.desktop{max-width:1280px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:200px 1fr 300px;gap:16px}
-.d-card{background:#fffdf6;border:1px solid var(--border);border-radius:16px;padding:12px;font-size:12px;line-height:1.5}
-body.dark .d-card{background:#1e1e24;border-color:#2a2a34}
-.d-chat{background:#fff;border:1px solid var(--border);border-radius:18px;min-height:620px;display:flex;flex-direction:column;overflow:hidden}
-body.dark .d-chat{background:#15151a;border-color:#2a2a34}
-.hero{font-size:40px;font-weight:300;text-align:center;margin-top:70px}
-.msgs{flex:1;display:flex;flex-direction:column;gap:10px;padding:16px;overflow-y:auto}
-.bubble{max-width:78%;padding:11px 14px;border-radius:18px;font-size:14px;line-height:1.5}
-.bubble-user{align-self:flex-end;background:var(--gold);color:#fff;border-bottom-right-radius:4px}
-.bubble-ai{align-self:flex-start;background:#f5f1e6;border:1px solid var(--border);border-bottom-left-radius:4px;color:#2b2210}
-body.dark .bubble-ai{background:#1e1e24;color:#f5f0e0;border-color:#2a2a34}
-.input-bar{border-top:1px solid var(--border);padding:10px;display:flex;gap:8px}
-.input{flex:1;border:1.5px solid #d6c59a;border-radius:24px;padding:11px 14px;background:#fffef7;outline:none}
-.footer-meta{text-align:center;font-size:9px;opacity:.55;line-height:1.6;padding:18px 14px;border-top:1px solid var(--border);max-width:1280px;margin:20px auto 0}
-.footer-meta b{font-size:11px;letter-spacing:1px}
-.mobile{display:none}
-.phone{max-width:390px;margin:0 auto;border-radius:36px;border:8px solid #111;padding:12px 14px 16px}
-body.light .phone{background:linear-gradient(180deg,#fffdf6,#f7f1e2)}
-body.dark .phone{background:linear-gradient(180deg,#1e1e2e,#12121a);color:#e8e0ff}
-.btn{border:1px solid #c9b07a;border-radius:20px;padding:5px 11px;font-size:11px;background:#fff7e0;cursor:pointer;font-weight:700}
-body.dark .btn{background:#2a2a3a;color:#f5f0e0;border-color:#444}
-@media(max-width:900px){.desktop{display:none}.mobile{display:block;padding:14px} body.light .mobile{background:#fbf7ef} body.dark .mobile{background:#0a0a0f}}
+body{font-family:Inter,sans-serif;background:radial-gradient(ellipse at 50% 0%,#24144f 0%,#0c0a26 70%,#07071b 100%);min-height:100vh}
+.gold-v{font-family:'Playfair Display',serif;font-style:italic;background:linear-gradient(180deg,#FFE8A0 0%,#D4AF37 45%,#B8860B 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.ametyst{width:28px;height:28px;position:relative;animation:spin 3s linear infinite;display:inline-block}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.ametyst-core{position:absolute;inset:0;background:radial-gradient(circle at 35% 35%,#E9D5FF,#A78BFA,#6D28D9);border-radius:50%;box-shadow:0 0 8px #A78BFA}
+.arrow{position:absolute;inset:-4px;border:1px solid transparent;border-top-color:#D4AF37;border-right-color:#FFD700;border-radius:50%}
 </style>
 </head>
-<body class="light">
-
-<!-- ШАПКА С ПРАВИЛАМИ МЕТЫ -->
-<div class="header">
-<div style="display:flex;gap:14px;align-items:center">
-<div class="V">V</div>
-<div class="meta-tag">
-<b>Built with Llama</b><br>
-Powered by Meta AI<br>
-Model: Llama 4 Maverick<br>
-Muse Spark 1.1<br>
-System: LM | Chef: Llama<br>
-No face mesh
+<body class="text-white p-2 md:p-6">
+<header class="text-center pt-2 pb-3">
+<div class="flex items-center justify-center gap-2 text-[20px]"><span class="opacity-40">—</span><div class="flex items-center gap-1.5"><div class="ametyst"><div class="ametyst-core"></div><div class="arrow"></div></div><span class="gold-v text-[28px]">V</span><span class="font-light tracking-wide">zors AI Memory Manager</span></div><span class="opacity-40">—</span></div>
+<div class="flex justify-center items-center gap-2 mt-3">
+<button class="bg-white/10 text-[11px] px-3 py-1 rounded-full flex items-center gap-1 border border-white/20">☀️ Light</button>
+<button class="bg-[#7C3AED] text-white text-[11px] px-3 py-1 rounded-full flex items-center gap-1">🌙 Cobalt</button>
+<span class="text-[10px] bg-black/40 px-2 py-1 rounded-full">Admin</span>
+<span class="text-[11px] opacity-30">Built with Llama</span>
 </div>
+<div class="flex justify-center gap-32 mt-3 text-[11px] tracking-widest opacity-40"><span>LIGHT</span><span>DARK • COBALT</span></div>
+</header>
+<main class="max-w-[920px] mx-auto grid md:grid-cols-2 gap-5 px-2 pb-10">
+<div class="bg-white rounded-[24px] text-black overflow-hidden shadow-2xl">
+<div class="px-4 pt-3 pb-2 flex items-center justify-between">
+<div class="flex items-center gap-1.5"><div class="ametyst" style="width:22px;height:22px"><div class="ametyst-core"></div><div class="arrow"></div></div><span class="gold-v text-[26px]">V</span><span class="text-[11px] font-semibold">zors AI Memory Manager</span></div>
+<div class="flex items-center gap-1"><span class="text-[9px] bg-black/5 px-2 py-1 rounded-full">☀️ Light | 🌙 Cobalt</span><span class="text-[9px] bg-black text-white px-2 py-1 rounded-full">Admin</span></div>
 </div>
-<div style="display:flex;gap:8px;align-items:center">
-<button class="btn" id="themeBtn">🌙 Dark</button>
-<button class="btn" id="langBtn">LV | EN | RU</button>
+<div class="px-4 flex gap-1.5"><button class="bg-[#7C8CFF] text-white text-[10px] px-2.5 py-1 rounded-full">LV</button><button class="bg-[#2B2F3A] text-white text-[10px] px-2.5 py-1 rounded-full">EN</button><button class="bg-[#B8B2C0] text-white text-[10px] px-2.5 py-1 rounded-full">RU</button></div>
+<div class="mx-3 mt-3 rounded-[12px] border border-dashed border-[#D6D0E5] bg-[#F7F5FF] p-2.5 text-center"><p class="text-[13px] font-medium">Laipni lūdzam! Reģistrēties / Pieteikties</p><div class="flex justify-center gap-2 mt-2"><button class="bg-[#7C5CFF] text-white text-[12px] px-4 py-1 rounded-full">Reģistrēties</button><button class="bg-white border text-[12px] px-4 py-1 rounded-full">Pieteikties</button></div></div>
+<div class="px-4 mt-3"><h2 class="font-bold text-[16px]">Dashboard</h2><p class="text-[12px] text-[#8B5CF6]">Čata konteksts</p>
+<div class="mt-2 bg-[#F3F1FF] rounded-[12px] p-2 flex gap-2"><div class="text-[20px]">🌦️</div><div class="flex-1 flex flex-col gap-1.5">
+<div class="bg-[#E8E4FF] rounded-[12px] rounded-br-[3px] px-3 py-1.5 self-end max-w-[88%]"><p class="text-[12px]">Vzors, pieraksti tikšanos pirmdien 15:00</p><p class="text-[10px] text-right opacity-60">14:32 • Tu</p></div>
+<div class="bg-white border rounded-[12px] rounded-bl-[3px] px-3 py-1.5 self-start max-w-[88%] shadow-sm"><p class="text-[12px]">Pierakstīju! 📅 Pirmdiena 15:00 — tikšanās pievienota.</p><p class="text-[10px] text-right opacity-60">14:32 • Vzor</p></div>
+</div></div>
+<div class="mt-2 grid grid-cols-2 gap-2"><div class="bg-[#A8D8FF] rounded-[12px] p-2.5"><p class="text-[11px] font-medium">✨ Beacon</p><p class="text-[11px] mt-4 font-semibold">Beacon > Steady</p><p class="text-[10px]">Riga 4C • Cloudy • Steady</p></div><div class="bg-[#FFF3D0] rounded-[12px] p-2.5"><p class="text-[11px]">☁️ Laikapstākļi</p><p class="text-[10px] mt-4">Riga 4C • Vējš 5m/s • Steady</p></div></div>
+<div class="mt-2 bg-[#F5F5F5] rounded-[10px] p-1.5 flex items-center gap-2"><span class="text-[14px]">👓</span><div class="flex-1 bg-white rounded-[8px] px-2 py-1 text-[11px] text-[#6B6B7A]">Brilles savienotas • Connected</div><span class="text-[#7C8CFF] text-[14px]">🎙️</span><span class="text-[#7C8CFF] text-[12px]">▶</span></div>
+<p class="font-bold mt-3 text-[13px]">Piezīmju tāfele</p><div class="mt-1 bg-[#C8A88A] p-1.5 flex gap-1.5 rounded-[10px]"><div class="bg-[#FFF6A0] p-2 rounded text-[11px] w-1/3">• Pirkt dāvanu</div><div class="bg-[#FFB3D1] p-2 rounded text-[11px] w-1/3">• Atgādināt</div><div class="bg-[#A8D8FF] p-2 rounded text-[11px] w-1/3">• Ideja: reels</div></div>
 </div>
+<div class="flex justify-around border-t mt-3 py-2 text-[10px]"><span class="text-[#7C5CFF]">🏠 Sākums</span><span class="opacity-60">Čats</span><span class="opacity-60">Geolokācija</span><span class="opacity-60">Iestatījumi</span></div>
 </div>
-
-<!-- DESKTOP - БЕЛЫЙ КАК У GPT/CLAUDE -->
-<div class="desktop">
-<div>
-<div class="d-card">
-<div style="font-size:9px;opacity:.5;letter-spacing:1px">MODEĻU PARĀDE</div>
-<div style="margin-top:6px;line-height:2">indox.lv<br>whatsapp<br>gmail<br>facebook<br>maps</div>
-<br>
-<b>Built with Llama</b><br>
-Powered by Meta AI<br>
-System: LM<br>
-Chef: Llama<br>
-Anti-recursie: Active
+<div class="bg-[#0E1230]/90 backdrop-blur rounded-[24px] text-white overflow-hidden border border-white/10 shadow-2xl">
+<div class="px-4 pt-3 pb-2 flex items-center justify-between"><div class="flex items-center gap-1.5"><div class="ametyst" style="width:22px;height:22px"><div class="ametyst-core"></div><div class="arrow"></div></div><span class="gold-v text-[26px]">V</span><span class="text-[11px] font-semibold text-white/90">zors AI Memory Manager</span></div><div class="flex items-center gap-1"><span class="text-[9px] bg-white/10 px-2 py-1 rounded-full">☀️ Light | 🌙 Cobalt</span><span class="text-[9px] bg-black/50 px-2 py-1 rounded-full border border-white/10">Admin</span></div></div>
+<div class="px-4 flex gap-1.5"><button class="bg-[#7C8CFF] text-white text-[10px] px-2.5 py-1 rounded-full">LV</button><button class="bg-black/50 text-white text-[10px] px-2.5 py-1 rounded-full">EN</button><button class="bg-white/20 text-white text-[10px] px-2.5 py-1 rounded-full">RU</button></div>
+<div class="mx-3 mt-3 rounded-[12px] border border-white/10 bg-white/5 p-2.5 text-center"><p class="text-[13px] font-medium">Laipni lūdzam! Reģistrēties / Pieteikties</p><div class="flex justify-center gap-2 mt-2"><button class="bg-white/10 text-white text-[12px] px-4 py-1 rounded-full">Reģistrēties</button><button class="bg-transparent border border-white/20 text-white/70 text-[12px] px-4 py-1 rounded-full">Pieteikties</button></div></div>
+<div class="px-4 mt-3"><h2 class="font-bold text-[16px]">Dashboard</h2><p class="text-[12px] text-white/50">Čata konteksts</p>
+<div class="mt-2 bg-white/5 rounded-[12px] p-2 flex gap-2 border border-white/5"><div class="text-[20px]">🌦️</div><div class="flex-1 flex flex-col gap-1.5">
+<div class="bg-white/15 rounded-[12px] rounded-br-[3px] px-3 py-1.5 self-end max-w-[88%]"><p class="text-[12px]">Vzors, pieraksti tikšanos pirmdien 15:00</p><p class="text-[10px] text-right opacity-60">14:32 • Tu</p></div>
+<div class="bg-[#1E233F] border border-white/10 rounded-[12px] rounded-bl-[3px] px-3 py-1.5 self-start max-w-[88%]"><p class="text-[12px]">Pierakstīju! 📅 Pirmdiena 15:00 — tikšanās pievienota.</p><p class="text-[10px] text-right opacity-60">14:32 • Vzor</p></div>
+</div></div>
+<div class="mt-2 grid grid-cols-2 gap-2"><div class="bg-white/10 rounded-[12px] p-2.5 border border-white/5"><p class="text-[11px] font-medium text-white/70">✨ Beacon</p><p class="text-[11px] mt-4 font-semibold">Beacon > Steady</p><p class="text-[10px] opacity-70">Riga 4C • Cloudy • Steady</p></div><div class="bg-white/5 rounded-[12px] p-2.5 border border-white/5"><p class="text-[11px]">☁️ Laikapstākļi</p><p class="text-[10px] mt-4 opacity-70">Riga 4C • Vējš 5m/s • Steady</p></div></div>
+<div class="mt-2 bg-white/5 rounded-[10px] p-1.5 flex items-center gap-2 border border-white/5"><span class="text-[14px]">👓</span><div class="flex-1 bg-black/30 rounded-[8px] px-2 py-1 text-[11px] text-white/50">Brilles savienotas • Connected</div><span class="text-white/40 text-[14px]">🎙️</span><span class="text-white/40 text-[12px]">▶</span></div>
+<p class="font-bold mt-3 text-[13px]">Piezīmju tāfele</p><div class="mt-1 bg-black/40 p-1.5 flex gap-1.5 rounded-[10px] border border-white/5"><div class="bg-[#FFF6A0] text-black p-2 rounded text-[11px] w-1/3">• Pirkt dāvanu</div><div class="bg-[#FFB3D1] text-black p-2 rounded text-[11px] w-1/3">• Atgādināt</div><div class="bg-[#A8D8FF] text-black p-2 rounded text-[11px] w-1/3">• Ideja: reels</div></div>
 </div>
+<div class="flex justify-around border-t border-white/10 mt-3 py-2 text-[10px]"><span class="text-[#7C5CFF]">🏠 Sākums</span><span class="opacity-50">Čats</span><span class="opacity-50">Geolokācija</span><span class="opacity-50">Iestatījumi</span></div>
 </div>
-
-<div class="d-chat">
-<div id="empty">
-<div class="hero" id="t-hero">What can I do for you?</div>
-<div style="text-align:center;opacity:.5;margin-top:6px" id="t-sub">Jautā man kaut ko... Vzors AI built with Llama</div>
-</div>
-<div class="msgs" id="msgs"></div>
-<div class="input-bar">
-<input id="q" class="input" placeholder="Built with Llama • Powered by Meta AI • Jautā...">
-<button id="mic" class="btn" title="Диктовалочка">🎤</button>
-<button id="send" class="btn" style="background:#8a6d1b;color:#fff">→</button>
-</div>
-<div style="display:flex;gap:10px;justify-content:center;padding:8px;border-top:1px solid #f0e6cc;font-size:12px">
-<div>🌐</div><div>f</div><div>G</div><div>✉️</div><div>📍</div>
-</div>
-</div>
-
-<div>
-<div class="d-card">
-<span id="t-notes">Manas piezīmes — 20</span><br>
-<span style="font-size:10px;opacity:.6">Powered by Meta AI • Built with Llama</span>
-<div id="nlist" style="margin-top:8px;font-size:11px;opacity:.7">Pirkt ziedus<br>Prezentācija Q4</div>
-</div>
-<div class="d-card" style="margin-top:10px">
-<span id="t-cal">Kalendārs — Novembris 2026</span><br>
-<span style="font-size:10px;opacity:.6">Google sync 70% • Anti-recursie Active</span>
-</div>
-</div>
-</div>
-
-<!-- MOBILE - ТВОЙ КРАСИВЫЙ С ТКАНЬЮ -->
-<div class="mobile">
-<div class="phone">
-<div style="display:flex;justify-content:space-between;align-items:center">
-<div style="font-weight:900;font-size:24px;color:#8a6d1b">V</div>
-<div style="font-size:9px;opacity:.6;text-align:right">Built with Llama<br>Powered by Meta AI<br>System LM | Chef Llama</div>
-</div>
-<div style="font-size:18px;margin-top:10px;font-family:serif" id="m-welcome">Laipni lūdzam</div>
-<div style="margin-top:8px;font-size:11px;border:1px solid #d6c59a;border-radius:10px;padding:7px;background:#fffdf0" id="m-connected">🕶️ Brilles savienotas / Glasses connected</div>
-<div style="display:flex;gap:8px;margin-top:8px">
-<div style="flex:1;text-align:center;background:#fffdf0;border:1px solid #e8d9a0;border-radius:12px;padding:6px;font-size:10px"><span style="color:#22c55e">●</span> Meta Ray-Ban<br>Connected</div>
-<div style="flex:1;text-align:center;background:#f0f6ff;border:1px solid #e8d9a0;border-radius:12px;padding:6px;font-size:10px"><span style="color:#22c55e">●</span> Orion<br>Connected</div>
-</div>
-<div style="margin-top:8px;font-size:11px;border:1px solid #cfe2c8;border-radius:8px;padding:6px;background:#f3faef;display:flex;justify-content:space-between">
-<span>🛡️ Anti-recursice filter: Active</span><span>Bez rekursijas 🎤</span>
-</div>
-<div style="margin-top:10px;border:1px dashed #c9b07a;border-radius:10px;padding:8px">
-<div style="text-align:center;font-weight:700;font-size:12px">Piezīmju tāfele</div>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px">
-<div style="background:#fff3c6;border:1px solid #e8d9a0;border-radius:6px;padding:5px;font-size:10px">Pirkt ziedus</div>
-<div style="background:#fff3c6;border:1px solid #e8d9a0;border-radius:6px;padding:5px;font-size:10px">Prezentācija Q4</div>
-<div style="background:#fff3c6;border:1px solid #e8d9a0;border-radius:6px;padding:5px;font-size:10px">Zvanīt juristam</div>
-</div>
-</div>
-<div style="margin-top:10px;text-align:center;font-size:10px">Preferences Bar • 🌐 Websites • 🟢 Spotify • 📻 Latvijas Radio</div>
-</div>
-</div>
-
-<!-- ФУТЕР - ГЛАВНЫЙ ЩИТ ОТ МАРКА -->
-<footer class="footer-meta">
-<b>BUILT WITH LLAMA</b><br>
-VZORS AI • Powered by Meta AI • Built with Llama • Llama 4 Maverick • Muse Spark 1.1 • System: LM • Chef: Llama<br>
-No face mesh • No biometric scan • Anti-recursie: Active • Bez rekursijas<br>
-<br>
-Llama 4 is licensed under the Llama 4 Community License, Copyright © Meta Platforms, Inc. All Rights Reserved.<br>
-This product uses Llama Materials and is built with Llama. Llama is a trademark of Meta Platforms, Inc.<br>
-License: https://www.llama.com/llama4/license/ • Use Policy: https://www.llama.com/llama4/use-policy/<br>
-Model name begins with "Llama" per §1.b.i • Attribution displayed per §1.b.i • 700M MAU threshold per §2<br>
-© 2026 VZORS • Chef = Llama • System = LM • Built with Llama • Powered by Meta AI
-</footer>
-
-<script>
-// SYSTEM PROMPT С ПРАВИЛАМИ МЕТЫ
-const SYSTEM_PROMPT = `You are Vzors AI. Built with Llama. Powered by Meta AI. Llama 4 Maverick. Muse Spark 1.1. System: LM. Chef: Llama. Llama 4 is licensed under the Llama 4 Community License, Copyright © Meta Platforms, Inc. All Rights Reserved. You remember context, LV/EN/RU, anti-recursion filter active, no face mesh.`;
-
-let lang='LV';
-const dict={
- LV:{hero:"What can I do for you?",sub:"Jautā man kaut ko... Vzors built with Llama",notes:"Manas piezīmes — 20",cal:"Kalendārs — Novembris 2026",welcome:"Laipni lūdzam",connected:"🕶️ Brilles savienotas / Glasses connected"},
- EN:{hero:"What can I do for you?",sub:"Ask me anything... Vzors built with Llama",notes:"My notes — 20",cal:"Calendar — November 2026",welcome:"Welcome",connected:"🕶️ Glasses connected"},
- RU:{hero:"Чем могу помочь?",sub:"Спроси меня... Vzors built with Llama",notes:"Мои заметки — 20",cal:"Календарь — Ноябрь 2026",welcome:"Добро пожаловать",connected:"🕶️ Очки подключены"}
-};
-const msgs=document.getElementById('msgs'), q=document.getElementById('q');
-function add(t,w){const e=document.getElementById('empty');if(e)e.style.display='none';const d=document.createElement('div');d.className='bubble '+(w==='user'?'bubble-user':'bubble-ai');d.textContent=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
-document.getElementById('send').onclick=()=>{if(!q.value.trim())return;add(q.value,'user');let v=q.value;q.value='';setTimeout(()=>add('Vzors AI — Built with Llama, Powered by Meta AI, System LM, Chef Llama, Anti-recursie Active: '+v,'ai'),300)};
-q.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('send').click()});
-document.getElementById('themeBtn').onclick=()=>{document.body.className=document.body.className==='light'?'dark':'light';document.getElementById('themeBtn').textContent=document.body.className==='light'?'🌙 Dark':'☀️ Light'};
-document.getElementById('langBtn').onclick=()=>{lang=lang==='LV'?'EN':lang==='EN'?'RU':'LV';document.getElementById('langBtn').textContent=lang+' | ...';const d=dict[lang];document.getElementById('t-hero').textContent=d.hero;document.getElementById('t-sub').textContent=d.sub;document.getElementById('t-notes').textContent=d.notes;document.getElementById('t-cal').textContent=d.cal;document.getElementById('m-welcome').textContent=d.welcome;document.getElementById('m-connected').textContent=d.connected;};
-document.getElementById('mic').onclick=()=>{
- const Rec=window.SpeechRecognition||window.webkitSpeechRecognition; if(!Rec){add('🎤 Нет диктовки в браузере','ai');return;} const rec=new Rec(); rec.lang=lang==='RU'?'ru-RU':lang==='LV'?'lv-LV':'en-US'; rec.start(); rec.onresult=e=>{q.value=e.results[0][0].transcript; document.getElementById('send').click()};
-};
-</script>
+</main>
 </body>
 </html>
