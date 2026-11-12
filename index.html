@@ -3,22 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vzors AI Memory Manager</title>
+<title>Vzors AI Memory Manager - FULL</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Inter,sans-serif;background:#080b1e;display:flex;justify-content:center;padding:16px;min-height:100vh}
-.app{width:100%;max-width:410px;border-radius:28px;overflow:hidden;display:flex;flex-direction:column;min-height:860px;transition:.3s}
-.app.light{background:#fff;color:#111;border:1px solid #e5e7eb}
+.app{width:100%;max-width:410px;border-radius:28px;overflow:hidden;display:flex;flex-direction:column;min-height:900px;transition:.3s}
+.app.light{background:#fff;color:#111;border:1px solid #e5e7eb;box-shadow:0 20px 60px rgba(0,0,0,.15)}
 .app.cobalt{background:linear-gradient(180deg,#151a42,#0e1230);color:#fff;border:1px solid rgba(255,255,255,.1)}
-
-/* ===== ТВОЙ ЛОГО - СПИРАЛЬ ВРАЩАЕТСЯ ПО ЧАСОВОЙ ===== */
 .header{padding:16px 18px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .brand{display:flex;align-items:center;gap:10px;flex:1}
-.spiral{width:44px;height:44px;flex-shrink:0;animation:spinCW 5s linear infinite;will-change:transform}
+.spiral{width:44px;height:44px;flex-shrink:0;animation:spinCW 5s linear infinite}
 @keyframes spinCW{to{transform:rotate(360deg)}}
 .spiral img{width:100%;height:100%;object-fit:contain;display:block}
-.gold-v{font-family:'Playfair Display',serif;font-style:italic;font-size:38px;background:linear-gradient(180deg,#FFE8A0,#D4AF37 55%,#8C6510);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;line-height:.9;transform:translateY(-2px)}
+.gold-v{font-family:'Playfair Display',serif;font-style:italic;font-size:38px;background:linear-gradient(180deg,#FFE8A0,#D4AF37 55%,#8C6510);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;line-height:.9}
 .zors-black{font-weight:800;font-size:16px;color:#000;letter-spacing:-.02em}
 .cobalt .zors-black{color:#fff}
 .theme{display:flex;background:rgba(0,0,0,.06);border-radius:999px;padding:3px;gap:3px}
@@ -26,13 +24,6 @@ body{font-family:Inter,sans-serif;background:#080b1e;display:flex;justify-conten
 .theme button{border:0;padding:6px 14px;border-radius:999px;font-size:11.5px;font-weight:700;cursor:pointer;transition:.2s}
 .theme button.active{background:#3B82F6;color:#fff;box-shadow:0 3px 10px rgba(59,130,246,.4)}
 .theme button:not(.active){background:transparent;opacity:.6;color:inherit}
-
-/* STICKER PREVIEW - ЧЕРНЫЕ БУКВЫ */
-.sticker{background:#fff;border:2px dashed #ccc;border-radius:18px;margin:12px 14px 0;padding:12px;display:flex;align-items:center;gap:10px;justify-content:center}
-.sticker .spiral{animation:none;width:36px;height:36px}
-.sticker span:last-child{color:#000!important;font-weight:800;font-size:14px}
-
-/* REST */
 .langs{padding:0 18px;display:flex;gap:6px;margin-top:10px;align-items:center}
 .langs button{border:0;padding:5px 12px;border-radius:10px;font-size:11px;font-weight:600;cursor:pointer}
 .lv{background:#3B82F6;color:#fff}.other{background:rgba(0,0,0,.06)}
@@ -60,6 +51,7 @@ body{font-family:Inter,sans-serif;background:#080b1e;display:flex;justify-conten
 .cobalt .card-beacon{background:rgba(168,216,255,.15);color:#fff;border:1px solid rgba(255,255,255,.15)}
 .cobalt .card-weather{background:rgba(255,244,197,.12);color:#fff;border:1px solid rgba(255,255,255,.15)}
 .card b{font-size:11px;opacity:.8}.card .big{font-size:13px;font-weight:800;margin-top:auto}.card .small{font-size:11px;opacity:.7;margin-top:4px}
+.sticker{margin:12px 14px 0;background:#fff;border:2px dashed #bbb;border-radius:16px;padding:10px;display:flex;align-items:center;gap:8px;justify-content:center;color:#000;font-weight:800;font-size:13px}
 .nav{display:flex;justify-content:space-around;padding:14px 8px 12px;border-top:1px solid rgba(0,0,0,.06);margin-top:auto}
 .cobalt .nav{border-color:rgba(255,255,255,.08)}
 .nav button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;opacity:.55;color:inherit;cursor:pointer;min-width:56px}
@@ -71,29 +63,22 @@ body{font-family:Inter,sans-serif;background:#080b1e;display:flex;justify-conten
 <div id="app" class="app light">
   <div class="header">
     <div class="brand">
-      <div class="spiral"><img src="spiral_logo.png" alt="Amethyst Spin"></div>
+      <div class="spiral"><img src="logo.png" alt="Vzors Spiral"></div>
       <div style="display:flex;align-items:baseline;gap:2px"><span class="gold-v">V</span><span class="zors-black" id="zorsText">zors AI Memory Manager</span></div>
     </div>
     <div class="theme"><button id="bL" class="active" onclick="setTheme('light')">☀️ Light</button><button id="bC" onclick="setTheme('cobalt')">🌙 Cobalt</button></div>
   </div>
-
   <div class="langs"><button class="lv">LV</button><button class="other">EN</button><button class="other">RU</button><span class="meta">Built with Llama • Privāts & Drošs</span></div>
-
   <div class="welcome"><h3>Laipni lūdzam!</h3><div class="actions"><button class="btn-blue">Reģistrēties</button><button class="btn-white">Pieteikties</button></div></div>
-
-  <!-- ВЕРСИЯ ДЛЯ СТИКЕРОВ - ЧЕРНЫЕ БУКВЫ -->
-  <div class="sticker"><div class="spiral"><img src="spiral_logo.png"></div><span class="gold-v">V</span><span>zors • black letters for stickers</span></div>
-
+  <div class="sticker"><div class="spiral" style="animation:none"><img src="logo.png"></div><span class="gold-v">V</span><span>zors • black letters for stickers • FULL PROJECT</span></div>
   <div class="main">
     <div><div class="h2">Dashboard</div><div class="sub">Čata konteksts • Online • Connected</div></div>
     <div class="chat-card"><div style="font-size:22px">⛅</div><div class="bubbles"><div class="msg msg-user">Vzors, pieraksti tikšanos pirmdien 15:00<div class="msg-meta">14:32 • Tu</div></div><div class="msg msg-vzor">Pierakstīju! 📅 Pirmdiena 15:00 — tikšanās pievienota tavam kontekstam. ✨<div class="msg-meta">14:32 • Vzor ✓</div></div></div></div>
     <div class="grid"><div class="card card-beacon"><b>✨ Beacon</b><div class="big">Beacon > Steady</div><div class="small">Riga 4C • Cloudy • Steady</div></div><div class="card card-weather"><b>☁️ Laikapstākļi</b><div class="big" style="margin-top:auto">Riga 4°C</div><div class="small">Šodien 5° Rīt 6° Trešd. 3°</div></div></div>
   </div>
-
   <nav class="nav"><button class="active"><span>🏠</span><span>Sākums</span></button><button><span>💬</span><span>Čats</span></button><button><span>📍</span><span>Geolokācija</span></button><button><span>⚙️</span><span>Iestatījumi</span></button></nav>
-  <div class="footer">Твоя спираль Amethyst Spin Clockwise + Golden V + Black zors • One screen • No shift</div>
+  <div class="footer">FULL PROJECT • Your spiral spinning • Golden V + Black zors • One screen Light/Cobalt • Built with Llama</div>
 </div>
-
 <script>
 function setTheme(t){
   const app=document.getElementById('app');
@@ -102,7 +87,7 @@ function setTheme(t){
   const z=document.getElementById('zorsText');
   if(t==='light'){app.className='app light';bL.className='active';bC.className='';z.style.color='#000';}
   else{app.className='app cobalt';bC.className='active';bL.className='';z.style.color='#fff';}
-  localStorage.setItem('vzors-theme',t);
+  try{localStorage.setItem('vzors-theme',t);}catch(e){}
 }
 try{const s=localStorage.getItem('vzors-theme');if(s)setTheme(s);}catch(e){}
 </script>
